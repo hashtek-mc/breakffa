@@ -71,9 +71,9 @@ public class GameManager implements HashLoggable
             if (!yaml.contains(prefix + key))
                 throw new NoSuchFieldException("\"" + prefix + key + "\" field not found.");
 
-        double x = yaml.getDouble(prefix + ".x");
-        double y = yaml.getDouble(prefix + ".y");
-        double z = yaml.getDouble(prefix + ".z");
+        final double x = yaml.getDouble(prefix + ".x");
+        final double y = yaml.getDouble(prefix + ".y");
+        final double z = yaml.getDouble(prefix + ".z");
 
         this.nexus = world.getBlockAt(new Location(world, x, y, z));
 
@@ -85,7 +85,7 @@ public class GameManager implements HashLoggable
     }
 
     /**
-     * Setups Nexus from the configuration file.
+     * Setups Lobby spawn location from the configuration file.
      *
      * @param   yaml                    Configuration file content
      * @param   world                   Game world
@@ -104,11 +104,11 @@ public class GameManager implements HashLoggable
             if (!yaml.contains(prefix + key))
                 throw new NoSuchFieldException("\"" + prefix + key + "\" field not found.");
 
-        double x = yaml.getDouble(prefix + ".x");
-        double y = yaml.getDouble(prefix + ".y");
-        double z = yaml.getDouble(prefix + ".z");
-        float pitch = (float) yaml.getDouble(prefix + ".pitch");
-        float yaw = (float) yaml.getDouble(prefix + ".yaw");
+        final double x = yaml.getDouble(prefix + ".x");
+        final double y = yaml.getDouble(prefix + ".y");
+        final double z = yaml.getDouble(prefix + ".z");
+        final float pitch = (float) yaml.getDouble(prefix + ".pitch");
+        final float yaw = (float) yaml.getDouble(prefix + ".yaw");
 
         this.lobbySpawnLocation = new Location(world, x, y, z, pitch, yaw);
 
@@ -159,11 +159,11 @@ public class GameManager implements HashLoggable
                 continue;
             }
 
-            double x = (double) spawn.get("x");
-            double y = (double) spawn.get("y");
-            double z = (double) spawn.get("z");
-            float pitch = (float) ((double) spawn.get("pitch"));
-            float yaw = (float) ((double) spawn.get("yaw"));
+            final double x = (double) spawn.get("x");
+            final double y = (double) spawn.get("y");
+            final double z = (double) spawn.get("z");
+            final float pitch = (float) ((double) spawn.get("pitch"));
+            final float yaw = (float) ((double) spawn.get("yaw"));
 
             this.spawnLocations.add(new Location(world, x, y, z, pitch, yaw));
 
@@ -246,6 +246,36 @@ public class GameManager implements HashLoggable
     public Map<Player, PlayerData> getPlayersData()
     {
         return this.playersData;
+    }
+
+    /**
+     * Adds a player's data to the main map.
+     *
+     * @param   player      Player
+     * @param   playerData  Player's data
+     */
+    public void addPlayerData(Player player, PlayerData playerData)
+    {
+        this.playersData.put(player, playerData);
+    }
+
+    /**
+     * Removes a player's data from the main map.
+     *
+     * @param   player  Player
+     */
+    public void removePlayerData(Player player)
+    {
+        this.playersData.remove(player);
+    }
+
+    /**
+     * @param   player  Player
+     * @return  Player's data
+     */
+    public PlayerData getPlayerData(Player player)
+    {
+        return this.playersData.get(player);
     }
 
     /**
