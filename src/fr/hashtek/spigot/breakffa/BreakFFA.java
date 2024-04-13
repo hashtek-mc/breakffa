@@ -5,9 +5,7 @@ import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashlogger.HashLogger;
 import fr.hashtek.spigot.breakffa.game.GameManager;
-import fr.hashtek.spigot.breakffa.listener.ListenerFoodLose;
-import fr.hashtek.spigot.breakffa.listener.ListenerJoin;
-import fr.hashtek.spigot.breakffa.listener.ListenerQuit;
+import fr.hashtek.spigot.breakffa.listener.*;
 import fr.hashtek.spigot.hashgui.HashGuiManager;
 import fr.hashtek.tekore.bukkit.Tekore;
 import org.bukkit.plugin.PluginManager;
@@ -148,7 +146,11 @@ public class BreakFFA extends JavaPlugin implements HashLoggable {
 
         this.pluginManager.registerEvents(new ListenerJoin(this), this);
         this.pluginManager.registerEvents(new ListenerQuit(this), this);
+        this.pluginManager.registerEvents(new ListenerFall(), this);
         this.pluginManager.registerEvents(new ListenerFoodLose(), this);
+        this.pluginManager.registerEvents(new ListenerMove(this), this);
+        this.pluginManager.registerEvents(new ListenerBreak(this), this);
+        this.pluginManager.registerEvents(new ListenerPlace(this), this);
 
         this.logger.info(this, "Listeners loaded!");
     }
