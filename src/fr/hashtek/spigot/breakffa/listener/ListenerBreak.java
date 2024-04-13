@@ -20,11 +20,15 @@ public class ListenerBreak implements Listener
 
 
     @EventHandler
-    public void onBreak(BlockBreakEvent event)
-    {
+    public void onBreak(BlockBreakEvent event) {
         final Block block = event.getBlock();
 
-        event.setCancelled(!this.gameManager.getPlacedBlocks().contains(block));
+        if (block != this.gameManager.getNexus()) {
+            event.setCancelled(!this.gameManager.getPlacedBlocks().contains(block));
+            return;
+        }
+
+        // TODO: Nexus break handling.
     }
 
 }
