@@ -5,6 +5,7 @@ import fr.hashtek.spigot.breakffa.kit.KitLobby;
 import fr.hashtek.spigot.breakffa.kit.KitStarter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Random;
 
@@ -24,22 +25,34 @@ public class PlayerManager
     }
 
 
+    private void clearArmor(PlayerInventory inventory)
+    {
+        inventory.setHelmet(null);
+        inventory.setChestplate(null);
+        inventory.setLeggings(null);
+        inventory.setBoots(null);
+    }
+
     public void play()
     {
+        final PlayerInventory playerInventory = this.player.getInventory();
+
         final int spawnIndex = new Random().nextInt(this.gameManager.getSpawnLocations().size());
         final Location spawn = this.gameManager.getSpawnLocations().get(spawnIndex);
 
         this.player.teleport(spawn);
         this.playerData.setState(PlayerState.PLAYING);
 
-        this.player.getInventory().clear();
+        playerInventory.clear();
+        this.clearArmor(playerInventory);
+        playerInventory.setHeldItemSlot(0);
         KitStarter.giveItems(this.player);
-        this.player.getInventory().setHeldItemSlot(0);
-        // ...
     }
 
     public void backToLobby()
     {
+        final PlayerInventory playerInventory = this.player.getInventory();
+
         this.playerData.setState(PlayerState.AT_LOBBY);
 
         this.player.teleport(this.gameManager.getLobbySpawnLocation());
@@ -47,9 +60,10 @@ public class PlayerManager
         this.player.setMaxHealth(20.0);
         this.player.setHealth(20.0);
 
-        this.player.getInventory().clear();
+        playerInventory.clear();
+        this.clearArmor(playerInventory);
+        playerInventory.setHeldItemSlot(4);
         KitLobby.giveItems(this.player);
-        this.player.getInventory().setHeldItemSlot(4);
     }
 
 }
