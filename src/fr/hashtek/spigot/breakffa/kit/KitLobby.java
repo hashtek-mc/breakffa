@@ -40,6 +40,27 @@ public enum KitLobby
             )
             .build(BreakFFA.getInstance().getGUIManager()),
         4
+    ),
+
+    SPECTATE (
+        new HashItem(Material.EYE_OF_ENDER)
+            .setName(ChatColor.YELLOW + "Mode spectateur")
+                .addInteractHandler(
+                    new InteractHandler()
+                        .addAllInteractTypes()
+                        .setInteractAction((Player player, ItemStack item, int slot) -> {
+                            player.sendMessage("pas mtn mdr");
+                        })
+                )
+                .addClickHandler(
+                    new ClickHandler()
+                        .addAllClickTypes()
+                        .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                            player.sendMessage("pas mtn mdr");
+                        })
+                )
+            .build(BreakFFA.getInstance().getGUIManager()),
+        8
     );
 
 
