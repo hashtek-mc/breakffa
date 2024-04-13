@@ -1,0 +1,20 @@
+settings:
+  maxHeight: 100.0
+  minHeight: 50.0
+
+lobbySpawn:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+
+nexusLocation:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+
+spawns:
+  - x: 0.0
+    y: 0.0
+    z: 0.0
+    pitch: 0.0
+    yaw: 0.0
