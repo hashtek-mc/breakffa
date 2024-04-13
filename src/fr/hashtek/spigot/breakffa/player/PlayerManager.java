@@ -1,5 +1,6 @@
 package fr.hashtek.spigot.breakffa.player;
 
+import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.kit.KitLobby;
 import fr.hashtek.spigot.breakffa.kit.KitStarter;
@@ -12,13 +13,15 @@ import java.util.Random;
 public class PlayerManager
 {
 
+    private final BreakFFA main;
     private final PlayerData playerData;
     private final Player player;
     private final GameManager gameManager;
 
 
-    public PlayerManager(PlayerData playerData)
+    public PlayerManager(BreakFFA main, PlayerData playerData)
     {
+        this.main = main;
         this.playerData = playerData;
         this.player = this.playerData.getPlayer();
         this.gameManager = this.playerData.getGameManager();
@@ -64,6 +67,16 @@ public class PlayerManager
         this.clearArmor(playerInventory);
         playerInventory.setHeldItemSlot(4);
         KitLobby.giveItems(this.player);
+    }
+
+    public void respawn()
+    {
+        this.main.getServer().getScheduler().runTaskLater(this.main, new Runnable() {
+            @Override
+            public void run() {
+                player.spigot().respawn();
+            }
+        }, 1L);
     }
 
 }
