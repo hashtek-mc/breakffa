@@ -6,6 +6,7 @@ import fr.hashtek.spigot.breakffa.kit.KitLobby;
 import fr.hashtek.spigot.breakffa.kit.KitStarter;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -83,6 +84,8 @@ public class PlayerManager
         if (killer != null) {
             final PlayerData killerData = this.gameManager.getPlayerData(killer);
 
+            killer.setHealth(killer.getMaxHealth());
+            killer.playSound(killer.getLocation(), Sound.NOTE_PLING, 1, 4);
             killerData.addTotalKills(1);
             this.main.getServer().broadcastMessage("Last damager: " + this.playerData.getLastDamager().getDisplayName());
         }
@@ -93,7 +96,7 @@ public class PlayerManager
         this.playerData.setLastDamager(null);
 
         for (PlayerData pData : this.gameManager.getPlayersData().values()) {
-            if (pData.getLastDamager() == null)
+            if (pData.getPlayer().equals(this.player) || pData.getLastDamager() == null)
                 continue;
 
             if (pData.getLastDamager().equals(this.player))
