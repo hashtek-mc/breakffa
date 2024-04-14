@@ -1,5 +1,8 @@
 package fr.hashtek.spigot.breakffa.listener;
 
+import fr.hashktek.spigot.hashboard.exceptions.AlreadyInTeamException;
+import fr.hashktek.spigot.hashboard.exceptions.StrangeException;
+import fr.hashktek.spigot.hashboard.exceptions.TeamSizeException;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
@@ -33,6 +36,16 @@ public class ListenerJoin implements Listener, HashLoggable
         event.setJoinMessage(null);
 
         playerData.getPlayerManager().backToLobby();
+
+        this.main.getBoard().setToPlayers(player);
+
+        try {
+            final fr.hashtek.tekore.common.player.PlayerData pData = this.main.getCore().getPlayerData(player);
+            main.getTablist().update(player);
+            main.getRankTeams().get(pData.getRank().getUuid()).add(player);
+        } catch (AlreadyInTeamException | TeamSizeException | StrangeException exception) {
+            // TODO: Write error handling (even if none of them should happen).
+        }
     }
 
 }

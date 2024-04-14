@@ -1,5 +1,8 @@
 package fr.hashtek.spigot.breakffa;
 
+import fr.hashktek.spigot.hashboard.HashBoard;
+import fr.hashktek.spigot.hashboard.HashTabList;
+import fr.hashktek.spigot.hashboard.HashTeam;
 import fr.hashtek.hashconfig.HashConfig;
 import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
@@ -8,12 +11,15 @@ import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.listener.*;
 import fr.hashtek.spigot.hashgui.HashGuiManager;
 import fr.hashtek.tekore.bukkit.Tekore;
+import fr.hashtek.tekore.common.Rank;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
+import java.util.HashMap;
 
-public class BreakFFA extends JavaPlugin implements HashLoggable {
+public class BreakFFA extends JavaPlugin implements HashLoggable
+{
 
     private static BreakFFA instance;
     private Tekore core;
@@ -25,6 +31,11 @@ public class BreakFFA extends JavaPlugin implements HashLoggable {
     private HashConfig hashConfig;
 
     private GameManager gameManager;
+
+    private HashBoard board;
+    private HashTabList tablist;
+
+    private HashMap<String, HashTeam> rankTeams;
 
 
     /**
@@ -51,6 +62,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable {
         logger.info(this, "Starting BreakFFA...");
 
         this.setupManagers();
+        this.setupBoard();
         this.registerListeners();
         this.registerCommands();
 
@@ -137,6 +149,24 @@ public class BreakFFA extends JavaPlugin implements HashLoggable {
         this.logger.info(this, "Game manager set up!");
     }
 
+    private void setupBoard()
+    {
+        this.board = new HashBoard();
+        this.tablist = new HashTabList();
+
+        this.tablist.setHeader("breakffa gaming");
+        this.tablist.setFooter("mc.hashtek.fr!!!!");
+
+        this.rankTeams = new HashMap<String, HashTeam>();
+
+        int i = 0;
+        for (Rank rank : this.core.getRanks()) {
+            HashTeam team = new HashTeam(i, rank.getShortName() + " ", "", 10, this.board); // TODO: Set team size to 0 when HashBoard is updated.
+            rankTeams.put(rank.getUuid(), team);
+            i++;
+        }
+    }
+
     /**
      * Registers all event listeners.
      */
@@ -146,7 +176,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable {
 
         this.pluginManager.registerEvents(new ListenerJoin(this), this);
         this.pluginManager.registerEvents(new ListenerQuit(this), this);
-        this.pluginManager.registerEvents(new ListenerFall(), this);
+        this.pluginManager.registerEvents(new ListenerDamage(), this);
         this.pluginManager.registerEvents(new ListenerFoodLose(), this);
         this.pluginManager.registerEvents(new ListenerMove(this), this);
         this.pluginManager.registerEvents(new ListenerBreak(this), this);
@@ -156,6 +186,8 @@ public class BreakFFA extends JavaPlugin implements HashLoggable {
         this.pluginManager.registerEvents(new ListenerDeath(), this);
         this.pluginManager.registerEvents(new ListenerRespawn(this), this);
         this.pluginManager.registerEvents(new ListenerExplosion(), this);
+        this.pluginManager.registerEvents(new ListenerInteract(this), this);
+        this.pluginManager.registerEvents(new ListenerChat(this), this);
 
         this.logger.info(this, "Listeners loaded!");
     }
@@ -218,6 +250,21 @@ public class BreakFFA extends JavaPlugin implements HashLoggable {
     public GameManager getGameManager()
     {
         return this.gameManager;
+    }
+
+    public HashBoard getBoard()
+    {
+        return this.board;
+    }
+
+    public HashTabList getTablist()
+    {
+        return this.tablist;
+    }
+
+    public HashMap<String, HashTeam> getRankTeams()
+    {
+        return this.rankTeams;
     }
 
 }
