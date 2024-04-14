@@ -36,7 +36,7 @@ public enum KitStarter
     ),
 
     GAPPLES (
-        new HashItem(Material.GOLDEN_APPLE, 8)
+        new HashItem(Material.GOLDEN_APPLE, 4)
             .build(),
         3
     ),
