@@ -91,4 +91,44 @@ public class PlayerData
         this.lastDamager = damager;
     }
 
+    public void setTotalKills(int totalKills)
+    {
+        this.totalKills = totalKills;
+    }
+
+    public void setKillStreak(int killStreak)
+    {
+        this.killStreak = killStreak;
+    }
+
+    public void setNexusBreaks(int nexusBreaks)
+    {
+        this.nexusBreaks = nexusBreaks;
+    }
+
+    public void setNexusBreaksStreak(int nexusBreaksStreak)
+    {
+        this.nexusBreaksStreak = nexusBreaksStreak;
+    }
+
+    public void addTotalKills(int amount)
+    {
+        this.totalKills += amount;
+    }
+
+    public void addKillStreak(int amount)
+    {
+        this.killStreak += amount;
+    }
+
+    public void addNexusBreaks(int amount)
+    {
+        this.nexusBreaks += amount;
+    }
+
+    public void addNexusBreaksStreak(int amount)
+    {
+        this.nexusBreaksStreak += amount;
+    }
+
 }

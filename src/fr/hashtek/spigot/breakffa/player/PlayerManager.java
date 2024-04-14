@@ -74,20 +74,31 @@ public class PlayerManager
 
     public void kill()
     {
+        final Player killer = this.playerData.getLastDamager();
+
         this.backToLobby();
 
         this.main.getServer().broadcastMessage(this.player.getDisplayName() + " died lol");
 
-        if (this.playerData.getLastDamager() != null)
+        if (killer != null) {
+            final PlayerData killerData = this.gameManager.getPlayerData(killer);
+
+            killerData.addTotalKills(1);
             this.main.getServer().broadcastMessage("Last damager: " + this.playerData.getLastDamager().getDisplayName());
+        }
         else
             this.main.getServer().broadcastMessage("in the void ig");
 
+        this.playerData.setKillStreak(0);
         this.playerData.setLastDamager(null);
 
-        for (PlayerData pData : this.gameManager.getPlayersData().values())
+        for (PlayerData pData : this.gameManager.getPlayersData().values()) {
+            if (pData.getLastDamager() == null)
+                continue;
+
             if (pData.getLastDamager().equals(this.player))
                 pData.setLastDamager(null);
+        }
     }
 
 }
