@@ -65,7 +65,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable {
     {
         logger.info(this, "Disabling Lobby...");
 
-        // ...
+        this.gameManager.reset();
 
         logger.info(this, "Lobby disabled.");
     }
