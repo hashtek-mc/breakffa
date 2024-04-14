@@ -7,10 +7,12 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class ListenerPlace implements Listener
 {
@@ -27,12 +29,20 @@ public class ListenerPlace implements Listener
 
 
     @EventHandler
-    public void onPlace(BlockPlaceEvent event)
-    {
+    public void onPlace(BlockPlaceEvent event) {
+        final Player player = event.getPlayer();
         final Block block = event.getBlockPlaced();
+        final Material blockReplacedType = event.getBlockReplacedState().getType();
+        final World world = block.getWorld();
 
-        if (block.getType() == Material.TNT) { // Insta TNT Handling
-            final World world = this.main.getServer().getWorld("breakffa");
+        /* If block is being placed where there's already a block, cancel the event */
+        if (blockReplacedType != Material.AIR) {
+            event.setCancelled(true);
+            return;
+        }
+
+        /* Instant TNT handling */
+        if (block.getType() == Material.TNT) {
             final Location blockLocation = block.getLocation();
             final TNTPrimed tnt = (TNTPrimed) world.spawnEntity(blockLocation, EntityType.PRIMED_TNT);
 
@@ -40,6 +50,11 @@ public class ListenerPlace implements Listener
             event.setCancelled(true);
             return;
         }
+
+        /* If neither of the above cases, keep the item in hand and add the block to placedBlocks */
+        final ItemStack item = event.getItemInHand();
+
+        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), item);
 
         this.gameManager.getPlacedBlocks().add(block);
     }
