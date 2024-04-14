@@ -2,6 +2,7 @@ package fr.hashtek.spigot.breakffa.kit;
 
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.PlayerInventory;
@@ -14,6 +15,7 @@ public enum KitStarter
         new HashItem(Material.IRON_SWORD)
             .setUnbreakable(true)
             .addFlag(ItemFlag.HIDE_UNBREAKABLE)
+            .addEnchant(Enchantment.DAMAGE_ALL, 1)
             .build(),
         0
     ),
