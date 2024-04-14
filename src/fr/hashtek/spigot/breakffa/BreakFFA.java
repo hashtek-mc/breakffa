@@ -153,7 +153,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable {
         this.pluginManager.registerEvents(new ListenerPlace(this), this);
         this.pluginManager.registerEvents(new ListenerDrop(this), this);
         this.pluginManager.registerEvents(new ListenerDamageEvent(this), this);
-        this.pluginManager.registerEvents(new ListenerDeath(this), this);
+        this.pluginManager.registerEvents(new ListenerDeath(), this);
         this.pluginManager.registerEvents(new ListenerRespawn(this), this);
 
         this.logger.info(this, "Listeners loaded!");
