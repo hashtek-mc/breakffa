@@ -31,7 +31,6 @@ public class ListenerDamageEvent implements Listener
 
         final Player victim = (Player) event.getEntity();
         final Player damager = (Player) event.getDamager();
-
         final PlayerData victimData = this.gameManager.getPlayerData(victim);
         final PlayerData damagerData = this.gameManager.getPlayerData(damager);
 

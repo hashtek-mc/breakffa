@@ -26,7 +26,7 @@ public class ListenerExplosion implements Listener
         event.blockList().clear();
 
         for (Entity entity : tnt.getNearbyEntities(radius, radius, radius)) {
-            if (!(entity instanceof Player))
+            if (!(entity instanceof Player)) // TODO: Maybe useless.
                 continue;
 
             final Player player = (Player) entity;

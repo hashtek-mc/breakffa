@@ -27,7 +27,6 @@ public class ListenerChat implements Listener
     {
         final Player player = event.getPlayer();
         final PlayerData playerData = this.core.getPlayerData(player);
-
         final Rank playerRank = playerData.getRank();
 
         event.setFormat(

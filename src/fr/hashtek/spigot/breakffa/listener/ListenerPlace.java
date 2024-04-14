@@ -37,12 +37,13 @@ public class ListenerPlace implements Listener
         final Material blockReplacedType = event.getBlockReplacedState().getType();
         final World world = block.getWorld();
 
-        /* If block is being placed where there's already a block, cancel the event */
+        /* If block is being placed where there's already a block, cancel the event. */
         if (blockReplacedType != Material.AIR) {
             event.setCancelled(true);
             return;
         }
 
+        /* If block is in the spawn protection, cancel the event. */
         Location nearestSpawn = null;
         double nearestDistanceSquared = Double.MAX_VALUE;
 
@@ -71,7 +72,7 @@ public class ListenerPlace implements Listener
             return;
         }
 
-        /* If neither of the above cases, keep the item in hand and add the block to placedBlocks */
+        /* If neither of the above cases, keep the item in hand and add the block to placed blocks list. */
         final ItemStack item = event.getItemInHand();
 
         player.getInventory().setItem(player.getInventory().getHeldItemSlot(), item);
