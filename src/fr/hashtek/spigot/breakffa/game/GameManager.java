@@ -6,7 +6,9 @@ import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashlogger.HashLogger;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -205,6 +207,27 @@ public class GameManager implements HashLoggable
         }
 
         this.logger.info(this, "Successfully set up BreakFFA game!");
+    }
+
+    /**
+     * Resets the map.
+     * Used when Nexus is broken.
+     */
+    public void reset()
+    {
+        this.main.getServer().broadcastMessage("reset lol");
+
+        for (Player player : this.main.getServer().getOnlinePlayers()) {
+            final PlayerData playerData = this.getPlayerData(player);
+            final PlayerManager playerManager = playerData.getPlayerManager();
+
+            playerManager.backToLobby();
+        }
+
+        for (Block block : this.placedBlocks)
+            block.setType(Material.AIR);
+
+        this.placedBlocks.clear();
     }
 
 
