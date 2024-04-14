@@ -26,7 +26,7 @@ public class GameManager implements HashLoggable
     private Location lobbySpawnLocation;
     private final List<Location> spawnLocations;
 
-    private final Date lastReset;
+    private Date lastReset;
     private final Map<Player, PlayerData> playersData;
     private final List<Block> placedBlocks;
 
@@ -226,6 +226,8 @@ public class GameManager implements HashLoggable
             block.setType(Material.AIR);
 
         this.placedBlocks.clear();
+
+        this.lastReset = new Date();
     }
 
 
