@@ -31,7 +31,7 @@ public class ListenerMove implements Listener
         final PlayerData playerData = this.gameManager.getPlayerData(player);
         final PlayerManager playerManager = playerData.getPlayerManager();
 
-        playerManager.backToLobby();
+        playerManager.kill();
     }
 
 }

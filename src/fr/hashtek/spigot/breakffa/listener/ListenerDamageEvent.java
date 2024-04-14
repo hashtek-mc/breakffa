@@ -42,7 +42,7 @@ public class ListenerDamageEvent implements Listener
 
         if (victim.getHealth() - event.getFinalDamage() <= 0) {
             event.setCancelled(true);
-            victimData.getPlayerManager().backToLobby();
+            victimData.getPlayerManager().kill();
         }
     }
 

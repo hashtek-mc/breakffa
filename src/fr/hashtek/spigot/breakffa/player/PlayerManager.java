@@ -4,6 +4,7 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.kit.KitLobby;
 import fr.hashtek.spigot.breakffa.kit.KitStarter;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
@@ -45,6 +46,7 @@ public class PlayerManager
 
         this.player.teleport(spawn);
         this.playerData.setState(PlayerState.PLAYING);
+        this.player.setGameMode(GameMode.SURVIVAL);
 
         playerInventory.clear();
         this.clearArmor(playerInventory);
@@ -57,11 +59,12 @@ public class PlayerManager
         final PlayerInventory playerInventory = this.player.getInventory();
 
         this.playerData.setState(PlayerState.AT_LOBBY);
+        this.player.setGameMode(GameMode.ADVENTURE);
 
         this.player.teleport(this.gameManager.getLobbySpawnLocation());
 
         this.player.setMaxHealth(20.0);
-        this.player.setHealth(20.0);
+        this.player.setHealth(this.player.getMaxHealth());
 
         playerInventory.clear();
         this.clearArmor(playerInventory);
@@ -69,14 +72,22 @@ public class PlayerManager
         KitLobby.giveItems(this.player);
     }
 
-    public void respawn()
+    public void kill()
     {
-        this.main.getServer().getScheduler().runTaskLater(this.main, new Runnable() {
-            @Override
-            public void run() {
-                player.spigot().respawn();
-            }
-        }, 1L);
+        this.backToLobby();
+
+        this.main.getServer().broadcastMessage(this.player.getDisplayName() + " died lol");
+
+        if (this.playerData.getLastDamager() != null)
+            this.main.getServer().broadcastMessage("Last damager: " + this.playerData.getLastDamager().getDisplayName());
+        else
+            this.main.getServer().broadcastMessage("in the void ig");
+
+        this.playerData.setLastDamager(null);
+
+        for (PlayerData pData : this.gameManager.getPlayersData().values())
+            if (pData.getLastDamager().equals(this.player))
+                pData.setLastDamager(null);
     }
 
 }
