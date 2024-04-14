@@ -4,28 +4,35 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.kit.KitLobby;
 import fr.hashtek.spigot.breakffa.kit.KitStarter;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import fr.hashtek.tekore.bukkit.Tekore;
+import fr.hashtek.tekore.common.Rank;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class PlayerManager
 {
 
     private final BreakFFA main;
+    private final Tekore core;
     private final PlayerData playerData;
     private final Player player;
+    private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private final GameManager gameManager;
 
 
     public PlayerManager(BreakFFA main, PlayerData playerData)
     {
         this.main = main;
+        this.core = this.main.getCore();
         this.playerData = playerData;
         this.player = this.playerData.getPlayer();
+        this.corePlayerData = this.core.getPlayerData(this.player);
         this.gameManager = this.playerData.getGameManager();
     }
 
@@ -76,21 +83,37 @@ public class PlayerManager
     public void kill()
     {
         final Player killer = this.playerData.getLastDamager();
+        final Rank playerRank = this.corePlayerData.getRank();
 
         this.backToLobby();
 
-        this.main.getServer().broadcastMessage(this.player.getDisplayName() + " died lol");
+        String killMessage = playerRank.getColor() + playerRank.getFullName() + " " + this.corePlayerData.getUsername() + " " + ChatColor.RESET;
 
         if (killer != null) {
+            final fr.hashtek.tekore.common.player.PlayerData coreKillerData = this.core.getPlayerData(killer);
             final PlayerData killerData = this.gameManager.getPlayerData(killer);
+            final Rank killerRank = coreKillerData.getRank();
+
+            final List<ItemStack> rewardItems = Arrays.asList(
+                KitStarter.GAPPLES.getItem().getItemStack(),
+                KitStarter.INSTANT_TNT.getItem().getItemStack()
+            );
+
+            rewardItems.forEach(item -> {
+                final ItemStack i = new ItemStack(item.getType(), 1);
+
+                killer.getInventory().addItem(i);
+            });
 
             killer.setHealth(killer.getMaxHealth());
             killer.playSound(killer.getLocation(), Sound.NOTE_PLING, 1, 4);
             killerData.addTotalKills(1);
-            this.main.getServer().broadcastMessage("Last damager: " + this.playerData.getLastDamager().getDisplayName());
-        }
-        else
-            this.main.getServer().broadcastMessage("in the void ig");
+
+            killMessage += "s'est fait tuer par " + killerRank.getColor() + killerRank.getFullName() + " " + coreKillerData.getUsername();
+        } else
+            killMessage += "est mort.";
+
+        this.main.getServer().broadcastMessage(killMessage);
 
         this.playerData.setKillStreak(0);
         this.playerData.setLastDamager(null);

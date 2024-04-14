@@ -1,10 +1,10 @@
 package fr.hashtek.spigot.breakffa.game;
 
+import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.hashconfig.HashConfig;
 import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashlogger.HashLogger;
-import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import org.bukkit.Location;
@@ -215,8 +215,6 @@ public class GameManager implements HashLoggable
      */
     public void reset()
     {
-        this.main.getServer().broadcastMessage("reset lol");
-
         for (Player player : this.main.getServer().getOnlinePlayers()) {
             final PlayerData playerData = this.getPlayerData(player);
             final PlayerManager playerManager = playerData.getPlayerManager();
