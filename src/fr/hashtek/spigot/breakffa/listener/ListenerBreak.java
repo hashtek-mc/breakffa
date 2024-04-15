@@ -2,6 +2,7 @@ package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
+import fr.hashtek.spigot.breakffa.game.Nexus;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -31,12 +32,14 @@ public class ListenerBreak implements Listener
     @EventHandler
     public void onBreak(BlockBreakEvent event)
     {
+        final Player player = event.getPlayer();
         final Block block = event.getBlock();
+        final Nexus nexus = this.gameManager.getNexus();
 
         /* Nexus break handling */
-        if (block.equals(this.gameManager.getNexus().getBlock())) {
+        if (block.equals(nexus.getBlock())) {
             event.setCancelled(true);
-            this.gameManager.getNexus().breqk(event.getPlayer());
+            nexus.breqk(player);
             return;
         }
 

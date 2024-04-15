@@ -43,7 +43,7 @@ public class GameManager implements HashLoggable
         this.main = main;
         this.logger = this.main.getHashLogger();
 
-        this.nexus = new Nexus(this.main);
+        this.nexus = new Nexus(this.main, this);
         this.spawnLocations = new ArrayList<Location>();
 
         this.lastReset = new Date();

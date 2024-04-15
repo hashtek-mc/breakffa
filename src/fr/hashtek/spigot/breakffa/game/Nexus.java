@@ -20,10 +20,10 @@ public class Nexus
      *
      * @param   main    BreakFFA instance
      */
-    public Nexus(BreakFFA main)
+    public Nexus(BreakFFA main, GameManager gameManager)
     {
         this.main = main;
-        this.gameManager = this.main.getGameManager();
+        this.gameManager = gameManager;
     }
 
 
@@ -40,7 +40,7 @@ public class Nexus
         final fr.hashtek.tekore.common.player.PlayerData corePlayerData = playerData.getCorePlayerData();
         final Rank playerRank = corePlayerData.getRank();
 
-        this.main.getServer().broadcastMessage(ChatColor.WHITE + "Le Nexus a été cassé par " + playerRank.getColor() + playerRank.getShortName() + corePlayerData.getUsername() + ChatColor.WHITE + " !");
+        this.main.getServer().broadcastMessage(ChatColor.WHITE + "Le Nexus a été cassé par " + playerRank.getColor() + playerRank.getShortName() + " " + corePlayerData.getUsername() + ChatColor.WHITE + " !");
 
         for (Player p : this.main.getServer().getOnlinePlayers()) {
             final PlayerData pData = this.gameManager.getPlayerData(p);
