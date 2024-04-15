@@ -12,7 +12,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 public class ListenerBreak implements Listener
 {
 
-    private final BreakFFA main;
     private final GameManager gameManager;
 
 
@@ -23,8 +22,7 @@ public class ListenerBreak implements Listener
      */
     public ListenerBreak(BreakFFA main)
     {
-        this.main = main;
-        this.gameManager = this.main.getGameManager();
+        this.gameManager = main.getGameManager();
     }
 
     /**
@@ -35,36 +33,14 @@ public class ListenerBreak implements Listener
     {
         final Block block = event.getBlock();
 
-        if (block.equals(this.gameManager.getNexus())) {
-            final Player player = event.getPlayer();
-            final PlayerData playerData = this.gameManager.getPlayerData(player);
-
-            this.main.getServer().broadcastMessage("nexus cassé par " + player.getDisplayName() + " wéééé");
-
-            for (Player p : this.main.getServer().getOnlinePlayers()) {
-                final PlayerData pData = this.gameManager.getPlayerData(p);
-
-                // title (deprecated)
-                p.sendTitle(player.getDisplayName(), "a cassé le nexus wula (il est à " + playerData.getNexusBreaks() + ")");
-
-                if (pData.getPlayer().equals(player))
-                    continue;
-
-                pData.setNexusBreaksStreak(0);
-            }
-
+        /* Nexus break handling */
+        if (block.equals(this.gameManager.getNexus().getBlock())) {
             event.setCancelled(true);
-            this.gameManager.reset();
-
-            playerData.addNexusBreaks(1);
-            playerData.addNexusBreaksStreak(1);
-
-//            for (PlayerData pData : this.gameManager.getPlayersData().values()) {
-//
-//            }
+            this.gameManager.getNexus().breqk(event.getPlayer());
             return;
         }
 
+        /* If block was not placed by a player, cancel the event. */
         if (!this.gameManager.getPlacedBlocks().contains(block))
             event.setCancelled(true);
     }

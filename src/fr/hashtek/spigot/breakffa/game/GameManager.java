@@ -22,7 +22,7 @@ public class GameManager implements HashLoggable
     private final BreakFFA main;
     private final HashLogger logger;
 
-    private Block nexus;
+    private final Nexus nexus;
     private Location lobbySpawnLocation;
     private final List<Location> spawnLocations;
 
@@ -43,6 +43,7 @@ public class GameManager implements HashLoggable
         this.main = main;
         this.logger = this.main.getHashLogger();
 
+        this.nexus = new Nexus(this.main);
         this.spawnLocations = new ArrayList<Location>();
 
         this.lastReset = new Date();
@@ -94,12 +95,12 @@ public class GameManager implements HashLoggable
         final double y = yaml.getDouble(prefix + ".y");
         final double z = yaml.getDouble(prefix + ".z");
 
-        this.nexus = world.getBlockAt(new Location(world, x, y, z));
+        this.nexus.setBlock(world.getBlockAt(new Location(world, x, y, z)));
 
         this.logger.info(this, String.format(
             "Successfully loaded Nexus.\n" +
             "(X: %f, Y: %f, Z: %f, Type: %s)",
-            x, y, z, this.nexus.getType()
+            x, y, z, this.nexus.getBlock().getType()
         ));
     }
 
@@ -116,12 +117,13 @@ public class GameManager implements HashLoggable
         this.logger.info(this, "Loading Lobby spawn...");
 
         final String prefix = "lobbySpawn";
+        
+        final String missingKey = this.checkRequiredKeys(yaml,
+            prefix, prefix + ".x", prefix + ".y", prefix + ".z"
+        );
 
-        final List<String> requiredKeys = Arrays.asList("", ".x", ".y", ".z");
-
-        for (String key : requiredKeys)
-            if (!yaml.contains(prefix + key))
-                throw new NoSuchFieldException("\"" + prefix + key + "\" field not found.");
+        if (missingKey != null)
+            throw new NoSuchFieldException("\"" + missingKey + "\" field not found.");
 
         final double x = yaml.getDouble(prefix + ".x");
         final double y = yaml.getDouble(prefix + ".y");
@@ -251,7 +253,7 @@ public class GameManager implements HashLoggable
     /**
      * @return  Game's Nexus
      */
-    public Block getNexus()
+    public Nexus getNexus()
     {
         return this.nexus;
     }
