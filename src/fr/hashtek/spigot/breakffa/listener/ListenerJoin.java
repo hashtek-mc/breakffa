@@ -16,22 +16,31 @@ public class ListenerJoin implements Listener, HashLoggable
 {
 
     private final BreakFFA main;
+    private final GameManager gameManager;
 
 
+    /**
+     * Creates a new instance of ListenerJoin.
+     *
+     * @param   main    BreakFFA instance
+     */
     public ListenerJoin(BreakFFA main)
     {
         this.main = main;
+        this.gameManager = this.main.getGameManager();
     }
 
 
+    /**
+     * Called when a player joins the server.
+     */
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
     {
         final Player player = event.getPlayer();
-        final GameManager gameManager = this.main.getGameManager();
-        final PlayerData playerData = new PlayerData(this.main, player, gameManager);
+        final PlayerData playerData = new PlayerData(this.main, player, this.gameManager);
 
-        gameManager.addPlayerData(player, playerData);
+        this.gameManager.addPlayerData(player, playerData);
 
         event.setJoinMessage(null);
 
@@ -41,8 +50,8 @@ public class ListenerJoin implements Listener, HashLoggable
 
         try {
             final fr.hashtek.tekore.common.player.PlayerData pData = this.main.getCore().getPlayerData(player);
-            main.getTablist().update(player);
-            main.getRankTeams().get(pData.getRank().getUuid()).add(player);
+            this.main.getTablist().update(player);
+            this.main.getRankTeams().get(pData.getRank().getUuid()).add(player);
         } catch (AlreadyInTeamException | TeamSizeException | StrangeException exception) {
             // TODO: Write error handling (even if none of them should happen).
         }

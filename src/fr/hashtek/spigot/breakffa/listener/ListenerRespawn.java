@@ -15,6 +15,11 @@ public class ListenerRespawn implements Listener
     private final GameManager gameManager;
 
 
+    /**
+     * Creates a new instance of ListenerRespawn.
+     *
+     * @param   main    BreakFFA instance
+     */
     public ListenerRespawn(BreakFFA main)
     {
         this.main = main;
@@ -22,6 +27,9 @@ public class ListenerRespawn implements Listener
     }
 
 
+    /**
+     * Called when a player respawns.
+     */
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event)
     {

@@ -8,12 +8,17 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class ListenerDamage implements Listener
 {
 
+    /**
+     * Called when an entity takes damage.
+     * In this case, we only process players.
+     */
     @EventHandler
     public void onDamage(EntityDamageEvent event)
     {
         if (!(event.getEntity() instanceof Player))
             return;
 
+        /* If damage cause is unwanted, cancel the event. */
         if (event.getCause() == EntityDamageEvent.DamageCause.FALL ||
             event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK ||
             event.getCause() == EntityDamageEvent.DamageCause.FIRE ||

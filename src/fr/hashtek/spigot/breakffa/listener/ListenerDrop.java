@@ -16,6 +16,11 @@ public class ListenerDrop implements Listener
     private final GameManager gameManager;
 
 
+    /**
+     * Creates a new instance of ListenerDrop.
+     *
+     * @param   main    BreakFFA instance
+     */
     public ListenerDrop(BreakFFA main)
     {
         this.main = main;
@@ -23,12 +28,16 @@ public class ListenerDrop implements Listener
     }
 
 
+    /**
+     * Called when a player drops an item.
+     */
     @EventHandler
     public void onDrop(PlayerDropItemEvent event)
     {
         final Player player = event.getPlayer();
         final PlayerData playerData = this.gameManager.getPlayerData(player);
 
+        /* If player is in the lobby, cancel the event. */
         if (playerData.getState() == PlayerState.AT_LOBBY)
             event.setCancelled(true);
     }

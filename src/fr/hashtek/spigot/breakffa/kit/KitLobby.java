@@ -129,6 +129,12 @@ public enum KitLobby
     private final int slotIndex;
 
 
+    /**
+     * Creates a new instance of KitLobby.
+     *
+     * @param   item        Item
+     * @param   slotIndex   Slot index
+     */
     KitLobby(HashItem item, int slotIndex)
     {
         this.item = item;
@@ -136,6 +142,11 @@ public enum KitLobby
     }
 
 
+    /**
+     * Gives the kit to a player.
+     *
+     * @param   player  Player
+     */
     public static void giveItems(Player player)
     {
         final Inventory playerInventory = player.getInventory();
@@ -145,11 +156,17 @@ public enum KitLobby
     }
 
 
+    /**
+     * @return  Item
+     */
     public HashItem getItem()
     {
         return this.item;
     }
 
+    /**
+     * @return  Slot index
+     */
     public int getSlotIndex()
     {
         return this.slotIndex;

@@ -131,6 +131,9 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         this.logger.info(this, "Managers set up!");
     }
 
+    /**
+     * Setups game manager.
+     */
     private void setupGameManager()
     {
         this.logger.info(this, "Setting up Game manager...");
@@ -149,6 +152,9 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         this.logger.info(this, "Game manager set up!");
     }
 
+    /**
+     * Setups main board.
+     */
     private void setupBoard()
     {
         this.board = new HashBoard();
@@ -182,7 +188,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         this.pluginManager.registerEvents(new ListenerBreak(this), this);
         this.pluginManager.registerEvents(new ListenerPlace(this), this);
         this.pluginManager.registerEvents(new ListenerDrop(this), this);
-        this.pluginManager.registerEvents(new ListenerDamageEvent(this), this);
+        this.pluginManager.registerEvents(new ListenerDamageByEntity(this), this);
         this.pluginManager.registerEvents(new ListenerDeath(), this);
         this.pluginManager.registerEvents(new ListenerRespawn(this), this);
         this.pluginManager.registerEvents(new ListenerExplosion(), this);
@@ -252,16 +258,25 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         return this.gameManager;
     }
 
+    /**
+     * @return  Main board
+     */
     public HashBoard getBoard()
     {
         return this.board;
     }
 
+    /**
+     * @return  Tablist
+     */
     public HashTabList getTablist()
     {
         return this.tablist;
     }
 
+    /**
+     * @return  Rank teams
+     */
     public HashMap<String, HashTeam> getRankTeams()
     {
         return this.rankTeams;

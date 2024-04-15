@@ -2,6 +2,7 @@ package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,6 +22,11 @@ public class ListenerPlace implements Listener
     private final GameManager gameManager;
 
 
+    /**
+     * Creates a new instance of ListenerPlace.
+     *
+     * @param   main    BreakFFA instance
+     */
     public ListenerPlace(BreakFFA main)
     {
         this.main = main;
@@ -28,6 +34,9 @@ public class ListenerPlace implements Listener
     }
 
 
+    /**
+     * Called when a player places a block.
+     */
     @EventHandler
     public void onPlace(BlockPlaceEvent event)
     {
@@ -70,6 +79,12 @@ public class ListenerPlace implements Listener
 
             tnt.setFuseTicks(0);
             return;
+        }
+
+        /* If block is above the max height limit, cancel the event. */
+        if (blockLocation.getBlockY() >= this.gameManager.getGameSettings().getMaxHeight()) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "Vous ne pouvez pas construire plus haut.");
         }
 
         /* If neither of the above cases, keep the item in hand and add the block to placed blocks list. */

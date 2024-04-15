@@ -13,6 +13,10 @@ import org.bukkit.util.Vector;
 public class ListenerExplosion implements Listener
 {
 
+    /**
+     * Called when an entity explodes.
+     * In this case, we only process TNT (for Instant TNTs).
+     */
     @EventHandler
     public void onTNTExplode(EntityExplodeEvent event)
     {
@@ -23,10 +27,12 @@ public class ListenerExplosion implements Listener
         final Location tntLocation = tnt.getLocation();
         final double radius = 5.0;
 
+        /* Cancels the damage caused to the map. */
         event.blockList().clear();
 
+        /* Pushes every entity around that TNT. */
         for (Entity entity : tnt.getNearbyEntities(radius, radius, radius)) {
-            if (!(entity instanceof Player)) // TODO: Maybe useless.
+            if (!(entity instanceof Player)) // FIXME: Maybe useless.
                 continue;
 
             final Player player = (Player) entity;

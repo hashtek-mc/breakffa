@@ -2,7 +2,6 @@ package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
-import fr.hashtek.spigot.breakffa.player.PlayerData;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +16,11 @@ public class ListenerInteract implements Listener
     private final GameManager gameManager;
 
 
+    /**
+     * Creates a new instance of ListenerInteract.
+     *
+     * @param   main    BreakFFA instance
+     */
     public ListenerInteract(BreakFFA main)
     {
         this.main = main;
@@ -24,11 +28,15 @@ public class ListenerInteract implements Listener
     }
 
 
+    /**
+     * Called when a player interacts with something in the world.
+     * Here, we cancel the event when player right-clicks on the nexus
+     * (to avoid beacon GUI popup).
+     */
     @EventHandler
     public void onInteract(PlayerInteractEvent event)
     {
         final Player player = event.getPlayer();
-        final PlayerData playerData = this.gameManager.getPlayerData(player);
         final Block block = event.getClickedBlock();
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && this.gameManager.getNexus().equals(block))

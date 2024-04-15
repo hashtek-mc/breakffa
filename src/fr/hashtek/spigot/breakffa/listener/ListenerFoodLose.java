@@ -8,6 +8,10 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 public class ListenerFoodLose implements Listener
 {
 
+    /**
+     * Called when an entity loses food.
+     * In this case, we only process players.
+     */
     @EventHandler
     public void onFoodLose(FoodLevelChangeEvent event)
     {

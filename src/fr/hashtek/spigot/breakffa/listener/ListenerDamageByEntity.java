@@ -9,20 +9,29 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class ListenerDamageEvent implements Listener
+public class ListenerDamageByEntity implements Listener
 {
 
     private final BreakFFA main;
     private final GameManager gameManager;
 
 
-    public ListenerDamageEvent(BreakFFA main)
+    /**
+     * Creates a new instance of ListenerDamageByEntity
+     *
+     * @param   main    BreakFFA instance
+     */
+    public ListenerDamageByEntity(BreakFFA main)
     {
         this.main = main;
         this.gameManager = this.main.getGameManager();
     }
 
 
+    /**
+     * Called when an entity takes damage from another entity.
+     * In this case, we only process players (PVP).
+     */
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent event)
     {
@@ -34,11 +43,14 @@ public class ListenerDamageEvent implements Listener
         final PlayerData victimData = this.gameManager.getPlayerData(victim);
         final PlayerData damagerData = this.gameManager.getPlayerData(damager);
 
+        /* If one of the two players is not playing, cancel the event. */
         if (victimData.getState() != PlayerState.PLAYING || damagerData.getState() != PlayerState.PLAYING)
             event.setCancelled(true);
 
+        /* For kill author detection. */
         victimData.setLastDamager(damager);
 
+        /* For kill. */
         if (victim.getHealth() - event.getFinalDamage() <= 0) {
             event.setCancelled(true);
             victimData.getPlayerManager().kill();

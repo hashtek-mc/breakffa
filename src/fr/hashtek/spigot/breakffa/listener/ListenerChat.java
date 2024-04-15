@@ -16,12 +16,20 @@ public class ListenerChat implements Listener
     private final Tekore core;
 
 
+    /**
+     * Creates a new instance of ListenerChat
+     *
+     * @param   main    BreakFFA instance
+     */
     public ListenerChat(BreakFFA main)
     {
         this.core = main.getCore();
     }
 
 
+    /**
+     * Called when a player sends a message in the chat.
+     */
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event)
     {

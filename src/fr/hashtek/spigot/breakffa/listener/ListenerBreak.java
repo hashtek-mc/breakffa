@@ -16,13 +16,20 @@ public class ListenerBreak implements Listener
     private final GameManager gameManager;
 
 
+    /**
+     * Creates a new instance of ListenerBreak
+     *
+     * @param   main    BreakFFA instance
+     */
     public ListenerBreak(BreakFFA main)
     {
         this.main = main;
         this.gameManager = this.main.getGameManager();
     }
 
-
+    /**
+     * Called when a player breaks a block.
+     */
     @EventHandler
     public void onBreak(BlockBreakEvent event)
     {
@@ -52,9 +59,9 @@ public class ListenerBreak implements Listener
             playerData.addNexusBreaks(1);
             playerData.addNexusBreaksStreak(1);
 
-            for (PlayerData pData : this.gameManager.getPlayersData().values()) {
-
-            }
+//            for (PlayerData pData : this.gameManager.getPlayersData().values()) {
+//
+//            }
             return;
         }
 

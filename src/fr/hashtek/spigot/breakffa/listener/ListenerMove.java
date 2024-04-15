@@ -15,12 +15,21 @@ public class ListenerMove implements Listener
     private final GameManager gameManager;
 
 
+    /**
+     * Creates a new instance of ListenerMove.
+     *
+     * @param   main    BreakFFA instance
+     */
     public ListenerMove(BreakFFA main)
     {
         this.gameManager = main.getGameManager();
     }
 
 
+    /**
+     * Called when a player moves in the world.
+     * If the player falls below the minimum height, kills the players.
+     */
     @EventHandler
     public void onMove(PlayerMoveEvent event)
     {

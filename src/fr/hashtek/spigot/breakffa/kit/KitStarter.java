@@ -74,16 +74,35 @@ public enum KitStarter
     private final int[] slotIndexes;
 
 
+    /**
+     * Creates a new instance of KitStarter.
+     * (without slot index)
+     *
+     * @param   item            Item
+     */
     KitStarter(HashItem item)
     {
         this(item, -1);
     }
 
+    /**
+     * Creates a new instance of KitStarter.
+     * (with only one slot index)
+     *
+     * @param   item        Item
+     * @param   slotIndex   Slot index
+     */
     KitStarter(HashItem item, int slotIndex)
     {
         this(item, new int[] { slotIndex });
     }
 
+    /**
+     * Creates a new instance of KitStarter.
+     *
+     * @param   item            Item
+     * @param   slotIndexes     Slot indexes
+     */
     KitStarter(HashItem item, int[] slotIndexes)
     {
         this.item = item;
@@ -91,6 +110,11 @@ public enum KitStarter
     }
 
 
+    /**
+     * Sets player's armor.
+     *
+     * @param   playerInventory     Player's inventory
+     */
     private static void setArmor(PlayerInventory playerInventory)
     {
         playerInventory.setChestplate(CHESTPLATE.getItem().getItemStack());
@@ -98,6 +122,11 @@ public enum KitStarter
         playerInventory.setBoots(BOOTS.getItem().getItemStack());
     }
 
+    /**
+     * Gives the kit to a player.
+     *
+     * @param   player  Player
+     */
     public static void giveItems(Player player)
     {
         final PlayerInventory playerInventory = player.getInventory();
@@ -106,6 +135,7 @@ public enum KitStarter
             for (int slot : kit.slotIndexes) {
                 if (slot == -1)
                     continue;
+
                 playerInventory.setItem(slot, kit.getItem().getItemStack());
             }
         }
@@ -114,11 +144,17 @@ public enum KitStarter
     }
 
 
+    /**
+     * @return  Item
+     */
     public HashItem getItem()
     {
         return this.item;
     }
 
+    /**
+     * @return  Slot indexes
+     */
     public int[] getSlotIndexes()
     {
         return this.slotIndexes;

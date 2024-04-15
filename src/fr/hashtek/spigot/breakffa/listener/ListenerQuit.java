@@ -14,12 +14,20 @@ public class ListenerQuit implements Listener, HashLoggable
     private final GameManager gameManager;
 
 
+    /**
+     * Creates a new instance of ListenerQuit.
+     *
+     * @param   main    BreakFFA instance
+     */
     public ListenerQuit(BreakFFA main)
     {
         this.gameManager = main.getGameManager();
     }
 
 
+    /**
+     * Called when a player leaves the server.
+     */
     @EventHandler
     public void onQuit(PlayerQuitEvent event)
     {

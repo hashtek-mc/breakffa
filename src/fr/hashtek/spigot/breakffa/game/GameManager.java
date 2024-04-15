@@ -54,6 +54,22 @@ public class GameManager implements HashLoggable
 
 
     /**
+     * Checks if keys are present in the configuration file.
+     *
+     * @param   yaml    Configuration file content
+     * @param   keys    Keys to check
+     * @return  Missing key (if one, else returns null)
+     */
+    private String checkRequiredKeys(YamlFile yaml, String... keys)
+    {
+        for (String key : keys)
+            if (!yaml.contains(key))
+                return key;
+
+        return null;
+    }
+
+    /**
      * Setups Nexus from the configuration file.
      *
      * @param   yaml                    Configuration file content
@@ -67,11 +83,12 @@ public class GameManager implements HashLoggable
 
         final String prefix = "nexusLocation";
 
-        final List<String> requiredKeys = Arrays.asList("", ".x", ".y", ".z");
+        final String missingKey = checkRequiredKeys(yaml,
+            prefix, prefix + ".x", prefix + ".y", prefix + ".z"
+        );
 
-        for (String key : requiredKeys)
-            if (!yaml.contains(prefix + key))
-                throw new NoSuchFieldException("\"" + prefix + key + "\" field not found.");
+        if (missingKey != null)
+            throw new NoSuchFieldException("\"" + missingKey + "\" field not found.");
 
         final double x = yaml.getDouble(prefix + ".x");
         final double y = yaml.getDouble(prefix + ".y");

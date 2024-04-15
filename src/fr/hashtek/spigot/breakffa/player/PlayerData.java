@@ -4,6 +4,10 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import org.bukkit.entity.Player;
 
+/**
+ * Player's BreakFFA data.
+ * Not to confuse with Tekore's PlayerData.
+ */
 public class PlayerData
 {
 
@@ -21,6 +25,13 @@ public class PlayerData
     private Player lastDamager;
 
 
+    /**
+     * Creates a new instance of PlayerData.
+     *
+     * @param   main        BreakFFA instance
+     * @param   player      Player
+     * @param   gameManager Game manager
+     */
     public PlayerData(BreakFFA main, Player player, GameManager gameManager)
     {
         this.main = main;
@@ -36,96 +47,153 @@ public class PlayerData
     }
 
 
+    /**
+     * @return  Player
+     */
     public Player getPlayer()
     {
         return this.player;
     }
 
+    /**
+     * @return  Player's state
+     */
     public PlayerState getState()
     {
         return this.state;
     }
 
+    /**
+     * @return  Game manager
+     */
     public GameManager getGameManager()
     {
         return this.gameManager;
     }
 
+    /**
+     * @return  Player's manager
+     */
     public PlayerManager getPlayerManager()
     {
         return this.playerManager;
     }
 
+    /**
+     * @return  Player's total kills
+     */
     public int getTotalKills()
     {
         return this.totalKills;
     }
 
+    /**
+     * @return  Player's killstreak
+     */
     public int getKillStreak()
     {
         return this.killStreak;
     }
 
+    /**
+     * @return  Player's nexus break amount
+     */
     public int getNexusBreaks()
     {
         return this.nexusBreaks;
     }
 
+    /**
+     * @return  Player's nexus break streak
+     */
     public int getNexusBreaksStreak()
     {
         return this.nexusBreaksStreak;
     }
 
+    /**
+     * @return  Player's last damager
+     */
     public Player getLastDamager()
     {
         return this.lastDamager;
     }
 
+    /**
+     * @param   state   Player's state
+     */
     public void setState(PlayerState state)
     {
         this.state = state;
     }
 
+    /**
+     * @param   damager     Player's last damager
+     */
     public void setLastDamager(Player damager)
     {
         this.lastDamager = damager;
     }
 
+    /**
+     * @param    totalKills     Player's total kills
+     */
     public void setTotalKills(int totalKills)
     {
         this.totalKills = totalKills;
     }
 
+    /**
+     * @param   killStreak  Player's killstreak
+     */
     public void setKillStreak(int killStreak)
     {
         this.killStreak = killStreak;
     }
 
+    /**
+     * @param   nexusBreaks     Player's nexus breaks
+     */
     public void setNexusBreaks(int nexusBreaks)
     {
         this.nexusBreaks = nexusBreaks;
     }
 
+    /**
+     * @param   nexusBreaksStreak   Player's nexus breaks streak
+     */
     public void setNexusBreaksStreak(int nexusBreaksStreak)
     {
         this.nexusBreaksStreak = nexusBreaksStreak;
     }
 
+    /**
+     * @param   amount  Amount to add.
+     */
     public void addTotalKills(int amount)
     {
         this.totalKills += amount;
     }
 
+    /**
+     * @param   amount  Amount to add.
+     */
     public void addKillStreak(int amount)
     {
         this.killStreak += amount;
     }
 
+    /**
+     * @param   amount  Amount to add.
+     */
     public void addNexusBreaks(int amount)
     {
         this.nexusBreaks += amount;
     }
 
+    /**
+     * @param   amount  Amount to add.
+     */
     public void addNexusBreaksStreak(int amount)
     {
         this.nexusBreaksStreak += amount;

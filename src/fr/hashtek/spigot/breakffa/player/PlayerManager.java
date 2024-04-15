@@ -26,6 +26,12 @@ public class PlayerManager
     private final GameManager gameManager;
 
 
+    /**
+     * Creates a new instance of PlayerManager.
+     *
+     * @param   main        BreakFFA instance
+     * @param   playerData  Player's data
+     */
     public PlayerManager(BreakFFA main, PlayerData playerData)
     {
         this.main = main;
@@ -37,6 +43,11 @@ public class PlayerManager
     }
 
 
+    /**
+     * Clear's player's armor.
+     *
+     * @param   inventory   Player's inventory
+     */
     private void clearArmor(PlayerInventory inventory)
     {
         inventory.setHelmet(null);
@@ -45,6 +56,9 @@ public class PlayerManager
         inventory.setBoots(null);
     }
 
+    /**
+     * Teleport the player in the game.
+     */
     public void play()
     {
         final PlayerInventory playerInventory = this.player.getInventory();
@@ -62,6 +76,9 @@ public class PlayerManager
         KitStarter.giveItems(this.player);
     }
 
+    /**
+     * Teleports the player back to the lobby.
+     */
     public void backToLobby()
     {
         final PlayerInventory playerInventory = this.player.getInventory();
@@ -80,6 +97,9 @@ public class PlayerManager
         KitLobby.giveItems(this.player);
     }
 
+    /**
+     * Kills the player.
+     */
     public void kill()
     {
         final Player killer = this.playerData.getLastDamager();
