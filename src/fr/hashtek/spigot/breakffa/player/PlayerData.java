@@ -12,8 +12,11 @@ public class PlayerData
 {
 
     private final BreakFFA main;
+
     private final Player player;
+    private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private PlayerState state;
+
     private final GameManager gameManager;
     private final PlayerManager playerManager;
 
@@ -35,8 +38,11 @@ public class PlayerData
     public PlayerData(BreakFFA main, Player player, GameManager gameManager)
     {
         this.main = main;
+
         this.player = player;
+        this.corePlayerData = this.main.getCore().getPlayerData(this.player);
         this.state = PlayerState.AT_LOBBY;
+
         this.gameManager = gameManager;
         this.playerManager = new PlayerManager(this.main, this);
 
@@ -44,6 +50,8 @@ public class PlayerData
         this.killStreak = 0;
         this.nexusBreaks = 0;
         this.nexusBreaksStreak = 0;
+
+        this.lastDamager = null;
     }
 
 
@@ -53,6 +61,14 @@ public class PlayerData
     public Player getPlayer()
     {
         return this.player;
+    }
+
+    /**
+     * @return  Tekore's Player data
+     */
+    public fr.hashtek.tekore.common.player.PlayerData getCorePlayerData()
+    {
+        return this.corePlayerData;
     }
 
     /**

@@ -19,7 +19,6 @@ public class PlayerManager
 {
 
     private final BreakFFA main;
-    private final Tekore core;
     private final PlayerData playerData;
     private final Player player;
     private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
@@ -35,10 +34,9 @@ public class PlayerManager
     public PlayerManager(BreakFFA main, PlayerData playerData)
     {
         this.main = main;
-        this.core = this.main.getCore();
         this.playerData = playerData;
+        this.corePlayerData = this.playerData.getCorePlayerData();
         this.player = this.playerData.getPlayer();
-        this.corePlayerData = this.core.getPlayerData(this.player);
         this.gameManager = this.playerData.getGameManager();
     }
 
@@ -110,8 +108,8 @@ public class PlayerManager
         String killMessage = playerRank.getColor() + playerRank.getFullName() + " " + this.corePlayerData.getUsername() + " " + ChatColor.RESET;
 
         if (killer != null) {
-            final fr.hashtek.tekore.common.player.PlayerData coreKillerData = this.core.getPlayerData(killer);
             final PlayerData killerData = this.gameManager.getPlayerData(killer);
+            final fr.hashtek.tekore.common.player.PlayerData coreKillerData = killerData.getCorePlayerData();
             final Rank killerRank = coreKillerData.getRank();
 
             final List<ItemStack> rewardItems = Arrays.asList(
@@ -121,6 +119,7 @@ public class PlayerManager
 
             rewardItems.forEach(item -> {
                 final ItemStack i = new ItemStack(item.getType(), 1);
+                i.setItemMeta(item.getItemMeta());
 
                 killer.getInventory().addItem(i);
             });
