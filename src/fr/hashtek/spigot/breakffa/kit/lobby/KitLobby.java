@@ -34,7 +34,7 @@ public enum KitLobby
                         player.sendMessage("Will send you to the lobby when ready.");
                     })
             )
-            .build(BreakFFA.getInstance().getGUIManager()),
+            .build(BreakFFA.getInstance().getGuiManager()),
         0
     ),
 
@@ -55,7 +55,7 @@ public enum KitLobby
                         player.sendMessage("Cosmotikes!!!");
                     })
             )
-            .build(BreakFFA.getInstance().getGUIManager()),
+            .build(BreakFFA.getInstance().getGuiManager()),
         2
     ),
 
@@ -82,7 +82,7 @@ public enum KitLobby
                         playerData.getPlayerManager().play();
                     })
             )
-            .build(BreakFFA.getInstance().getGUIManager()),
+            .build(BreakFFA.getInstance().getGuiManager()),
         4
     ),
 
@@ -99,7 +99,7 @@ public enum KitLobby
                 ChatColor.WHITE + "Nexus brisés d'affilé : " + 0,
                 ChatColor.WHITE + "Temps joué au total : 0m"
             ))
-            .build(BreakFFA.getInstance().getGUIManager()),
+            .build(BreakFFA.getInstance().getGuiManager()),
         6
     ),
 
@@ -120,7 +120,7 @@ public enum KitLobby
                             player.sendMessage("pas mtn mdr");
                         })
                 )
-            .build(BreakFFA.getInstance().getGUIManager()),
+            .build(BreakFFA.getInstance().getGuiManager()),
         8
     );
 
