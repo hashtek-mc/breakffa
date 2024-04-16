@@ -1,9 +1,11 @@
-package fr.hashtek.spigot.breakffa.kit;
+package fr.hashtek.spigot.breakffa.kit.starter;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
-import fr.hashtek.spigot.breakffa.kit.starter.KitStarterItem;
-import fr.hashtek.spigot.breakffa.shop.Shop;
-import fr.hashtek.spigot.hashgui.HashGuiManager;
+import fr.hashtek.spigot.breakffa.game.GameManager;
+import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.player.PlayerManager;
+import fr.hashtek.spigot.breakffa.shop.ShopManager;
+import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.Material;
@@ -14,11 +16,18 @@ public class KitStarter
 {
 
     private final BreakFFA main;
+    private final GameManager gameManager;
 
 
+    /**
+     * Creates a new instance of KitStarter.
+     *
+     * @param   main    BreakFFA main
+     */
     public KitStarter(BreakFFA main)
     {
         this.main = main;
+        this.gameManager = this.main.getGameManager();
     }
 
     /**
@@ -35,6 +44,9 @@ public class KitStarter
 
     public void giveShop(Player player, PlayerInventory inventory)
     {
+        final PlayerData playerData = this.gameManager.getPlayerData(player);
+        final PlayerManager playerManager = playerData.getPlayerManager();
+        final ShopManager shopManager = playerManager.getShopManager();
         final HashGuiManager guiManager = this.main.getGuiManager();
 
         final HashItem darkBlueGlass =
@@ -61,7 +73,7 @@ public class KitStarter
                 .setUntakable(true)
                 .build(guiManager);
 
-        final HashItem shopItem = Shop.getShopItem(false);
+        final HashItem shopItem = shopManager.getShopItem(false);
 
         final Mask mask = new Mask(inventory);
 
@@ -87,11 +99,10 @@ public class KitStarter
     {
         final PlayerInventory playerInventory = player.getInventory();
 
-        for (KitStarterItem kit : KitStarterItem.values())
-            kit.give(player);
+        for (KitStarterItem starterItem : KitStarterItem.values())
+            starterItem.give(player);
 
         this.setArmor(playerInventory);
-
         this.giveShop(player, playerInventory);
     }
 
