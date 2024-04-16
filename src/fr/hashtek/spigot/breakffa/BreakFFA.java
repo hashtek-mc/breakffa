@@ -9,7 +9,7 @@ import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashlogger.HashLogger;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.listener.*;
-import fr.hashtek.spigot.hashgui.HashGuiManager;
+import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.plugin.PluginManager;
@@ -245,7 +245,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     /**
      * @return	GUI manager
      */
-    public HashGuiManager getGUIManager()
+    public HashGuiManager getGuiManager()
     {
         return this.guiManager;
     }
