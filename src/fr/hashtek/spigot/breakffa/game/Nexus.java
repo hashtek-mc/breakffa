@@ -5,6 +5,7 @@ import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashutils.Title;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.player.PlayerState;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -53,6 +54,9 @@ public class Nexus implements HashLoggable
 
         for (Player p : this.main.getServer().getOnlinePlayers()) {
             final PlayerData pData = this.gameManager.getPlayerData(p);
+
+            if (pData.getState() != PlayerState.PLAYING)
+                continue;
 
             p.playSound(p.getLocation(), Sound.IRONGOLEM_DEATH, 100, 0);
             p.playSound(p.getLocation(), Sound.EXPLODE, 100, 0);
