@@ -2,17 +2,14 @@ package fr.hashtek.spigot.breakffa.player;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
-import fr.hashtek.spigot.breakffa.kit.KitLobby;
-import fr.hashtek.spigot.breakffa.kit.KitStarter;
-import fr.hashtek.tekore.bukkit.Tekore;
+import fr.hashtek.spigot.breakffa.kit.lobby.KitLobby;
+import fr.hashtek.spigot.breakffa.kit.starter.KitStarter;
+import fr.hashtek.spigot.breakffa.shop.ShopManager;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class PlayerManager
@@ -23,6 +20,7 @@ public class PlayerManager
     private final Player player;
     private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private final GameManager gameManager;
+    private final ShopManager shopManager;
 
 
     /**
@@ -38,6 +36,7 @@ public class PlayerManager
         this.corePlayerData = this.playerData.getCorePlayerData();
         this.player = this.playerData.getPlayer();
         this.gameManager = this.playerData.getGameManager();
+        this.shopManager = new ShopManager(this);
     }
 
 
@@ -60,6 +59,7 @@ public class PlayerManager
     public void play()
     {
         final PlayerInventory playerInventory = this.player.getInventory();
+        final KitStarter starterKit = new KitStarter(this.main);
 
         final int spawnIndex = new Random().nextInt(this.gameManager.getSpawnLocations().size());
         final Location spawn = this.gameManager.getSpawnLocations().get(spawnIndex);
@@ -71,7 +71,7 @@ public class PlayerManager
         playerInventory.clear();
         this.clearArmor(playerInventory);
         playerInventory.setHeldItemSlot(0);
-        KitStarter.giveItems(this.player);
+        starterKit.giveItems(this.player);
     }
 
     /**
@@ -80,6 +80,7 @@ public class PlayerManager
     public void backToLobby()
     {
         final PlayerInventory playerInventory = this.player.getInventory();
+        final KitLobby lobbyKit = new KitLobby(this.main);
 
         this.playerData.setState(PlayerState.AT_LOBBY);
         this.player.setGameMode(GameMode.ADVENTURE);
@@ -92,7 +93,7 @@ public class PlayerManager
         playerInventory.clear();
         this.clearArmor(playerInventory);
         playerInventory.setHeldItemSlot(4);
-        KitLobby.giveItems(this.player);
+        lobbyKit.giveItems(this.player);
     }
 
     /**
@@ -112,17 +113,17 @@ public class PlayerManager
             final fr.hashtek.tekore.common.player.PlayerData coreKillerData = killerData.getCorePlayerData();
             final Rank killerRank = coreKillerData.getRank();
 
-            final List<ItemStack> rewardItems = Arrays.asList(
-                KitStarter.GAPPLES.getItem().getItemStack(),
-                KitStarter.INSTANT_TNT.getItem().getItemStack()
-            );
-
-            rewardItems.forEach(item -> {
-                final ItemStack i = new ItemStack(item.getType(), 1);
-                i.setItemMeta(item.getItemMeta());
-
-                killer.getInventory().addItem(i);
-            });
+//            final List<ItemStack> rewardItems = Arrays.asList(
+//                KitStarter.GAPPLES.getItem().getItemStack(),
+//                KitStarter.INSTANT_TNT.getItem().getItemStack()
+//            );
+//
+//            rewardItems.forEach(item -> {
+//                final ItemStack i = new ItemStack(item.getType(), 1);
+//                i.setItemMeta(item.getItemMeta());
+//
+//                killer.getInventory().addItem(i);
+//            });
 
             killer.setHealth(killer.getMaxHealth());
             killer.playSound(killer.getLocation(), Sound.NOTE_PLING, 1, 4);
@@ -144,6 +145,21 @@ public class PlayerManager
             if (pData.getLastDamager().equals(this.player))
                 pData.setLastDamager(null);
         }
+    }
+
+    public Player getPlayer()
+    {
+        return this.player;
+    }
+
+    public PlayerData getPlayerData()
+    {
+        return this.playerData;
+    }
+
+    public ShopManager getShopManager()
+    {
+        return this.shopManager;
     }
 
 }
