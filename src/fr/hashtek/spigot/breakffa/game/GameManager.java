@@ -99,7 +99,7 @@ public class GameManager implements HashLoggable
 
         this.logger.info(this, String.format(
             "Successfully loaded Nexus.\n" +
-            "(X: %f, Y: %f, Z: %f, Type: %s)",
+            "(X: %.2f, Y: %.2f, Z: %.2f, Type: %s)",
             x, y, z, this.nexus.getBlock().getType()
         ));
     }
@@ -135,7 +135,7 @@ public class GameManager implements HashLoggable
 
         this.logger.info(this, String.format(
             "Successfully loaded Lobby spawn.\n" +
-            "(X: %f, Y: %f, Z: %f, Pitch: %f, Yaw: %f)",
+            "(X: %.2f, Y: %.2f, Z: %.2f, Pitch: %.2f, Yaw: %.2f)",
             x, y, z, pitch, yaw
         ));
     }
@@ -190,7 +190,7 @@ public class GameManager implements HashLoggable
 
             this.logger.info(this, String.format(
                 "Successfully loaded spawn %d\n" +
-                "(X: %f, Y: %f, Z: %f, Pitch: %f, Yaw: %f)",
+                "(X: %.2f, Y: %.2f, Z: %.2f, Pitch: %.2f, Yaw: %.2f)",
                 this.spawnLocations.size(),
                 x, y, z, pitch, yaw
             ));
