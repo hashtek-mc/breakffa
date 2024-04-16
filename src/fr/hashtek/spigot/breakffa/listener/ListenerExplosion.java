@@ -25,7 +25,7 @@ public class ListenerExplosion implements Listener
 
         final TNTPrimed tnt = (TNTPrimed) event.getEntity();
         final Location tntLocation = tnt.getLocation();
-        final double radius = 5.0;
+        final double radius = 4.0;
 
         /* Cancels the damage caused to the map. */
         event.blockList().clear();
