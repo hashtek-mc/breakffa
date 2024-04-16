@@ -20,6 +20,8 @@ public class PlayerData
     private final GameManager gameManager;
     private final PlayerManager playerManager;
 
+    private int shards;
+
     private int totalKills;
     private int killStreak;
     private int nexusBreaks;
@@ -46,6 +48,8 @@ public class PlayerData
         this.gameManager = gameManager;
         this.playerManager = new PlayerManager(this.main, this);
 
+        this.shards = 0;
+
         this.totalKills = 0;
         this.killStreak = 0;
         this.nexusBreaks = 0;
@@ -54,6 +58,14 @@ public class PlayerData
         this.lastDamager = null;
     }
 
+
+    /**
+     * @return  BreakFFA instance
+     */
+    public BreakFFA getMain()
+    {
+        return this.main;
+    }
 
     /**
      * @return  Player
@@ -93,6 +105,14 @@ public class PlayerData
     public PlayerManager getPlayerManager()
     {
         return this.playerManager;
+    }
+
+    /**
+     * @return  Player's shards
+     */
+    public int getShards()
+    {
+        return this.shards;
     }
 
     /**
@@ -152,6 +172,14 @@ public class PlayerData
     }
 
     /**
+     * @param    shards     Player's shards
+     */
+    public void setShards(int shards)
+    {
+        this.shards = shards;
+    }
+
+    /**
      * @param    totalKills     Player's total kills
      */
     public void setTotalKills(int totalKills)
@@ -181,6 +209,14 @@ public class PlayerData
     public void setNexusBreaksStreak(int nexusBreaksStreak)
     {
         this.nexusBreaksStreak = nexusBreaksStreak;
+    }
+
+    /**
+     * @param   amount  Amount to add.
+     */
+    public void addShards(int amount)
+    {
+        this.shards += amount;
     }
 
     /**
