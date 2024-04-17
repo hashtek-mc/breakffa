@@ -16,6 +16,7 @@ public class ListenerDeath implements Listener
     {
         event.setDeathMessage(null);
         event.getDrops().clear();
+        event.getEntity().spigot().respawn();
     }
 
 }
