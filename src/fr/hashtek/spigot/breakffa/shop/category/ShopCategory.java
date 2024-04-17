@@ -34,9 +34,19 @@ public class ShopCategory
     private final Byte primaryColor;
     private final Byte secondaryColor;
 
-    private List<ShopArticle> articles;
+    private final List<ShopArticle> articles;
 
 
+    /**
+     * Creates a new Shop category
+     *
+     * @param   main            BreakFFA instance
+     * @param   player          Player
+     * @param   category        Category title
+     * @param   color           Color (for strings)
+     * @param   primaryColor    Primary color
+     * @param   secondaryColor  Secondary color
+     */
     public ShopCategory(
         BreakFFA main,
         Player player,
@@ -64,6 +74,9 @@ public class ShopCategory
     }
 
 
+    /**
+     * Creates the category's base GUI.
+     */
     public void createGui()
     {
         this.gui = new PaginatedHashGui(
@@ -106,6 +119,9 @@ public class ShopCategory
         mask.apply();
     }
 
+    /**
+     * Opens the GUI to a player.
+     */
     public void open()
     {
         this.gui.open(this.player);
@@ -113,7 +129,9 @@ public class ShopCategory
     }
 
     /**
-     * Loads articles. Must be overwritten by child classes.
+     * Loads articles.
+     *
+     * @apiNote MUST be overwritten by child classes.
      */
     public void loadArticles() {}
 
@@ -129,52 +147,93 @@ public class ShopCategory
         }
     }
 
+    /**
+     * Adds a list of articles in the shop category articles.
+     *
+     * @param   articles    List of articles
+     */
     public void addArticles(List<ShopArticle> articles)
     {
         for (ShopArticle article : articles)
             this.addArticle(article);
     }
 
+
+    /**
+     * @return  BreakFFA instance
+     */
     public BreakFFA getMain()
     {
         return this.main;
     }
 
+    /**
+     * @return  Gui manager
+     */
     public HashGuiManager getGuiManager()
     {
         return this.guiManager;
     }
 
+    /**
+     * @return  Shop manager
+     */
     public ShopManager getShopManager()
     {
         return this.shopManager;
     }
 
+    /**
+     * @return  Player
+     */
     public Player getPlayer()
     {
         return this.player;
     }
 
+    /**
+     * @return  Gui
+     */
     public PaginatedHashGui getGui()
     {
         return this.gui;
     }
 
+    /**
+     * @return  Category title
+     */
+    public String getCategory()
+    {
+        return this.category;
+    }
+
+    /**
+     * @return  Color (for strings)
+     */
     public ChatColor getColor()
     {
         return this.color;
     }
 
+    /**
+     * @return  Primary color
+     */
     public Byte getPrimaryColor()
     {
         return this.primaryColor;
     }
 
+    /**
+     * @return  Secondary color
+     */
     public Byte getSecondaryColor()
     {
         return this.secondaryColor;
     }
 
+    /**
+     * @return  List of articles
+     */
     public List<ShopArticle> getArticles()
     {
         return this.articles;
