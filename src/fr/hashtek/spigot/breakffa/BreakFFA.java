@@ -9,9 +9,12 @@ import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashlogger.HashLogger;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.listener.*;
+import fr.hashtek.spigot.breakffa.shop.ShopManager;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
+import org.bukkit.Difficulty;
+import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,6 +34,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     private HashConfig hashConfig;
 
     private GameManager gameManager;
+    private ShopManager shopManager;
 
     private HashBoard board;
     private HashTabList tablist;
@@ -62,6 +66,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         logger.info(this, "Starting BreakFFA...");
 
         this.setupManagers();
+        this.setupWorld();
         this.setupBoard();
         this.registerListeners();
         this.registerCommands();
@@ -127,6 +132,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         this.guiManager.setup();
 
         this.setupGameManager();
+        this.shopManager = new ShopManager(this);
 
         this.logger.info(this, "Managers set up!");
     }
@@ -150,6 +156,20 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         }
 
         this.logger.info(this, "Game manager set up!");
+    }
+
+    private void setupWorld()
+    {
+        final World world = this.getServer().getWorld("breakffa");
+
+        world.setGameRuleValue("doDaylightCycle", "false");
+        world.setGameRuleValue("doFireTick", "false");
+        world.setGameRuleValue("doMobLoot", "false");
+        world.setGameRuleValue("doMobSpawning", "false");
+        world.setGameRuleValue("doTileDrops", "false");
+        world.setGameRuleValue("keepInventory", "true");
+        world.setDifficulty(Difficulty.NORMAL);
+        world.setAutoSave(false);
     }
 
     /**
@@ -194,6 +214,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         this.pluginManager.registerEvents(new ListenerExplosion(), this);
         this.pluginManager.registerEvents(new ListenerInteract(this), this);
         this.pluginManager.registerEvents(new ListenerChat(this), this);
+        this.pluginManager.registerEvents(new ListenerWeatherChange(), this);
 
         this.logger.info(this, "Listeners loaded!");
     }
@@ -256,6 +277,14 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     public GameManager getGameManager()
     {
         return this.gameManager;
+    }
+
+    /**
+     * @return  Shop manager
+     */
+    public ShopManager getShopManager()
+    {
+        return this.shopManager;
     }
 
     /**
