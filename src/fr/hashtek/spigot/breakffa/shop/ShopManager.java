@@ -1,9 +1,11 @@
 package fr.hashtek.spigot.breakffa.shop;
 
+import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
-import fr.hashtek.spigot.breakffa.shop.category.ShopCategory;
+import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategoryDefensive;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategoryOffensive;
+import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategorySupport;
 import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
@@ -19,22 +21,16 @@ import java.util.Arrays;
 public class ShopManager
 {
 
-    private final Player player;
-    private final PlayerData playerData;
-    private final PlayerManager playerManager;
+    private final BreakFFA main;
+    private final HashGuiManager guiManager;
 
     private HashGui gui;
 
-    private final HashGuiManager guiManager;
 
-
-    public ShopManager(PlayerManager playerManager)
+    public ShopManager(BreakFFA main)
     {
-        this.playerManager = playerManager;
-        this.playerData = this.playerManager.getPlayerData();
-        this.player = this.playerManager.getPlayer();
-
-        this.guiManager = this.playerData.getMain().getGuiManager();
+        this.main = main;
+        this.guiManager = this.main.getGuiManager();
 
         this.createGui();
     }
@@ -63,15 +59,8 @@ public class ShopManager
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
-                    .setClickAction((player1, hashGui, itemStack, i) -> {
-                        new ShopCategory(
-                            this.playerManager,
-                            "DEFENSIF",
-                            ChatColor.BLUE,
-                            (byte) 11,
-                            (byte) 3
-                        )
-                        .open();
+                    .setClickAction((Player p, HashGui gui, ItemStack item, int slot) -> {
+                        new ShopCategoryDefensive(this.main, p).open();
                     })
             )
             .build(this.guiManager);
@@ -89,9 +78,8 @@ public class ShopManager
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
-                    .setClickAction((player1, hashGui, itemStack, i) -> {
-                        new ShopCategoryOffensive(this.playerManager)
-                            .open();
+                    .setClickAction((Player p, HashGui gui, ItemStack item, int slot) -> {
+                        new ShopCategoryOffensive(this.main, p).open();
                     })
             )
             .build(this.guiManager);
@@ -112,14 +100,8 @@ public class ShopManager
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
-                    .setClickAction((player1, hashGui, itemStack, i) -> {
-                        new ShopCategory(
-                            this.playerManager,
-                            "SUPPORT",
-                            ChatColor.GREEN,
-                            (byte) 13,
-                            (byte) 5
-                        ).open();
+                    .setClickAction((Player p, HashGui gui, ItemStack item, int slot) -> {
+                        new ShopCategorySupport(this.main, p).open();
                     })
             )
             .build(this.guiManager);
@@ -143,13 +125,13 @@ public class ShopManager
         mask.apply();
     }
 
-    public HashItem getShopItem(boolean close)
+    public HashItem getShopItem(PlayerData playerData, boolean close)
     {
         return new HashItem(Material.NETHER_STAR)
             .setName(ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (clic droit)")
             .setLore(Arrays.asList(
                 "",
-                ChatColor.GRAY + "Vous possédez actuellement " + ChatColor.AQUA + this.playerData.getShards() + " shards" + ChatColor.GRAY + ".",
+                ChatColor.GRAY + "Vous possédez actuellement " + ChatColor.AQUA + playerData.getShards() + " shards" + ChatColor.GRAY + ".",
                 ChatColor.GRAY + "Vos " + ChatColor.AQUA + "shards" + ChatColor.GRAY + " ne sont pas conservables.",
                 "",
                 ChatColor.GRAY + "Vous pouvez acheter des " + ChatColor.BLUE + "objets divers",

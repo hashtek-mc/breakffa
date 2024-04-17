@@ -4,13 +4,15 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
-import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * TODO:
@@ -19,52 +21,83 @@ import java.util.List;
 public class ShopArticle
 {
 
+    private final BreakFFA main;
+
+    private final HashItem shopArticle;
     private final HashItem article;
     private final int price;
-
-    private final BreakFFA main;
 
 
     public ShopArticle(HashItem article, int price, BreakFFA main)
     {
+        this.main = main;
         this.article = article;
+        this.shopArticle = new HashItem(article);
+
         this.price = price;
 
-        this.main = main;
-
-        this.updateArticleLore();
-        this.setArticleClickHandler();
+        this.initializeArticles();
     }
 
+
+    private void initializeArticles()
+    {
+        String articleName = this.getShopArticle().getItemMeta().getDisplayName();
+
+        articleName += " " + ChatColor.WHITE + ChatColor.BOLD + "●" + ChatColor.AQUA + " " + this.price + " shards";
+
+        this.getShopArticle().setName(articleName);
+        this.getShopArticle()
+            .setFlags(Arrays.asList(
+                ItemFlag.HIDE_ENCHANTS,
+                ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_UNBREAKABLE
+            ))
+            .build();
+
+        this.setShopArticleClickHandler();
+
+        this.article
+            .setFlags(Arrays.asList(
+                ItemFlag.HIDE_UNBREAKABLE,
+                ItemFlag.HIDE_ATTRIBUTES
+            ))
+            .clearLore()
+            .build();
+    }
 
     public void buy(PlayerData playerData)
     {
         final Player player = playerData.getPlayer();
         final int playerShards = playerData.getShards();
+        final int articlePrice = this.getPrice();
 
-        if (playerShards < this.price) {
-            player.sendMessage(ChatColor.RED + "Vous ne possédez pas assez de " + ChatColor.AQUA + "shards" + ChatColor.RED + ".");
+        final boolean hasEnoughShards = playerShards >= articlePrice;
+        final boolean hasEnoughSpace = player.getInventory().firstEmpty() != -1;
+        final boolean canBuy = hasEnoughShards && hasEnoughSpace;
+
+        if (!canBuy) {
+            player.playSound(player.getLocation(), "random.break", 100, 0);
+            player.playSound(player.getLocation(), Sound.NOTE_BASS, 100, 0);
+
+            if (!hasEnoughShards)
+                player.sendMessage(ChatColor.RED + "Vous ne possédez pas assez de " + ChatColor.AQUA + "shards" + ChatColor.RED + ".");
+            if (!hasEnoughSpace)
+                player.sendMessage(ChatColor.RED + "Vous n'avez plus de place dans votre inventaire.");
+
             return;
         }
 
-        playerData.setShards(playerShards - this.price);
-        player.getInventory().addItem(this.article.getItemStack());
+        playerData.setShards(playerShards - articlePrice);
+        player.getInventory().addItem(this.getArticle().getItemStack());
+        player.playSound(player.getLocation(), "mob.horse.leather", 100, 1);
+        player.playSound(player.getLocation(), Sound.WOOD_CLICK, 100, 1);
         player.sendMessage(ChatColor.AQUA + "Vous avez acheté " + this.article.getItemMeta().getDisplayName() + ChatColor.AQUA + ".");
     }
 
-    private void updateArticleLore()
+    private void setShopArticleClickHandler()
     {
-        final List<String> articleLore = this.article.getItemMeta().getLore();
-
-        articleLore.replaceAll((String line) -> line.replace("{price}", String.valueOf(price)));
-
-        this.article.setLore(articleLore);
-        this.article.build();
-    }
-
-    private void setArticleClickHandler()
-    {
-        this.article.addClickHandler(
+        this.getShopArticle().addClickHandler(
             new ClickHandler()
                 .addAllClickTypes()
                 .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
@@ -74,20 +107,16 @@ public class ShopArticle
                 })
         );
 
-        this.article.build(this.main.getGuiManager());
+        this.getShopArticle().build(this.main.getGuiManager());
     }
 
     public HashItem getShopArticle()
     {
-        return this.article;
+        return this.shopArticle;
     }
 
     public HashItem getArticle()
     {
-        final HashItem article = new HashItem(this.article)
-            .clearLore()
-            .build();
-
         return this.article;
     }
 
