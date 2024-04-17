@@ -1,67 +1,92 @@
 package fr.hashtek.spigot.breakffa.shop.category.categories;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
-import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategory;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ShopCategoryOffensive extends ShopCategory
 {
 
-    private final BreakFFA main;
-
-    private List<ShopArticle> articles = new ArrayList<ShopArticle>();
-
-
-    public ShopCategoryOffensive(
-        PlayerManager playerManager
-    ) {
-        super(playerManager, "OFFENSIF", ChatColor.RED, (byte) 14, (byte) 1);
-
-        this.main = playerManager.getPlayerData().getMain();
+    public ShopCategoryOffensive(BreakFFA main, Player player)
+    {
+        super(main, player, "OFFENSIF", ChatColor.RED, (byte) 14, (byte) 1);
 
         this.loadArticles();
-
-        super.addArticles(this.articles);
     }
 
-
-    private void loadArticles()
+    /**
+     * Loads articles.
+     */
+    @Override
+    public void loadArticles()
     {
-        ShopArticle one = new ShopArticle(
-            new HashItem(Material.IRON_SWORD)
-                .addLore("sex {price}")
-                .build(),
-            15,
-            this.main
+        List<ShopArticle> articles = Arrays.asList(
+            new ShopArticle(
+                new HashItem(Material.IRON_SWORD)
+                    .setName(ChatColor.RED + "Epée Renforcée")
+                    .setLore(Arrays.asList(
+                        "",
+                        ChatColor.GRAY + "Procure une épée renforcée " + ChatColor.YELLOW + "incassable",
+                        ChatColor.GRAY + "et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec " + ChatColor.DARK_AQUA + "Tranchant II" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+8.5)",
+                        "",
+                        ChatColor.GRAY + "Cette arme est " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ", elle",
+                        ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + "!"
+                    ))
+                    .addEnchant(Enchantment.DAMAGE_ALL, 2)
+                    .setUnbreakable(true)
+                    .build(),
+                3,
+                super.getMain()
+            ),
+
+            new ShopArticle(
+                new HashItem(Material.DIAMOND_SWORD)
+                    .setName(ChatColor.RED + "Epée Brillante")
+                    .setLore(Arrays.asList(
+                        "",
+                        ChatColor.GRAY + "Procure une épée brillante " + ChatColor.YELLOW + "incassable",
+                        ChatColor.GRAY + "en " + ChatColor.AQUA + "diamant" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec " + ChatColor.DARK_AQUA + "Tranchant II" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+9.5)",
+                        "",
+                        ChatColor.GRAY + "Cette arme est " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ", elle",
+                        ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + "!"
+                    ))
+                    .addEnchant(Enchantment.DAMAGE_ALL, 2)
+                    .setUnbreakable(true)
+                    .build(),
+                8,
+                super.getMain()
+            ),
+
+            new ShopArticle(
+                new HashItem(Material.GOLD_SWORD)
+                    .setName(ChatColor.RED + "Epée Parfaite")
+                    .setLore(Arrays.asList(
+                        "",
+                        ChatColor.GRAY + "Procure l'épée " + ChatColor.GOLD + "parfaite" + ChatColor.GRAY + ", " + ChatColor.YELLOW + "incassable",
+                        ChatColor.GRAY + "en " + ChatColor.GOLD + "or" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec " + ChatColor.DARK_AQUA + "Tranchant V" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+10.25)",
+                        "",
+                        ChatColor.GRAY + "Cette épée " + ChatColor.YELLOW + "double" + ChatColor.GRAY + " vos gains de " + ChatColor.AQUA + "shards",
+                        ChatColor.GRAY + "à chaque " + ChatColor.RED + "élimination" + ChatColor.GRAY + "!",
+                        "",
+                        ChatColor.GRAY + "Cette arme est " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ", elle",
+                        ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + "!"
+                    ))
+                    .addEnchant(Enchantment.DAMAGE_ALL, 5)
+                    .setUnbreakable(true)
+                    .build(),
+                15,
+                super.getMain()
+            )
         );
 
-        ShopArticle two = new ShopArticle(
-            new HashItem(Material.REDSTONE)
-                .addLore("sex45 {price}")
-                .build(),
-            1500,
-            this.main
-        );
-
-        ShopArticle three = new ShopArticle(
-            new HashItem(Material.DIRT)
-                .addLore("xxdxddxdd {price}")
-                .build(),
-            69,
-            this.main
-        );
-
-        for (int k = 0; k < 27; k++) {
-            this.articles.add(one);
-            this.articles.add(two);
-            this.articles.add(three);
-        }
+        super.addArticles(articles);
     }
 }

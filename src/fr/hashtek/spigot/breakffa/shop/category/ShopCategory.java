@@ -1,5 +1,6 @@
 package fr.hashtek.spigot.breakffa.shop.category;
 
+import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import fr.hashtek.spigot.breakffa.shop.ShopManager;
@@ -7,51 +8,57 @@ import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
 import fr.hashtek.spigot.hashgui.PaginatedHashGui;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.spigot.hashgui.mask.Mask;
-import fr.hashtek.spigot.hashgui.page.HashPage;
+import fr.hashtek.spigot.hashgui.page.Page;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopCategory
 {
 
-    private final Player player;
-    private final PlayerData playerData;
-    private final PlayerManager playerManager;
+    private final BreakFFA main;
+    private final HashGuiManager guiManager;
     private final ShopManager shopManager;
 
-    private PaginatedHashGui gui;
+    private final Player player;
+    private final PlayerData playerData;
 
-    private final HashGuiManager guiManager;
+    private PaginatedHashGui gui;
 
     private final String category;
     private final ChatColor color;
     private final Byte primaryColor;
     private final Byte secondaryColor;
 
+    private List<ShopArticle> articles;
+
 
     public ShopCategory(
-        PlayerManager playerManager,
+        BreakFFA main,
+        Player player,
         String category,
         ChatColor color,
         Byte primaryColor,
         Byte secondaryColor
     )
     {
-        this.playerManager = playerManager;
-        this.shopManager = this.playerManager.getShopManager();
-        this.playerData = this.playerManager.getPlayerData();
-        this.player = this.playerManager.getPlayer();
+        this.main = main;
+        this.guiManager = this.main.getGuiManager();
+        this.shopManager = this.main.getShopManager();
 
-        this.guiManager = this.playerData.getMain().getGuiManager();
+        this.player = player;
+        this.playerData = this.main.getGameManager().getPlayerData(player);
 
         this.category = category;
         this.color = color;
         this.primaryColor = primaryColor;
         this.secondaryColor = secondaryColor;
+
+        this.articles = new ArrayList<ShopArticle>();
 
         this.createGui();
     }
@@ -61,7 +68,8 @@ public class ShopCategory
     {
         this.gui = new PaginatedHashGui(
             "" + this.color + ChatColor.BOLD + "Marché " + ChatColor.WHITE + ChatColor.BOLD + "●" + this.color + ChatColor.BOLD + " " + this.category,
-            6
+            6,
+            this.guiManager
         );
 
         final HashItem primaryGlass = HashItem.separator(this.primaryColor, this.guiManager);
@@ -75,10 +83,10 @@ public class ShopCategory
             .setName(this.color + "Page suivante")
             .addLore(ChatColor.GRAY + "Cliquez pour afficher la page suivante.");
 
-        final HashItem shopItem = this.shopManager.getShopItem(true);
+        final HashItem shopItem = this.shopManager.getShopItem(this.playerData, true);
 
-        this.gui.setPreviousPageItem(previousPage, this.guiManager);
-        this.gui.setNextPageItem(nextPage, this.guiManager);
+        this.gui.setPreviousPageItem(previousPage);
+        this.gui.setNextPageItem(nextPage);
 
         final Mask mask = new Mask(this.gui);
 
@@ -104,9 +112,14 @@ public class ShopCategory
         this.gui.update(this.player);
     }
 
+    /**
+     * Loads articles. Must be overwritten by child classes.
+     */
+    public void loadArticles() {}
+
     public void addArticle(ShopArticle article)
     {
-        final HashPage lastPage = this.gui.getLastPage();
+        final Page lastPage = this.gui.getLastPage();
 
         try {
             lastPage.addItem(article.getShopArticle());
@@ -120,6 +133,51 @@ public class ShopCategory
     {
         for (ShopArticle article : articles)
             this.addArticle(article);
+    }
+
+    public BreakFFA getMain()
+    {
+        return this.main;
+    }
+
+    public HashGuiManager getGuiManager()
+    {
+        return this.guiManager;
+    }
+
+    public ShopManager getShopManager()
+    {
+        return this.shopManager;
+    }
+
+    public Player getPlayer()
+    {
+        return this.player;
+    }
+
+    public PaginatedHashGui getGui()
+    {
+        return this.gui;
+    }
+
+    public ChatColor getColor()
+    {
+        return this.color;
+    }
+
+    public Byte getPrimaryColor()
+    {
+        return this.primaryColor;
+    }
+
+    public Byte getSecondaryColor()
+    {
+        return this.secondaryColor;
+    }
+
+    public List<ShopArticle> getArticles()
+    {
+        return this.articles;
     }
 
 }
