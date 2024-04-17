@@ -25,7 +25,7 @@ public class KitLobby
     {
         final Inventory playerInventory = player.getInventory();
 
-        for (KitLobbyItem kit : KitLobbyItem.values())
+        for (KitLobbyItems kit : KitLobbyItems.values())
             playerInventory.setItem(kit.getSlotIndex(), kit.getItem().getItemStack());
     }
 

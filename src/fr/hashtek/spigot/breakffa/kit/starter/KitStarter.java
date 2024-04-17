@@ -37,17 +37,17 @@ public class KitStarter
      */
     private void setArmor(PlayerInventory inventory)
     {
-        inventory.setChestplate(KitStarterItem.CHESTPLATE.getItem().getItemStack());
-        inventory.setLeggings(KitStarterItem.LEGGINGS.getItem().getItemStack());
-        inventory.setBoots(KitStarterItem.BOOTS.getItem().getItemStack());
+        inventory.setChestplate(KitStarterItems.CHESTPLATE.getItem().getItemStack());
+        inventory.setLeggings(KitStarterItems.LEGGINGS.getItem().getItemStack());
+        inventory.setBoots(KitStarterItems.BOOTS.getItem().getItemStack());
     }
 
     public void giveShop(Player player, PlayerInventory inventory)
     {
         final PlayerData playerData = this.gameManager.getPlayerData(player);
         final PlayerManager playerManager = playerData.getPlayerManager();
-        final ShopManager shopManager = playerManager.getShopManager();
         final HashGuiManager guiManager = this.main.getGuiManager();
+        final ShopManager shopManager = this.main.getShopManager();
 
         final HashItem darkBlueGlass =
             new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 9)
@@ -73,7 +73,7 @@ public class KitStarter
                 .setUntakable(true)
                 .build(guiManager);
 
-        final HashItem shopItem = shopManager.getShopItem(false);
+        final HashItem shopItem = shopManager.getShopItem(playerData, false);
 
         final Mask mask = new Mask(inventory);
 
@@ -99,7 +99,7 @@ public class KitStarter
     {
         final PlayerInventory playerInventory = player.getInventory();
 
-        for (KitStarterItem starterItem : KitStarterItem.values())
+        for (KitStarterItems starterItem : KitStarterItems.values())
             starterItem.give(player);
 
         this.setArmor(playerInventory);

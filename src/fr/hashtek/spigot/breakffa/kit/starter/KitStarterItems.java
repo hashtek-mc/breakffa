@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.PlayerInventory;
 
-public enum KitStarterItem
+public enum KitStarterItems
 {
 
     /* Items */
@@ -79,7 +79,7 @@ public enum KitStarterItem
      *
      * @param   item            Item
      */
-    KitStarterItem(HashItem item)
+    KitStarterItems(HashItem item)
     {
         this(item, -1);
     }
@@ -91,7 +91,7 @@ public enum KitStarterItem
      * @param   item        Item
      * @param   slotIndex   Slot index
      */
-    KitStarterItem(HashItem item, int slotIndex)
+    KitStarterItems(HashItem item, int slotIndex)
     {
         this(item, new int[] { slotIndex });
     }
@@ -102,7 +102,7 @@ public enum KitStarterItem
      * @param   item            Item
      * @param   slotIndexes     Slot indexes
      */
-    KitStarterItem(HashItem item, int[] slotIndexes)
+    KitStarterItems(HashItem item, int[] slotIndexes)
     {
         this.item = item;
         this.slotIndexes = slotIndexes;
