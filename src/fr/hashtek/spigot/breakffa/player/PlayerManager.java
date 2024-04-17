@@ -20,7 +20,6 @@ public class PlayerManager
     private final Player player;
     private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private final GameManager gameManager;
-    private final ShopManager shopManager;
 
 
     /**
@@ -35,8 +34,7 @@ public class PlayerManager
         this.playerData = playerData;
         this.corePlayerData = this.playerData.getCorePlayerData();
         this.player = this.playerData.getPlayer();
-        this.gameManager = this.playerData.getGameManager();
-        this.shopManager = new ShopManager(this);
+        this.gameManager = this.main.getGameManager();
     }
 
 
@@ -113,20 +111,8 @@ public class PlayerManager
             final fr.hashtek.tekore.common.player.PlayerData coreKillerData = killerData.getCorePlayerData();
             final Rank killerRank = coreKillerData.getRank();
 
-//            final List<ItemStack> rewardItems = Arrays.asList(
-//                KitStarter.GAPPLES.getItem().getItemStack(),
-//                KitStarter.INSTANT_TNT.getItem().getItemStack()
-//            );
-//
-//            rewardItems.forEach(item -> {
-//                final ItemStack i = new ItemStack(item.getType(), 1);
-//                i.setItemMeta(item.getItemMeta());
-//
-//                killer.getInventory().addItem(i);
-//            });
-
             killer.setHealth(killer.getMaxHealth());
-            killer.playSound(killer.getLocation(), Sound.NOTE_PLING, 1, 4);
+            killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 100, 2);
             killerData.addTotalKills(1);
 
             killMessage += "s'est fait tuer par " + killerRank.getColor() + killerRank.getFullName() + " " + coreKillerData.getUsername();
@@ -155,11 +141,6 @@ public class PlayerManager
     public PlayerData getPlayerData()
     {
         return this.playerData;
-    }
-
-    public ShopManager getShopManager()
-    {
-        return this.shopManager;
     }
 
 }

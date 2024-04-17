@@ -38,7 +38,7 @@ public class ListenerJoin implements Listener, HashLoggable
     public void onJoin(PlayerJoinEvent event)
     {
         final Player player = event.getPlayer();
-        final PlayerData playerData = new PlayerData(this.main, player, this.gameManager);
+        final PlayerData playerData = new PlayerData(this.main, player);
 
         this.gameManager.addPlayerData(player, playerData);
 
