@@ -6,7 +6,6 @@ import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -14,10 +13,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
-/**
- * TODO:
- *   - buy() function
- */
 public class ShopArticle
 {
 
@@ -28,6 +23,13 @@ public class ShopArticle
     private final int price;
 
 
+    /**
+     * Creates a new Shop article.
+     *
+     * @param   article     Article
+     * @param   price       Price
+     * @param   main        BreakFFA instance
+     */
     public ShopArticle(HashItem article, int price, BreakFFA main)
     {
         this.main = main;
@@ -40,6 +42,9 @@ public class ShopArticle
     }
 
 
+    /**
+     * Initializes articles (shop and the one which will be used by players).
+     */
     private void initializeArticles()
     {
         String articleName = this.getShopArticle().getItemMeta().getDisplayName();
@@ -66,6 +71,11 @@ public class ShopArticle
             .build();
     }
 
+    /**
+     * Buys the article for a player.
+     *
+     * @param   playerData  Player's data
+     */
     public void buy(PlayerData playerData)
     {
         final Player player = playerData.getPlayer();
@@ -95,6 +105,9 @@ public class ShopArticle
         player.sendMessage(ChatColor.AQUA + "Vous avez acheté " + this.article.getItemMeta().getDisplayName() + ChatColor.AQUA + ".");
     }
 
+    /**
+     * Sets article click handler (for buy click detection).
+     */
     private void setShopArticleClickHandler()
     {
         this.getShopArticle().addClickHandler(
@@ -110,16 +123,25 @@ public class ShopArticle
         this.getShopArticle().build(this.main.getGuiManager());
     }
 
+    /**
+     * @return  Shop article (with the price in the title, and the lore)
+     */
     public HashItem getShopArticle()
     {
         return this.shopArticle;
     }
 
+    /**
+     * @return  Article (which will be used by players)
+     */
     public HashItem getArticle()
     {
         return this.article;
     }
 
+    /**
+     * @return  Article price
+     */
     public int getPrice()
     {
         return this.price;

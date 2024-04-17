@@ -15,6 +15,12 @@ import java.util.List;
 public class ShopCategorySupport extends ShopCategory
 {
 
+    /**
+     * Creates a new instance of ShopCategorySupport.
+     *
+     * @param   main    BreakFFA main
+     * @param   player  Player
+     */
     public ShopCategorySupport(BreakFFA main, Player player)
     {
         super(main, player, "SUPPORT", ChatColor.GREEN, (byte) 13, (byte) 5);

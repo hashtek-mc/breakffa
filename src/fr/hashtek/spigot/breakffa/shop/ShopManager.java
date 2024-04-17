@@ -27,6 +27,11 @@ public class ShopManager
     private HashGui gui;
 
 
+    /**
+     * Creates a new instance of ShopManager
+     *
+     * @param   main    BreakFFA instance
+     */
     public ShopManager(BreakFFA main)
     {
         this.main = main;
@@ -35,6 +40,10 @@ public class ShopManager
         this.createGui();
     }
 
+
+    /**
+     * Creates the base shop GUIs.
+     */
     private void createGui()
     {
         this.gui = new HashGui("" + ChatColor.AQUA + ChatColor.BOLD + "Marché ● CATÉGORIES", 3);
@@ -125,6 +134,13 @@ public class ShopManager
         mask.apply();
     }
 
+    /**
+     * Builds the shop item.
+     *
+     * @param   playerData  Player's data
+     * @param   close       Should item close the shop or open it (only visual, in the item's lore)
+     * @return  Returns built item.
+     */
     public HashItem getShopItem(PlayerData playerData, boolean close)
     {
         return new HashItem(Material.NETHER_STAR)

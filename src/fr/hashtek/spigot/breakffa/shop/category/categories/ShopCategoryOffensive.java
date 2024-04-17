@@ -15,6 +15,12 @@ import java.util.List;
 public class ShopCategoryOffensive extends ShopCategory
 {
 
+    /**
+     * Creates a new instance of ShopCategoryOffensive.
+     *
+     * @param   main    BreakFFA main
+     * @param   player  Player
+     */
     public ShopCategoryOffensive(BreakFFA main, Player player)
     {
         super(main, player, "OFFENSIF", ChatColor.RED, (byte) 14, (byte) 1);
