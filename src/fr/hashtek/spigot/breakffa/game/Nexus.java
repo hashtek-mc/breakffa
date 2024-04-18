@@ -47,7 +47,7 @@ public class Nexus implements HashLoggable
         final Title title = new Title();
 
         this.main.getServer().broadcastMessage(
-            "" + ChatColor.DARK_RED + ChatColor.UNDERLINE + "⚒" + ChatColor.RESET + " " +
+            "" + ChatColor.DARK_RED + ChatColor.UNDERLINE + "⚕" + ChatColor.RESET + " " +
             playerRank.getColor() + playerRank.getShortName() + " " + corePlayerData.getUsername() + " " +
             ChatColor.RED + "a brisé le " + ChatColor.DARK_RED + ChatColor.BOLD + "Nexus" + ChatColor.RESET + ChatColor.RED + " !"
         );
@@ -70,7 +70,7 @@ public class Nexus implements HashLoggable
                     0,
                     20,
                     40,
-                    ChatColor.RED + "⚒ " + ChatColor.DARK_RED + ChatColor.BOLD + "NEXUS" + ChatColor.RED + " ⚒",
+                    ChatColor.RED + "⚕ " + ChatColor.DARK_RED + ChatColor.BOLD + "NEXUS" + ChatColor.RED + " ⚕",
                     ChatColor.RED + "Brisé par " + playerRank.getColor() + corePlayerData.getUsername()
                 );
             } catch (Exception exception) {
