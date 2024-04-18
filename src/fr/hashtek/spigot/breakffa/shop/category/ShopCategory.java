@@ -2,7 +2,6 @@ package fr.hashtek.spigot.breakffa.shop.category;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
-import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import fr.hashtek.spigot.breakffa.shop.ShopManager;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
 import fr.hashtek.spigot.hashgui.PaginatedHashGui;
@@ -69,7 +68,6 @@ public class ShopCategory
         this.secondaryColor = secondaryColor;
 
         this.articles = new ArrayList<ShopArticle>();
-
         this.createGui();
     }
 
