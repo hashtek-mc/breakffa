@@ -85,8 +85,6 @@ public class ShopArticle
         final int playerShards = playerData.getShards();
         final int articlePrice = this.getPrice();
 
-        final HashItem shopItem = playerData.getMain().getShopManager().createShopItem(playerData, true);
-
         final boolean hasEnoughShards = playerShards >= articlePrice;
         final boolean hasEnoughSpace = player.getInventory().firstEmpty() != -1;
         final boolean canBuy = hasEnoughShards && hasEnoughSpace;
@@ -107,9 +105,12 @@ public class ShopArticle
         }
 
         playerData.setShards(playerShards - articlePrice);
+
+        final HashItem shopItem = playerData.getMain().getShopManager().createShopItem(playerData, true);
+
         player.getInventory().addItem(this.getArticle().getItemStack());
         playerData.getMain().getShopManager().giveShop(playerData);
-        gui.replaceAll(shopItem.getItemMeta().getDisplayName(), shopItem); // !! FIXME: This doesn't work properly !!
+        gui.replaceAll(shopItem.getItemMeta().getDisplayName(), shopItem);
         player.playSound(player.getLocation(), "mob.horse.leather", 100, 1);
         player.playSound(player.getLocation(), Sound.WOOD_CLICK, 100, 1);
         player.sendMessage(ChatColor.AQUA + "Vous avez acheté " + this.article.getItemMeta().getDisplayName() + ChatColor.AQUA + ".");

@@ -42,68 +42,22 @@ public class KitStarter
         inventory.setBoots(KitStarterItems.BOOTS.getItem().getItemStack());
     }
 
-    public void giveShop(Player player, PlayerInventory inventory)
-    {
-        final PlayerData playerData = this.gameManager.getPlayerData(player);
-        final PlayerManager playerManager = playerData.getPlayerManager();
-        final HashGuiManager guiManager = this.main.getGuiManager();
-        final ShopManager shopManager = this.main.getShopManager();
-
-        final HashItem darkBlueGlass =
-            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 9)
-                .setName("")
-                .setUntakable(true)
-                .build(guiManager);
-
-        final HashItem blueGlass =
-            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 3)
-                .setName("")
-                .setUntakable(true)
-                .build(guiManager);
-
-        final HashItem magentaGlass =
-            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 2)
-                .setName("")
-                .setUntakable(true)
-                .build(guiManager);
-
-        final HashItem whiteGlass =
-            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 0)
-                .setName("")
-                .setUntakable(true)
-                .build(guiManager);
-
-        final HashItem shopItem = shopManager.getShopItem(playerData, false);
-
-        final Mask mask = new Mask(inventory);
-
-        mask.setItem('d', darkBlueGlass)
-            .setItem('b', blueGlass)
-            .setItem('m', magentaGlass)
-            .setItem('w', whiteGlass)
-            .setItem('s', shopItem);
-
-        mask.pattern(2, "ddbmwmbdd")
-            .pattern(3, "dbmwswmbd")
-            .pattern(4, "ddbmwmbdd");
-
-        mask.apply();
-    }
-
     /**
      * Gives the kit to a player.
      *
-     * @param   player  Player
+     * @param   playerData  Player's data
      */
-    public void giveItems(Player player)
+    public void giveItems(PlayerData playerData)
     {
+        final Player player = playerData.getPlayer();
         final PlayerInventory playerInventory = player.getInventory();
+        final ShopManager shopManager = this.main.getShopManager();
 
         for (KitStarterItems starterItem : KitStarterItems.values())
             starterItem.give(player);
 
         this.setArmor(playerInventory);
-        this.giveShop(player, playerInventory);
+        shopManager.giveShop(playerData);
     }
 
 }

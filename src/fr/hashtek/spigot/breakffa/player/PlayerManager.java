@@ -68,7 +68,7 @@ public class PlayerManager
         playerInventory.clear();
         this.clearArmor(playerInventory);
         playerInventory.setHeldItemSlot(0);
-        starterKit.giveItems(this.player);
+        starterKit.giveItems(this.playerData);
     }
 
     /**
