@@ -1,7 +1,6 @@
 package fr.hashtek.spigot.breakffa.player;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
-import fr.hashtek.spigot.breakffa.game.GameManager;
 import org.bukkit.entity.Player;
 
 /**

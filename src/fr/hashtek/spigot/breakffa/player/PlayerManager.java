@@ -4,7 +4,6 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.kit.lobby.KitLobby;
 import fr.hashtek.spigot.breakffa.kit.starter.KitStarter;
-import fr.hashtek.spigot.breakffa.shop.ShopManager;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
