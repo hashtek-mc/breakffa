@@ -114,6 +114,8 @@ public class PlayerManager
             killer.setHealth(killer.getMaxHealth());
             killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 100, 2);
             killerData.addTotalKills(1);
+            killerData.addShards(1);
+            this.main.getShopManager().giveShop(killerData);
 
             killMessage += "s'est fait tuer par " + killerRank.getColor() + killerRank.getFullName() + " " + coreKillerData.getUsername();
         } else
