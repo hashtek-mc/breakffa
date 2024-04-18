@@ -4,11 +4,13 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategory;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
+import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
@@ -93,7 +95,32 @@ public class ShopCategoryOffensive extends ShopCategory
             return this.price;
         }
 
+        @Override
+        public boolean equals(ItemStack item)
+        {
+            final ItemStack i = new HashItem(item)
+                .clearFlags()
+                .build()
+                .getItemStack();
+
+            final ItemStack article = new HashItem(this.article)
+                .clearLore()
+                .clearFlags()
+                .build()
+                .getItemStack();
+
+            return i.equals(article);
+        }
+
     }
+
+    private static final ShopCategoryAttributes attributes = new ShopCategoryAttributes(
+        "OFFENSIF",
+        ChatColor.RED,
+        (byte) 14,
+        (byte) 1
+    );
+
 
     /**
      * Creates a new instance of ShopCategoryOffensive.
@@ -103,7 +130,7 @@ public class ShopCategoryOffensive extends ShopCategory
      */
     public ShopCategoryOffensive(BreakFFA main, Player player)
     {
-        super(main, player, "OFFENSIF", ChatColor.RED, (byte) 14, (byte) 1);
+        super(main, player, attributes);
 
         this.loadArticles();
     }

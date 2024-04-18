@@ -3,6 +3,7 @@ package fr.hashtek.spigot.breakffa.shop.category.categories;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategory;
+import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -12,6 +13,14 @@ import java.util.List;
 public class ShopCategoryDefensive extends ShopCategory
 {
 
+    private static final ShopCategoryAttributes attributes = new ShopCategoryAttributes(
+        "DEFENSIF",
+        ChatColor.BLUE,
+        (byte) 11,
+        (byte) 3
+    );
+
+
     /**
      * Creates a new instance of ShopCategoryDefensive.
      *
@@ -20,7 +29,7 @@ public class ShopCategoryDefensive extends ShopCategory
      */
     public ShopCategoryDefensive(BreakFFA main, Player player)
     {
-        super(main, player, "DEFENSIF", ChatColor.BLUE, (byte) 11, (byte) 3);
+        super(main, player, attributes);
 
         this.loadArticles();
     }

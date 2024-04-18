@@ -33,8 +33,8 @@ public class ShopArticle
     public ShopArticle(HashItem article, int price, BreakFFA main)
     {
         this.main = main;
-        this.article = article;
         this.shopArticle = new HashItem(article);
+        this.article = new HashItem(article);
 
         this.price = price;
 
@@ -48,8 +48,10 @@ public class ShopArticle
     private void initializeArticles()
     {
         String articleName = this.getShopArticle().getItemMeta().getDisplayName();
+        final String suffix = " " + ChatColor.WHITE + ChatColor.BOLD + "●" + ChatColor.AQUA + " " + this.price + " shards";
 
-        articleName += " " + ChatColor.WHITE + ChatColor.BOLD + "●" + ChatColor.AQUA + " " + this.price + " shards";
+        if (!articleName.endsWith(suffix))
+            articleName += suffix;
 
         this.getShopArticle().setName(articleName);
         this.getShopArticle()
