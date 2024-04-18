@@ -4,7 +4,9 @@ import fr.hashtek.spigot.hashgui.handler.click.ClickAction;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ShopCategoryItem extends HashItem
@@ -33,6 +35,11 @@ public class ShopCategoryItem extends HashItem
 
         super.setName(name)
             .setLore(lore)
+            .setFlags(Arrays.asList(
+                ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_ENCHANTS,
+                ItemFlag.HIDE_UNBREAKABLE
+            ))
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()

@@ -136,7 +136,7 @@ public class ShopManager
     public HashItem createShopItem(PlayerData playerData, boolean close)
     {
         return new HashItem(Material.NETHER_STAR)
-            .setName(ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (clic droit)")
+            .setName(ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (clic gauche)")
             .setLore(Arrays.asList(
                 "",
                 ChatColor.GRAY + "Vous possédez actuellement " + ChatColor.AQUA + playerData.getShards() + " shards" + ChatColor.GRAY + ".",
