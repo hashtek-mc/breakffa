@@ -3,6 +3,7 @@ package fr.hashtek.spigot.breakffa.shop;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
+import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryItem;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategoryDefensive;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategoryOffensive;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategorySupport;
@@ -41,6 +42,11 @@ public class ShopManager
     }
 
 
+    private void createCategoryItem()
+    {
+
+    }
+
     /**
      * Creates the base shop GUIs.
      */
@@ -55,65 +61,56 @@ public class ShopManager
         final HashItem greenGlass = HashItem.separator((byte) 5, this.guiManager);
         final HashItem darkGreenGlass = HashItem.separator((byte) 13, this.guiManager);
 
-        final HashItem defensiveCategory = new HashItem(Material.CHAINMAIL_CHESTPLATE)
-            .setName(ChatColor.BLUE + "Catégorie Défensive")
-            .setLore(Arrays.asList(
+        final HashItem defensiveCategory = new ShopCategoryItem(
+            Material.CHAINMAIL_CHESTPLATE,
+            ChatColor.BLUE + "Catégorie Défensive",
+            Arrays.asList(
                 "",
                 ChatColor.GRAY + "Cette catégorie contient l'ensemble des objets",
                 ChatColor.GRAY + "visant à vous " + ChatColor.BLUE + "protéger" + ChatColor.GRAY + ", que cela soit",
-                ChatColor.GRAY + "des types d'" + ChatColor.YELLOW + "arumures" + ChatColor.GRAY + ", des " + ChatColor.YELLOW + "structures" + ChatColor.GRAY + ", ou autre.",
+                ChatColor.GRAY + "des types d'" + ChatColor.YELLOW + "armures" + ChatColor.GRAY + ", des " + ChatColor.YELLOW + "structures" + ChatColor.GRAY + ", ou autre.",
                 "",
                 "" + ChatColor.BLUE + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
-            ))
-            .addClickHandler(
-                new ClickHandler()
-                    .addAllClickTypes()
-                    .setClickAction((Player p, HashGui gui, ItemStack item, int slot) -> {
-                        new ShopCategoryDefensive(this.main, p).open();
-                    })
-            )
-            .build(this.guiManager);
+            ),
+            (Player p, HashGui gui, ItemStack item, int slot) -> {
+                new ShopCategoryDefensive(this.main, p).open();
+            }
+        ).build(this.guiManager);
 
-        final HashItem offensiveCategory = new HashItem(Material.IRON_SWORD)
-            .setName(ChatColor.RED + "Catégorie Offensive")
-            .setLore(Arrays.asList(
+        final HashItem offensiveCategory = new ShopCategoryItem(
+            Material.IRON_SWORD,
+            ChatColor.RED + "Catégorie Offensive",
+            Arrays.asList(
                 "",
                 ChatColor.GRAY + "Cette catégorie contient l'ensemble des " + ChatColor.RED + "armes" + ChatColor.GRAY + ",",
                 ChatColor.YELLOW + "blanches" + ChatColor.GRAY + " ou à " + ChatColor.YELLOW + "distance" + ChatColor.GRAY + ", et autres objets ayant",
                 ChatColor.GRAY + "pour but de " + ChatColor.RED + "blesser" + ChatColor.GRAY + " votre " + ChatColor.WHITE + "cible" + ChatColor.GRAY + ".",
                 "",
                 "" + ChatColor.RED + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
-            ))
-            .addClickHandler(
-                new ClickHandler()
-                    .addAllClickTypes()
-                    .setClickAction((Player p, HashGui gui, ItemStack item, int slot) -> {
-                        new ShopCategoryOffensive(this.main, p).open();
-                    })
-            )
-            .build(this.guiManager);
+            ),
+            (Player p, HashGui gui, ItemStack item, int slot) -> {
+                new ShopCategoryOffensive(this.main, p).open();
+            }
+        ).build(this.guiManager);
 
-        final HashItem supportCategory = new HashItem(Material.GOLDEN_APPLE)
-            .setName(ChatColor.GREEN + "Catégorie Supportive")
-            .setLore(Arrays.asList(
+        final HashItem supportCategory = new ShopCategoryItem(
+            Material.GOLDEN_APPLE,
+            ChatColor.GREEN + "Catégorie Supportive",
+            Arrays.asList(
                 "",
                 ChatColor.GRAY + "Cette catégorie représente les objets",
                 ChatColor.GRAY + "impliqués dans le " + ChatColor.GREEN + "support" + ChatColor.GRAY + ", permettant donc",
                 ChatColor.GRAY + "de vous aider " + ChatColor.DARK_GREEN + "vous ou vos alliés" + ChatColor.GRAY + ".",
                 "",
                 ChatColor.GRAY + "On y retrouve également le " + ChatColor.BLUE + "reste" + ChatColor.GRAY + " des",
-                ChatColor.GRAY + "objets  " + ChatColor.YELLOW + "divers" + ChatColor.GRAY + " et " + ChatColor.YELLOW + "variés" + ChatColor.GRAY + ".",
+                ChatColor.GRAY + "objets " + ChatColor.YELLOW + "divers" + ChatColor.GRAY + " et " + ChatColor.YELLOW + "variés" + ChatColor.GRAY + ".",
                 "",
                 "" + ChatColor.GREEN + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
-            ))
-            .addClickHandler(
-                new ClickHandler()
-                    .addAllClickTypes()
-                    .setClickAction((Player p, HashGui gui, ItemStack item, int slot) -> {
-                        new ShopCategorySupport(this.main, p).open();
-                    })
-            )
-            .build(this.guiManager);
+            ),
+            (Player p, HashGui gui, ItemStack item, int slot) -> {
+                new ShopCategorySupport(this.main, p).open();
+            }
+        ).build(this.guiManager);
 
         final Mask mask = new Mask(this.gui);
 

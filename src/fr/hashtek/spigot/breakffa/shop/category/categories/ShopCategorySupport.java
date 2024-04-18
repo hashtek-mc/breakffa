@@ -4,11 +4,13 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategory;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
+import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
@@ -19,7 +21,7 @@ public class ShopCategorySupport extends ShopCategory
     {
 
         GOLD_PACKAGE (
-            new HashItem(Material.GOLDEN_APPLE)
+            new HashItem(Material.GOLDEN_APPLE, 3)
                 .setName(ChatColor.GREEN + "Colis d'Or")
                 .setLore(Arrays.asList(
                     "",
@@ -52,8 +54,10 @@ public class ShopCategorySupport extends ShopCategory
             8
         );
 
+
         private final HashItem article;
         private final int price;
+
 
         Articles(HashItem article, int price)
         {
@@ -74,7 +78,32 @@ public class ShopCategorySupport extends ShopCategory
             return this.price;
         }
 
+        @Override
+        public boolean equals(ItemStack item)
+        {
+            final ItemStack i = new HashItem(item)
+                .clearFlags()
+                .build()
+                .getItemStack();
+
+            final ItemStack article = new HashItem(this.article)
+                .clearLore()
+                .clearFlags()
+                .build()
+                .getItemStack();
+
+            return i.equals(article);
+        }
+
     }
+
+    private static final ShopCategoryAttributes attributes = new ShopCategoryAttributes(
+        "SUPPORT",
+        ChatColor.GREEN,
+        (byte) 13,
+        (byte) 5
+    );
+
 
     /**
      * Creates a new instance of ShopCategorySupport.
@@ -84,10 +113,11 @@ public class ShopCategorySupport extends ShopCategory
      */
     public ShopCategorySupport(BreakFFA main, Player player)
     {
-        super(main, player, "SUPPORT", ChatColor.GREEN, (byte) 13, (byte) 5);
+        super(main, player, attributes);
 
         this.loadArticles();
     }
+
 
     /**
      * Loads articles.

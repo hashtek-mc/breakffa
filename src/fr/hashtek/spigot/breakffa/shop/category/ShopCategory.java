@@ -28,10 +28,7 @@ public class ShopCategory
 
     private PaginatedHashGui gui;
 
-    private final String category;
-    private final ChatColor color;
-    private final Byte primaryColor;
-    private final Byte secondaryColor;
+    private final ShopCategoryAttributes attributes;
 
     private final List<ShopArticle> articles;
 
@@ -41,18 +38,12 @@ public class ShopCategory
      *
      * @param   main            BreakFFA instance
      * @param   player          Player
-     * @param   category        Category title
-     * @param   color           Color (for strings)
-     * @param   primaryColor    Primary color
-     * @param   secondaryColor  Secondary color
+     * @param   attributes      Category attributes
      */
     public ShopCategory(
         BreakFFA main,
         Player player,
-        String category,
-        ChatColor color,
-        Byte primaryColor,
-        Byte secondaryColor
+        ShopCategoryAttributes attributes
     )
     {
         this.main = main;
@@ -62,10 +53,7 @@ public class ShopCategory
         this.player = player;
         this.playerData = this.main.getGameManager().getPlayerData(player);
 
-        this.category = category;
-        this.color = color;
-        this.primaryColor = primaryColor;
-        this.secondaryColor = secondaryColor;
+        this.attributes = attributes;
 
         this.articles = new ArrayList<ShopArticle>();
         this.createGui();
@@ -77,21 +65,23 @@ public class ShopCategory
      */
     public void createGui()
     {
+        final ShopCategoryAttributes attributes = this.attributes;
+
         this.gui = new PaginatedHashGui(
-            "" + this.color + ChatColor.BOLD + "Marché " + ChatColor.WHITE + ChatColor.BOLD + "●" + this.color + ChatColor.BOLD + " " + this.category,
+            "" + attributes.getColor() + ChatColor.BOLD + "Marché " + ChatColor.WHITE + ChatColor.BOLD + "●" + attributes.getColor() + ChatColor.BOLD + " " + attributes.getName(),
             6,
             this.guiManager
         );
 
-        final HashItem primaryGlass = HashItem.separator(this.primaryColor, this.guiManager);
-        final HashItem secondaryGlass = HashItem.separator(this.secondaryColor, this.guiManager);
+        final HashItem primaryGlass = HashItem.separator(attributes.getPrimaryColor(), this.guiManager);
+        final HashItem secondaryGlass = HashItem.separator(attributes.getSecondaryColor(), this.guiManager);
 
         final HashItem previousPage = new HashItem(Material.ARROW)
-            .setName(this.color + "Page précédente")
+            .setName(attributes.getColor() + "Page précédente")
             .addLore(ChatColor.GRAY + "Cliquez pour afficher la page précédente.");
 
         final HashItem nextPage = new HashItem(Material.ARROW)
-            .setName(this.color + "Page suivante")
+            .setName(attributes.getColor() + "Page suivante")
             .addLore(ChatColor.GRAY + "Cliquez pour afficher la page suivante.");
 
         final HashItem shopItem = this.shopManager.getShopItem(this.playerData, true);
@@ -127,7 +117,19 @@ public class ShopCategory
     }
 
     /**
+     * Opens the GUI to a player.
+     *
+     * @param   player    Player
+     */
+    public void open(Player player)
+    {
+        this.gui.open(player);
+        this.gui.update(player);
+    }
+
+    /**
      * Loads articles.
+     * TODO: Auto loader.
      *
      * @apiNote MUST be overwritten by child classes.
      */
@@ -198,35 +200,11 @@ public class ShopCategory
     }
 
     /**
-     * @return  Category title
+     * @return  Category's attributes
      */
-    public String getCategory()
+    public ShopCategoryAttributes getAttributes()
     {
-        return this.category;
-    }
-
-    /**
-     * @return  Color (for strings)
-     */
-    public ChatColor getColor()
-    {
-        return this.color;
-    }
-
-    /**
-     * @return  Primary color
-     */
-    public Byte getPrimaryColor()
-    {
-        return this.primaryColor;
-    }
-
-    /**
-     * @return  Secondary color
-     */
-    public Byte getSecondaryColor()
-    {
-        return this.secondaryColor;
+        return this.attributes;
     }
 
     /**
