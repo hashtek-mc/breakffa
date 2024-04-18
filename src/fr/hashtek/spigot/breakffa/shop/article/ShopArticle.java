@@ -3,6 +3,7 @@ package fr.hashtek.spigot.breakffa.shop.article;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.hashgui.HashGui;
+import fr.hashtek.spigot.hashgui.PaginatedHashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
@@ -78,30 +79,37 @@ public class ShopArticle
      *
      * @param   playerData  Player's data
      */
-    public void buy(PlayerData playerData)
+    public void buy(PlayerData playerData, PaginatedHashGui gui)
     {
         final Player player = playerData.getPlayer();
         final int playerShards = playerData.getShards();
         final int articlePrice = this.getPrice();
+
+        final HashItem shopItem = playerData.getMain().getShopManager().createShopItem(playerData, true);
 
         final boolean hasEnoughShards = playerShards >= articlePrice;
         final boolean hasEnoughSpace = player.getInventory().firstEmpty() != -1;
         final boolean canBuy = hasEnoughShards && hasEnoughSpace;
 
         if (!canBuy) {
+            String reason = ChatColor.RED + "";
+
             player.playSound(player.getLocation(), "random.break", 100, 0);
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 100, 0);
 
             if (!hasEnoughShards)
-                player.sendMessage(ChatColor.RED + "Vous ne possédez pas assez de " + ChatColor.AQUA + "shards" + ChatColor.RED + ".");
+                reason += "Vous ne possédez pas assez de " + ChatColor.AQUA + "shards" + ChatColor.RED + ".";
             if (!hasEnoughSpace)
-                player.sendMessage(ChatColor.RED + "Vous n'avez plus de place dans votre inventaire.");
+                reason += "Vous n'avez plus de place dans votre inventaire.";
 
+            player.sendMessage(reason);
             return;
         }
 
         playerData.setShards(playerShards - articlePrice);
         player.getInventory().addItem(this.getArticle().getItemStack());
+        playerData.getMain().getShopManager().giveShop(playerData);
+        gui.replaceAll(shopItem.getItemMeta().getDisplayName(), shopItem); // !! FIXME: This doesn't work properly !!
         player.playSound(player.getLocation(), "mob.horse.leather", 100, 1);
         player.playSound(player.getLocation(), Sound.WOOD_CLICK, 100, 1);
         player.sendMessage(ChatColor.AQUA + "Vous avez acheté " + this.article.getItemMeta().getDisplayName() + ChatColor.AQUA + ".");
@@ -109,6 +117,8 @@ public class ShopArticle
 
     /**
      * Sets article click handler (for buy click detection).
+     * FIXME: If GUI is not an instance of PaginatedHashGui, you may
+     *        want to throw an error.
      */
     private void setShopArticleClickHandler()
     {
@@ -116,9 +126,13 @@ public class ShopArticle
             new ClickHandler()
                 .addAllClickTypes()
                 .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                    if (!(gui instanceof PaginatedHashGui))
+                        return;
+
+                    final PaginatedHashGui paginatedGui = (PaginatedHashGui) gui;
                     final PlayerData playerData = this.main.getGameManager().getPlayerData(player);
 
-                    this.buy(playerData);
+                    this.buy(playerData, paginatedGui);
                 })
         );
 

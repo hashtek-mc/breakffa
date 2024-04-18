@@ -84,7 +84,7 @@ public class ShopCategory
             .setName(attributes.getColor() + "Page suivante")
             .addLore(ChatColor.GRAY + "Cliquez pour afficher la page suivante.");
 
-        final HashItem shopItem = this.shopManager.getShopItem(this.playerData, true);
+        final HashItem shopItem = this.shopManager.createShopItem(this.playerData, true);
 
         this.gui.setPreviousPageItem(previousPage);
         this.gui.setNextPageItem(nextPage);

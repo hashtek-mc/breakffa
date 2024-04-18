@@ -1,7 +1,6 @@
 package fr.hashtek.spigot.breakffa.player;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
-import fr.hashtek.spigot.breakffa.game.GameManager;
 import org.bukkit.entity.Player;
 
 /**
@@ -17,7 +16,6 @@ public class PlayerData
     private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private PlayerState state;
 
-    private final GameManager gameManager;
     private final PlayerManager playerManager;
 
     private int shards;
@@ -35,9 +33,8 @@ public class PlayerData
      *
      * @param   main        BreakFFA instance
      * @param   player      Player
-     * @param   gameManager Game manager
      */
-    public PlayerData(BreakFFA main, Player player, GameManager gameManager)
+    public PlayerData(BreakFFA main, Player player)
     {
         this.main = main;
 
@@ -45,7 +42,6 @@ public class PlayerData
         this.corePlayerData = this.main.getCore().getPlayerData(this.player);
         this.state = PlayerState.AT_LOBBY;
 
-        this.gameManager = gameManager;
         this.playerManager = new PlayerManager(this.main, this);
 
         this.shards = 0;
@@ -89,14 +85,6 @@ public class PlayerData
     public PlayerState getState()
     {
         return this.state;
-    }
-
-    /**
-     * @return  Game manager
-     */
-    public GameManager getGameManager()
-    {
-        return this.gameManager;
     }
 
     /**

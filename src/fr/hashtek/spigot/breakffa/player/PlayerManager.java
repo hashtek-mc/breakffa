@@ -4,7 +4,6 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.kit.lobby.KitLobby;
 import fr.hashtek.spigot.breakffa.kit.starter.KitStarter;
-import fr.hashtek.spigot.breakffa.shop.ShopManager;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -20,7 +19,6 @@ public class PlayerManager
     private final Player player;
     private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private final GameManager gameManager;
-    private final ShopManager shopManager;
 
 
     /**
@@ -35,8 +33,7 @@ public class PlayerManager
         this.playerData = playerData;
         this.corePlayerData = this.playerData.getCorePlayerData();
         this.player = this.playerData.getPlayer();
-        this.gameManager = this.playerData.getGameManager();
-        this.shopManager = new ShopManager(this);
+        this.gameManager = this.main.getGameManager();
     }
 
 
@@ -155,11 +152,6 @@ public class PlayerManager
     public PlayerData getPlayerData()
     {
         return this.playerData;
-    }
-
-    public ShopManager getShopManager()
-    {
-        return this.shopManager;
     }
 
 }

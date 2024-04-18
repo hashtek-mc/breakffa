@@ -2,7 +2,6 @@ package fr.hashtek.spigot.breakffa.shop;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
-import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryItem;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategoryDefensive;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategoryOffensive;
@@ -16,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Arrays;
 
@@ -41,11 +41,6 @@ public class ShopManager
         this.createGui();
     }
 
-
-    private void createCategoryItem()
-    {
-
-    }
 
     /**
      * Creates the base shop GUIs.
@@ -138,7 +133,7 @@ public class ShopManager
      * @param   close       Should item close the shop or open it (only visual, in the item's lore)
      * @return  Returns built item.
      */
-    public HashItem getShopItem(PlayerData playerData, boolean close)
+    public HashItem createShopItem(PlayerData playerData, boolean close)
     {
         return new HashItem(Material.NETHER_STAR)
             .setName(ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (clic droit)")
@@ -166,6 +161,58 @@ public class ShopManager
                     })
             )
             .build(this.guiManager);
+    }
+
+    /**
+     * Gives the shop to a player in its inventory.
+     *
+     * @param   playerData  Player's data
+     */
+    public void giveShop(PlayerData playerData)
+    {
+        final Player player = playerData.getPlayer();
+        final PlayerInventory inventory = player.getInventory();
+        final HashGuiManager guiManager = this.main.getGuiManager();
+
+        final HashItem darkBlueGlass =
+            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 9)
+                .setName("")
+                .setUntakable(true)
+                .build(guiManager);
+
+        final HashItem blueGlass =
+            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 3)
+                .setName("")
+                .setUntakable(true)
+                .build(guiManager);
+
+        final HashItem magentaGlass =
+            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 2)
+                .setName("")
+                .setUntakable(true)
+                .build(guiManager);
+
+        final HashItem whiteGlass =
+            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 0)
+                .setName("")
+                .setUntakable(true)
+                .build(guiManager);
+
+        final HashItem shopItem = this.createShopItem(playerData, false);
+
+        final Mask mask = new Mask(inventory);
+
+        mask.setItem('d', darkBlueGlass)
+            .setItem('b', blueGlass)
+            .setItem('m', magentaGlass)
+            .setItem('w', whiteGlass)
+            .setItem('s', shopItem);
+
+        mask.pattern(2, "ddbmwmbdd")
+            .pattern(3, "dbmwswmbd")
+            .pattern(4, "ddbmwmbdd");
+
+        mask.apply();
     }
 
 }

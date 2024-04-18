@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
-public enum KitLobbyItem
+public enum KitLobbyItems
 {
 
     BACK_TO_LOBBY (
@@ -136,7 +136,7 @@ public enum KitLobbyItem
      * @param   item        Item
      * @param   slotIndex   Slot index
      */
-    KitLobbyItem(HashItem item, int slotIndex)
+    KitLobbyItems(HashItem item, int slotIndex)
     {
         this.item = item;
         this.slotIndex = slotIndex;
