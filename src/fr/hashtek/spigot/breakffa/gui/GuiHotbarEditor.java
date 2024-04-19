@@ -28,9 +28,14 @@ public class GuiHotbarEditor extends HashGui
     private final PlayerSettings playerSettings;
 
 
+    /**
+     * Creates a new Hotbar editor GUI.
+     *
+     * @param   player  Player
+     */
     public GuiHotbarEditor(Player player)
     {
-        super("" + ChatColor.WHITE + ChatColor.BOLD + "Personnalisation ● " + ChatColor.GOLD + "Hotbar", 6);
+        super("" + ChatColor.WHITE + ChatColor.BOLD + "Personnalisation ● " + ChatColor.GOLD + ChatColor.BOLD + "Hotbar", 6);
 
         final BreakFFA main = BreakFFA.getInstance();
         final GameManager gameManager = main.getGameManager();
@@ -44,6 +49,9 @@ public class GuiHotbarEditor extends HashGui
     }
 
 
+    /**
+     * Creates the GUI.
+     */
     private void createGui()
     {
         final HashItem orangeGlass = HashItem.separator((byte) 1, this.guiManager);
@@ -74,7 +82,7 @@ public class GuiHotbarEditor extends HashGui
 
                         final GuiHotbarEditor guiHotbarEditor = (GuiHotbarEditor) gui;
 
-                        guiHotbarEditor.updatePlayerHotbarLayout(player, gui);
+                        guiHotbarEditor.updatePlayerHotbarLayout(player, guiHotbarEditor);
                         player.sendMessage(ChatColor.GREEN + "Vos modifications ont été enregistrées.");
                         guiHotbarEditor.close(player);
                     })
@@ -117,18 +125,15 @@ public class GuiHotbarEditor extends HashGui
 
         this.mask = new Mask(this);
 
-        this.mask.setItem('s', KitStarter.Items.SWORD.getItem())
-            .setItem('p', KitStarter.Items.PICKAXE.getItem())
-            .setItem('t', KitStarter.Items.INSTANT_TNT.getItem())
-            .setItem('g', KitStarter.Items.GOLDEN_APPLES.getItem())
-            .setItem('b', KitStarter.Items.BLOCKS.getItem())
-
+        this.mask
             .setItem('T', titleItem)
             .setItem('C', confirmItem)
             .setItem('R', resetItem)
             .setItem('c', cancelItem)
             .setItem('O', orangeGlass)
             .setItem('r', redGlass);
+
+        this.setHotbar();
 
         this.mask
             .pattern("rOOOTOOOr")
@@ -141,9 +146,34 @@ public class GuiHotbarEditor extends HashGui
         this.mask.apply();
     }
 
-    public void updatePlayerHotbarLayout(Player player, HashGui gui)
+    /**
+     * Sets GUI's hotbar
+     */
+    private void setHotbar()
     {
-        StringBuilder newHotbarLayout = new StringBuilder();
+        final HashItem sword = new HashItem(KitStarter.Items.SWORD.getItem()).setAmount(1);
+        final HashItem pickaxe = new HashItem(KitStarter.Items.PICKAXE.getItem()).setAmount(1);
+        final HashItem tnt = new HashItem(KitStarter.Items.INSTANT_TNT.getItem()).setAmount(1);
+        final HashItem gapples = new HashItem(KitStarter.Items.GOLDEN_APPLES.getItem()).setAmount(1);
+        final HashItem blocks = new HashItem(KitStarter.Items.BLOCKS.getItem()).setAmount(1);
+
+        this.mask
+            .setItem('s', sword)
+            .setItem('p', pickaxe)
+            .setItem('t', tnt)
+            .setItem('g', gapples)
+            .setItem('b', blocks);
+    }
+
+    /**
+     * Updates Player's Hotbar layout based on the GUI content.
+     *
+     * @param   player  Player
+     * @param   gui     GUI
+     */
+    public void updatePlayerHotbarLayout(Player player, GuiHotbarEditor gui)
+    {
+        final StringBuilder newHotbarLayout = new StringBuilder();
 
         for (int k = 18; k < 27; k++) {
             final ItemStack item = gui.getInventory().getItem(k);
@@ -161,11 +191,13 @@ public class GuiHotbarEditor extends HashGui
             }
         }
 
-        System.out.println("New Hotbar layout: '" + newHotbarLayout + "'.");
-
         this.playerSettings.setHotbarLayout(newHotbarLayout.toString());
     }
 
+
+    /**
+     * @return  GUI's Mask
+     */
     public Mask getMask()
     {
         return this.mask;
