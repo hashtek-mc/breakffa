@@ -23,9 +23,11 @@ public class ShopArticle
     private final HashItem article;
     private final int price;
 
+    private final ShopArticleBuyAction buyAction;
+
 
     /**
-     * Creates a new Shop article.
+     * Creates a new Shop article (without custom buy action).
      *
      * @param   article     Article
      * @param   price       Price
@@ -33,11 +35,26 @@ public class ShopArticle
      */
     public ShopArticle(HashItem article, int price, BreakFFA main)
     {
+        this(article, price, null, main);
+    }
+
+    /**
+     * Creates a new Shop article (with custom buy action).
+     *
+     * @param   article     Article
+     * @param   price       Price
+     * @param   buyAction   Custom buy action
+     * @param   main        BreakFFA instance
+     */
+    public ShopArticle(HashItem article, int price, ShopArticleBuyAction buyAction, BreakFFA main)
+    {
         this.main = main;
         this.shopArticle = new HashItem(article);
         this.article = new HashItem(article);
 
         this.price = price;
+
+        this.buyAction = buyAction;
 
         this.initializeArticles();
     }
@@ -67,8 +84,9 @@ public class ShopArticle
 
         this.article
             .setFlags(Arrays.asList(
-                ItemFlag.HIDE_UNBREAKABLE,
-                ItemFlag.HIDE_ATTRIBUTES
+                ItemFlag.HIDE_ENCHANTS,
+                ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_UNBREAKABLE
             ))
             .clearLore()
             .build();
@@ -104,15 +122,26 @@ public class ShopArticle
             return;
         }
 
+        /* Makes the transaction. */
         playerData.setShards(playerShards - articlePrice);
 
+        /* Gives the item to the player. */
+        if (this.buyAction == null)
+            player.getInventory().addItem(this.getArticle().getItemStack());
+        else
+            this.buyAction.execute(player, this);
+
+        /* Updates the shop items (for shards in lore). */
         final HashItem shopItem = playerData.getMain().getShopManager().createShopItem(playerData, true);
 
-        player.getInventory().addItem(this.getArticle().getItemStack());
         playerData.getMain().getShopManager().giveShop(playerData);
         gui.replaceAll(shopItem.getItemMeta().getDisplayName(), shopItem);
+
+        /* Plays buy sound to the player. */
         player.playSound(player.getLocation(), "mob.horse.leather", 100, 1);
         player.playSound(player.getLocation(), Sound.WOOD_CLICK, 100, 1);
+
+        /* Sends buy confirmation to the player. */
         player.sendMessage(ChatColor.AQUA + "Vous avez acheté " + this.article.getItemMeta().getDisplayName() + ChatColor.AQUA + ".");
     }
 

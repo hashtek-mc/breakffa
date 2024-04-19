@@ -1,7 +1,9 @@
 package fr.hashtek.spigot.breakffa.shop.category.categories;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
+import fr.hashtek.spigot.breakffa.kit.kits.KitStarter;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
+import fr.hashtek.spigot.breakffa.shop.article.ShopArticleBuyAction;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategory;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
@@ -21,7 +23,7 @@ public class ShopCategorySupport extends ShopCategory
     {
 
         GOLD_PACKAGE (
-            new HashItem(Material.GOLDEN_APPLE, 3)
+            new HashItem(Material.GOLDEN_APPLE)
                 .setName(ChatColor.GREEN + "Colis d'Or")
                 .setLore(Arrays.asList(
                     "",
@@ -30,7 +32,10 @@ public class ShopCategorySupport extends ShopCategory
                     ChatColor.GRAY + "de " + ChatColor.DARK_GREEN + "survie" + ChatColor.GRAY + ", jusqu'à votre " + ChatColor.DARK_RED + "mort"
                 ))
                 .build(),
-            3
+            3,
+            (Player player, ShopArticle a) -> {
+                player.getInventory().addItem(KitStarter.Items.GOLDEN_APPLES.getItem().getItemStack());
+            }
         ),
 
         BASEBALL_BAT (
@@ -54,15 +59,21 @@ public class ShopCategorySupport extends ShopCategory
             8
         );
 
-
         private final HashItem article;
         private final int price;
+        private final ShopArticleBuyAction buyAction;
 
 
         Articles(HashItem article, int price)
         {
+            this(article, price, null);
+        }
+
+        Articles(HashItem article, int price, ShopArticleBuyAction buyAction)
+        {
             this.article = article;
             this.price = price;
+            this.buyAction = buyAction;
         }
 
 
@@ -76,6 +87,12 @@ public class ShopCategorySupport extends ShopCategory
         public int getPrice()
         {
             return this.price;
+        }
+
+        @Override
+        public ShopArticleBuyAction getBuyAction()
+        {
+            return this.buyAction;
         }
 
         @Override
@@ -130,6 +147,7 @@ public class ShopCategorySupport extends ShopCategory
                 new ShopArticle(
                     article.getArticle(),
                     article.getPrice(),
+                    article.getBuyAction(),
                     super.getMain()
                 )
             );

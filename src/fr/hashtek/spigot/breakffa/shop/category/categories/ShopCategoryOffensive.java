@@ -2,6 +2,7 @@ package fr.hashtek.spigot.breakffa.shop.category.categories;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
+import fr.hashtek.spigot.breakffa.shop.article.ShopArticleBuyAction;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategory;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
@@ -141,12 +142,21 @@ public class ShopCategoryOffensive extends ShopCategory
 
         private final HashItem article;
         private final int price;
+        private final ShopArticleBuyAction buyAction;
+
 
         Articles(HashItem article, int price)
         {
+            this(article, price, null);
+        }
+
+        Articles(HashItem article, int price, ShopArticleBuyAction buyAction)
+        {
             this.article = article;
             this.price = price;
+            this.buyAction = buyAction;
         }
+
 
         @Override
         public HashItem getArticle()
@@ -158,6 +168,12 @@ public class ShopCategoryOffensive extends ShopCategory
         public int getPrice()
         {
             return this.price;
+        }
+
+        @Override
+        public ShopArticleBuyAction getBuyAction()
+        {
+            return this.buyAction;
         }
 
         @Override
@@ -211,6 +227,7 @@ public class ShopCategoryOffensive extends ShopCategory
                 new ShopArticle(
                     article.getArticle(),
                     article.getPrice(),
+                    article.getBuyAction(),
                     super.getMain()
                 )
             );
