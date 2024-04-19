@@ -206,7 +206,7 @@ public class ShopCategoryOffensive extends ShopCategory
     @Override
     public void loadArticles()
     {
-        for (ShopCategoryOffensive.Articles article : ShopCategoryOffensive.Articles.values())
+        for (Articles article : Articles.values())
             super.addArticle(
                 new ShopArticle(
                     article.getArticle(),

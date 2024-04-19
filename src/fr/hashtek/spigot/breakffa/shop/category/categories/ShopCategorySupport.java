@@ -125,7 +125,7 @@ public class ShopCategorySupport extends ShopCategory
     @Override
     public void loadArticles()
     {
-        for (ShopCategorySupport.Articles article : ShopCategorySupport.Articles.values())
+        for (Articles article : Articles.values())
             super.addArticle(
                 new ShopArticle(
                     article.getArticle(),
