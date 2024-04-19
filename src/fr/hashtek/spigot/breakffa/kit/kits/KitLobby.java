@@ -1,6 +1,7 @@
 package fr.hashtek.spigot.breakffa.kit.kits;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
+import fr.hashtek.spigot.breakffa.gui.GuiHotbarEditor;
 import fr.hashtek.spigot.breakffa.kit.KitItems;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.hashgui.HashGui;
@@ -128,6 +129,26 @@ public class KitLobby
                 )
                 .build(BreakFFA.getInstance().getGuiManager()),
             8
+        ),
+
+        HOTBAR_EDITOR (
+            new HashItem(Material.COMMAND)
+                .setName(ChatColor.AQUA + "Modifier la hotbar")
+                .setLore(Arrays.asList(
+                    "",
+                    ChatColor.GRAY + "Modifiez ici l'agencement de votre " + ChatColor.AQUA + "hotbar" + ChatColor.GRAY + " !",
+                    "",
+                    "" + ChatColor.AQUA + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
+                ))
+                .addClickHandler(
+                    new ClickHandler()
+                        .addAllClickTypes()
+                        .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                            new GuiHotbarEditor(player).open(player);
+                        })
+                )
+                .build(BreakFFA.getInstance().getGuiManager()),
+            22
         );
 
 

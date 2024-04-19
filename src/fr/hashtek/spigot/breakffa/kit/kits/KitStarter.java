@@ -4,7 +4,9 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.kit.KitItems;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.player.PlayerSettings;
 import fr.hashtek.spigot.breakffa.shop.ShopManager;
+import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -27,37 +29,32 @@ public class KitStarter
                 .setName(ChatColor.RED + "Epée Basique" + ChatColor.DARK_GRAY + " (+7.25)")
                 .setUnbreakable(true)
                 .addEnchant(Enchantment.DAMAGE_ALL, 1)
-                .build(),
-            0
+                .build()
         ),
 
         PICKAXE (
             new HashItem(Material.IRON_PICKAXE)
                 .setName(ChatColor.GREEN + "Pioche Basique" + ChatColor.DARK_GRAY + " (+4)")
                 .setUnbreakable(true)
-                .build(),
-            1
+                .build()
         ),
 
         INSTANT_TNT (
             new HashItem(Material.TNT, 4)
                 .setName(ChatColor.RED + "TNT")
-                .build(),
-            2
+                .build()
         ),
 
         GOLDEN_APPLES(
             new HashItem(Material.GOLDEN_APPLE, 3)
                 .setName(ChatColor.GREEN + "Pomme d'Or")
-                .build(),
-            3
+                .build()
         ),
 
-        SANDSTONE (
+        BLOCKS(
             new HashItem(Material.SANDSTONE, 64, (byte) 2)
                 .setName(ChatColor.GREEN + "Blocs")
-                .build(),
-            4
+                .build()
         ),
 
         /* Armor */
@@ -163,13 +160,23 @@ public class KitStarter
     public void giveItems(PlayerData playerData)
     {
         final Player player = playerData.getPlayer();
-        final PlayerInventory playerInventory = player.getInventory();
+        final PlayerSettings settings = playerData.getPlayerSettings();
+        final PlayerInventory inventory = player.getInventory();
         final ShopManager shopManager = this.main.getShopManager();
 
-        for (Items item : Items.values())
-            item.give(player);
+        final Mask mask = new Mask(inventory);
 
-        this.setArmor(playerInventory);
+        mask.setItem('s', Items.SWORD.getItem())
+            .setItem('p', Items.PICKAXE.getItem())
+            .setItem('t', Items.INSTANT_TNT.getItem())
+            .setItem('g', Items.GOLDEN_APPLES.getItem())
+            .setItem('b', Items.BLOCKS.getItem());
+
+        mask.pattern(settings.getHotbarLayout());
+
+        mask.apply();
+
+        this.setArmor(inventory);
         shopManager.giveShop(playerData);
     }
 

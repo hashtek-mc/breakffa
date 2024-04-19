@@ -16,6 +16,7 @@ public class PlayerData
     private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private PlayerState state;
 
+    private PlayerSettings settings;
     private final PlayerManager playerManager;
 
     private int shards;
@@ -42,6 +43,7 @@ public class PlayerData
         this.corePlayerData = this.main.getCore().getPlayerData(this.player);
         this.state = PlayerState.AT_LOBBY;
 
+        this.settings = new PlayerSettings();
         this.playerManager = new PlayerManager(this.main, this);
 
         this.shards = 0;
@@ -85,6 +87,14 @@ public class PlayerData
     public PlayerState getState()
     {
         return this.state;
+    }
+
+    /**
+     * @return  Player's settings
+     */
+    public PlayerSettings getPlayerSettings()
+    {
+        return this.settings;
     }
 
     /**
