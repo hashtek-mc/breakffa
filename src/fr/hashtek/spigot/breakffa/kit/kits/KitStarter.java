@@ -26,7 +26,7 @@ public class KitStarter
         /* Items */
         SWORD (
             new HashItem(Material.IRON_SWORD)
-                .setName(ChatColor.RED + "Epée Basique" + ChatColor.DARK_GRAY + " (+7.25)")
+                .setName(ChatColor.RED + "Epée Basique")
                 .setUnbreakable(true)
                 .addEnchant(Enchantment.DAMAGE_ALL, 1)
                 .build()
@@ -34,7 +34,7 @@ public class KitStarter
 
         PICKAXE (
             new HashItem(Material.IRON_PICKAXE)
-                .setName(ChatColor.GREEN + "Pioche Basique" + ChatColor.DARK_GRAY + " (+4)")
+                .setName(ChatColor.GREEN + "Pioche Basique")
                 .setUnbreakable(true)
                 .build()
         ),
