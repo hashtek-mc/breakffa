@@ -8,8 +8,12 @@ import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
 
 public class ShopCategoryDefensive extends ShopCategory
 {
@@ -17,7 +21,49 @@ public class ShopCategoryDefensive extends ShopCategory
     public enum Articles implements ShopCategoryArticles
     {
 
-        ;
+        CHAINMAIL (
+            new HashItem(Material.CHAINMAIL_CHESTPLATE)
+                .setName(ChatColor.BLUE + "Côte de Maille")
+                .setLore(Arrays.asList(
+                    "",
+                    ChatColor.GRAY + "Equipez-vous d'une côte de maille",
+                    ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec",
+                    ChatColor.DARK_AQUA + "Protection contre les projectiles II" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+16%)",
+                    "",
+                    ChatColor.GRAY + "Cette armure est  " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ",",
+                    ChatColor.GRAY + "elle disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + "!"
+                ))
+                .addEnchant(Enchantment.PROTECTION_PROJECTILE, 2)
+                .setUnbreakable(true)
+                .build(),
+            3,
+            (Player player, ShopArticle a) -> {
+                player.getInventory().setChestplate(a.getArticle().getItemStack());
+            }
+        ),
+
+        SILVERMAIL (
+            new HashItem(Material.CHAINMAIL_CHESTPLATE)
+                .setName(ChatColor.BLUE + "Côte d'Argent")
+                .setLore(Arrays.asList(
+                    "",
+                    ChatColor.GRAY + "Equipez-vous d'une côte d'" + ChatColor.WHITE + "argent",
+                    ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec",
+                    ChatColor.DARK_AQUA + "Protection contre les projectiles IV" + ChatColor.DARK_GRAY + " (+32%)",
+                    ChatColor.GRAY + "et " + ChatColor.DARK_AQUA + "Epines I" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+15%)",
+                    "",
+                    ChatColor.GRAY + "Cette armure est  " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ",",
+                    ChatColor.GRAY + "elle disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + "!"
+                ))
+                .addEnchant(Enchantment.PROTECTION_PROJECTILE, 4)
+                .addEnchant(Enchantment.THORNS, 1)
+                .setUnbreakable(true)
+                .build(),
+            8,
+            (Player player, ShopArticle a) -> {
+                player.getInventory().setChestplate(a.getArticle().getItemStack());
+            }
+        );
 
         private final HashItem article;
         private final int price;
@@ -106,6 +152,7 @@ public class ShopCategoryDefensive extends ShopCategory
                 new ShopArticle(
                     article.getArticle(),
                     article.getPrice(),
+                    article.getBuyAction(),
                     super.getMain()
                 )
             );
