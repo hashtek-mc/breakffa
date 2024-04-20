@@ -20,8 +20,6 @@ public class ListenerDamage implements Listener
 
         /* If damage cause is unwanted, cancel the event. */
         if (event.getCause() == EntityDamageEvent.DamageCause.FALL ||
-            event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK ||
-            event.getCause() == EntityDamageEvent.DamageCause.FIRE ||
             event.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
             event.setCancelled(true);
     }
