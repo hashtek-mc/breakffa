@@ -6,6 +6,7 @@ import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategorySupport;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,8 +39,10 @@ public class ListenerDamageByEntity implements Listener
         final ShopCategoryArticles baseballBat = ShopCategorySupport.Articles.BASEBALL_BAT;
 
         if (baseballBat.equals(weapon)) {
-            damager.playSound(damager.getLocation(), Sound.ANVIL_LAND, 1, 1);
-            damager.playSound(damager.getLocation(), Sound.ZOMBIE_METAL, 100, 1);
+            for (Player player : this.main.getServer().getOnlinePlayers()) {
+                player.playSound(damager.getLocation(), Sound.ANVIL_LAND, 1, 1);
+                player.playSound(damager.getLocation(), Sound.ZOMBIE_METAL, 100, 1);
+            }
             return;
         }
     }
@@ -66,9 +69,11 @@ public class ListenerDamageByEntity implements Listener
 
         /* For kill author detection. */
         victimData.setLastDamager(damager);
+        victimData.setLastDamagerWeapon(damagerWeapon);
 
         /* Shop weapons abilities handling. */
-        this.executeShopWeaponsAbilities(damagerWeapon, victim, damager);
+        if (damagerWeapon == null || damagerWeapon.getType() != Material.AIR)
+            this.executeShopWeaponsAbilities(damagerWeapon, victim, damager);
 
         /* For kill. */
         if (victim.getHealth() - event.getFinalDamage() <= 0) {
