@@ -2,6 +2,7 @@ package fr.hashtek.spigot.breakffa.player;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Player's BreakFFA data.
@@ -16,10 +17,11 @@ public class PlayerData
     private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private PlayerState state;
 
-    private PlayerSettings settings;
+    private final PlayerSettings settings;
     private final PlayerManager playerManager;
 
     private int shards;
+    private int killRewardShards;
 
     private int totalKills;
     private int killStreak;
@@ -27,6 +29,7 @@ public class PlayerData
     private int nexusBreaksStreak;
 
     private Player lastDamager;
+    private ItemStack lastDamagerWeapon;
 
 
     /**
@@ -47,6 +50,7 @@ public class PlayerData
         this.playerManager = new PlayerManager(this.main, this);
 
         this.shards = 0;
+        this.killRewardShards = 1;
 
         this.totalKills = 0;
         this.killStreak = 0;
@@ -114,6 +118,14 @@ public class PlayerData
     }
 
     /**
+     * @return  Shards obtained when killing someone
+     */
+    public int getKillRewardShards()
+    {
+        return this.killRewardShards;
+    }
+
+    /**
      * @return  Player's total kills
      */
     public int getTotalKills()
@@ -154,6 +166,14 @@ public class PlayerData
     }
 
     /**
+     * @return  Player's last damager weapon
+     */
+    public ItemStack getLastDamagerWeapon()
+    {
+        return this.lastDamagerWeapon;
+    }
+
+    /**
      * @param   state   Player's state
      */
     public void setState(PlayerState state)
@@ -170,11 +190,27 @@ public class PlayerData
     }
 
     /**
+     * @param   weapon  Player's last damager's weapon
+     */
+    public void setLastDamagerWeapon(ItemStack weapon)
+    {
+        this.lastDamagerWeapon = weapon;
+    }
+
+    /**
      * @param    shards     Player's shards
      */
     public void setShards(int shards)
     {
         this.shards = shards;
+    }
+
+    /**
+     * @param   killRewardShards    Shards obtained when killing someone
+     */
+    public void setKillRewardShards(int killRewardShards)
+    {
+        this.killRewardShards = killRewardShards;
     }
 
     /**
@@ -215,6 +251,14 @@ public class PlayerData
     public void addShards(int amount)
     {
         this.shards += amount;
+    }
+
+    /**
+     * @param   amount  Amount to multiply with.
+     */
+    public void multiplyKillRewardShards(int amount)
+    {
+        this.killRewardShards *= amount;
     }
 
     /**
