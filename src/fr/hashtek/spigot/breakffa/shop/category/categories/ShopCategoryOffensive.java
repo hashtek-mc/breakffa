@@ -27,11 +27,14 @@ public class ShopCategoryOffensive extends ShopCategory
                 .setLore(Arrays.asList(
                     "",
                     ChatColor.GRAY + "Procure une épée " + ChatColor.LIGHT_PURPLE + "charmée" + ChatColor.GRAY + " par les",
-                    ChatColor.GRAY + "forces de la " + ChatColor.AQUA + "célérité" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée",
-                    ChatColor.GRAY + "avec " + ChatColor.DARK_AQUA + "Tranchant I" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+7.25)",
+                    ChatColor.GRAY + "forces de la " + ChatColor.AQUA + "célérité" + ChatColor.GRAY + ", " + ChatColor.YELLOW + "incassable" + ChatColor.GRAY + ",",
+                    ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + "avec " + ChatColor.DARK_AQUA + "Tranchant I" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+7.25)",
                     "",
                     ChatColor.GRAY + "Chaque élimination vous " + ChatColor.YELLOW + "imprègne" + ChatColor.GRAY + " avec l'effet",
-                    ChatColor.AQUA + "Vitesse I" + ChatColor.GRAY + " pendant " + ChatColor.YELLOW + "5 secondes" + ChatColor.GRAY + "."
+                    ChatColor.AQUA + "Vitesse I" + ChatColor.GRAY + " pendant " + ChatColor.YELLOW + "5 secondes" + ChatColor.GRAY + ".",
+                    "",
+                    ChatColor.GRAY + "Cette arme est " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ", elle",
+                    ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + " !"
                 ))
                 .addEnchant(Enchantment.DAMAGE_ALL, 1)
                 .setUnbreakable(true)
@@ -83,7 +86,7 @@ public class ShopCategoryOffensive extends ShopCategory
                     ChatColor.GRAY + "en " + ChatColor.AQUA + "diamant" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec " + ChatColor.DARK_AQUA + "Tranchant II" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+9.5)",
                     "",
                     ChatColor.GRAY + "Cette arme est " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ", elle",
-                    ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + "!"
+                    ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + " !"
                 ))
                 .addEnchant(Enchantment.DAMAGE_ALL, 2)
                 .setUnbreakable(true)
@@ -97,18 +100,18 @@ public class ShopCategoryOffensive extends ShopCategory
                 .setLore(Arrays.asList(
                     "",
                     ChatColor.GRAY + "Procure l'épée " + ChatColor.GOLD + "parfaite" + ChatColor.GRAY + ", " + ChatColor.YELLOW + "incassable",
-                    ChatColor.GRAY + "en " + ChatColor.GOLD + "or" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec " + ChatColor.DARK_AQUA + "Tranchant V" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+10.25)",
+                    ChatColor.GRAY + "en " + ChatColor.GOLD + "or" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec " + ChatColor.DARK_AQUA + "Tranchant IV" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+9)",
                     "",
-                    ChatColor.GRAY + "Cette épée " + ChatColor.YELLOW + "double" + ChatColor.GRAY + " vos gains de " + ChatColor.AQUA + "shards",
-                    ChatColor.GRAY + "à chaque " + ChatColor.RED + "élimination" + ChatColor.GRAY + "!",
+                    ChatColor.GRAY + "Cette épée " + ChatColor.YELLOW + "offre" + ChatColor.AQUA + " 1 shard " + ChatColor.GRAY + "supplémentaire",
+                    ChatColor.GRAY + "à chaque " + ChatColor.RED + "élimination" + ChatColor.GRAY + " !",
                     "",
                     ChatColor.GRAY + "Cette arme est " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ", elle",
-                    ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + "!"
+                    ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + " !"
                 ))
-                .addEnchant(Enchantment.DAMAGE_ALL, 5)
+                .addEnchant(Enchantment.DAMAGE_ALL, 4)
                 .setUnbreakable(true)
                 .build(),
-            15
+            12
         ),
 
         HASH_ACTIVE (
