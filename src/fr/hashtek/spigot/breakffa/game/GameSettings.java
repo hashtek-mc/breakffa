@@ -51,7 +51,7 @@ public class GameSettings implements HashLoggable
 
         this.logger.info(this, String.format(
             "Successfully loaded settings.\n" +
-            "(Minimum height: %f, Maximum height: %f)",
+            "(Minimum height: %.2f, Maximum height: %.2f)",
             this.maxHeight, this.minHeight
         ));
     }
