@@ -2,6 +2,7 @@ package fr.hashtek.spigot.breakffa.game;
 
 import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
+import fr.hashtek.hashutils.HashUtils;
 import fr.hashtek.hashutils.Title;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
@@ -13,6 +14,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.List;
 
 public class Nexus implements HashLoggable
 {
@@ -46,11 +49,8 @@ public class Nexus implements HashLoggable
         final Rank playerRank = corePlayerData.getRank();
         final Title title = new Title();
 
-        this.main.getServer().broadcastMessage(
-            "" + ChatColor.DARK_RED + ChatColor.UNDERLINE + "⚕" + ChatColor.RESET + " " +
-            playerRank.getColor() + playerRank.getShortName() + " " + corePlayerData.getUsername() + " " +
-            ChatColor.RED + "a brisé le " + ChatColor.DARK_RED + ChatColor.BOLD + "Nexus" + ChatColor.RESET + ChatColor.RED + " !"
-        );
+        /* Clears all drops. */
+        new HashUtils.World(this.main.getWorld()).clearItems();
 
         for (Player p : this.main.getServer().getOnlinePlayers()) {
             final PlayerData pData = this.gameManager.getPlayerData(p);
@@ -58,11 +58,19 @@ public class Nexus implements HashLoggable
             if (pData.getState() != PlayerState.PLAYING)
                 continue;
 
+            /* Nexus breaking SFX / VFX */
             p.playSound(p.getLocation(), Sound.IRONGOLEM_DEATH, 100, 0);
             p.playSound(p.getLocation(), Sound.EXPLODE, 100, 0);
             p.playSound(p.getLocation(), "mob.guardian.curse", 100, 0);
             p.playSound(p.getLocation(), Sound.WITHER_DEATH, 100, 0);
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1, 0), false);
+
+            /* Nexus breaking messages */
+            p.sendMessage(
+                "" + ChatColor.DARK_RED + ChatColor.UNDERLINE + "⚕" + ChatColor.RESET + " " +
+                playerRank.getColor() + playerRank.getShortName() + " " + corePlayerData.getUsername() + " " +
+                ChatColor.RED + "a brisé le " + ChatColor.DARK_RED + ChatColor.BOLD + "Nexus" + ChatColor.RESET + ChatColor.RED + " !"
+            );
 
             try {
                 title.send(
@@ -79,12 +87,15 @@ public class Nexus implements HashLoggable
                     .sendToPlayer(p);
             }
 
+            /* Resetting player's nexus break streak */
             if (!pData.getPlayer().equals(player))
                 pData.setNexusBreaksStreak(0);
         }
 
+        /* Resetting game */
         this.gameManager.reset();
 
+        /* Updating player's data */
         playerData.addNexusBreaks(1);
         playerData.addNexusBreaksStreak(1);
         playerData.addShards(5);
