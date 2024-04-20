@@ -1,15 +1,16 @@
 package fr.hashtek.spigot.breakffa;
 
 import fr.hashktek.spigot.hashboard.HashBoard;
-import fr.hashktek.spigot.hashboard.HashTabList;
 import fr.hashktek.spigot.hashboard.HashTeam;
 import fr.hashtek.hashconfig.HashConfig;
 import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashlogger.HashLogger;
+import fr.hashtek.spigot.breakffa.command.CommandGuiDump;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.listener.*;
 import fr.hashtek.spigot.breakffa.shop.ShopManager;
+import fr.hashtek.spigot.breakffa.tablist.Tablist;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
@@ -37,9 +38,11 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     private ShopManager shopManager;
 
     private HashBoard board;
-    private HashTabList tablist;
+    private Tablist tablist;
 
     private HashMap<String, HashTeam> rankTeams;
+
+    private World world;
 
 
     /**
@@ -160,30 +163,34 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
 
     private void setupWorld()
     {
-        final World world = this.getServer().getWorld("breakffa");
+        this.world = this.getServer().getWorld("breakffa");
 
-        world.setGameRuleValue("doDaylightCycle", "false");
-        world.setGameRuleValue("doFireTick", "false");
-        world.setGameRuleValue("doMobLoot", "false");
-        world.setGameRuleValue("doMobSpawning", "false");
-        world.setGameRuleValue("doTileDrops", "false");
-        world.setGameRuleValue("keepInventory", "true");
-        world.setDifficulty(Difficulty.NORMAL);
-        world.setAutoSave(false);
+        this.world.setGameRuleValue("doDaylightCycle", "false");
+        this.world.setGameRuleValue("doFireTick", "false");
+        this.world.setGameRuleValue("doMobLoot", "false");
+        this.world.setGameRuleValue("doMobSpawning", "false");
+        this.world.setGameRuleValue("doTileDrops", "false");
+        this.world.setGameRuleValue("keepInventory", "true");
+        this.world.setDifficulty(Difficulty.NORMAL);
+        this.world.setAutoSave(false);
     }
 
     /**
      * Setups main board.
+     * FIXME: Change HashError field. (CFG_EXCEPTION ?)
      */
     private void setupBoard()
     {
         this.board = new HashBoard();
-        this.tablist = new HashTabList();
-
-        this.tablist.setHeader("breakffa gaming");
-        this.tablist.setFooter("mc.hashtek.fr!!!!");
-
+        this.tablist = new Tablist(this);
         this.rankTeams = new HashMap<String, HashTeam>();
+
+        try {
+            this.tablist.setup(this.hashConfig.getYaml());
+        } catch (NoSuchFieldException exception) {
+            HashError.CFG_FILE_NOT_FOUND
+                .log(this.logger, this, exception);
+        }
 
         int i = 0;
         for (Rank rank : this.core.getRanks()) {
@@ -211,7 +218,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         this.pluginManager.registerEvents(new ListenerDamageByEntity(this), this);
         this.pluginManager.registerEvents(new ListenerDeath(), this);
         this.pluginManager.registerEvents(new ListenerRespawn(this), this);
-        this.pluginManager.registerEvents(new ListenerExplosion(), this);
+        this.pluginManager.registerEvents(new ListenerExplosion(this), this);
         this.pluginManager.registerEvents(new ListenerInteract(this), this);
         this.pluginManager.registerEvents(new ListenerChat(this), this);
         this.pluginManager.registerEvents(new ListenerWeatherChange(), this);
@@ -226,6 +233,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     {
         this.logger.info(this, "Registering commands...");
 
+        getCommand("guidump").setExecutor(new CommandGuiDump());
         /* ... */
 
         this.logger.info(this, "Commands registered!");
@@ -298,7 +306,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     /**
      * @return  Tablist
      */
-    public HashTabList getTablist()
+    public Tablist getTablist()
     {
         return this.tablist;
     }
@@ -309,6 +317,14 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     public HashMap<String, HashTeam> getRankTeams()
     {
         return this.rankTeams;
+    }
+
+    /**
+     * @return  World
+     */
+    public World getWorld()
+    {
+        return this.world;
     }
 
 }

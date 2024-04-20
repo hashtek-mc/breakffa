@@ -1,6 +1,10 @@
 settings:
-  maxHeight: 100.0
+  maxHeight: 80.0
   minHeight: 50.0
+
+tablist:
+  header: "&4&l&m------&r &c&b&nBreakFFA&r &4&l&m------"
+  footer: "&4&l&m----&r &c&b{version} &4&b| &c&b{players} joueurs&r &4&l&m----"
 
 lobbySpawn:
   x: 0.0

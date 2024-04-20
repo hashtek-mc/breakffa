@@ -7,6 +7,7 @@ import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.tablist.Tablist;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,6 +40,7 @@ public class ListenerJoin implements Listener, HashLoggable
     {
         final Player player = event.getPlayer();
         final PlayerData playerData = new PlayerData(this.main, player);
+        final Tablist tablist = this.main.getTablist();
 
         this.gameManager.addPlayerData(player, playerData);
 
@@ -50,8 +52,10 @@ public class ListenerJoin implements Listener, HashLoggable
 
         try {
             final fr.hashtek.tekore.common.player.PlayerData pData = this.main.getCore().getPlayerData(player);
-            this.main.getTablist().update(player);
+
             this.main.getRankTeams().get(pData.getRank().getUuid()).add(player);
+            tablist.refresh();
+            tablist.update();
         } catch (AlreadyInTeamException | TeamSizeException | StrangeException exception) {
             // TODO: Write error handling (even if none of them should happen).
         }
