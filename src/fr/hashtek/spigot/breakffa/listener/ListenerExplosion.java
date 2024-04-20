@@ -1,5 +1,7 @@
 package fr.hashtek.spigot.breakffa.listener;
 
+import fr.hashtek.spigot.breakffa.BreakFFA;
+import fr.hashtek.spigot.breakffa.player.PlayerData;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -13,6 +15,20 @@ import org.bukkit.util.Vector;
 public class ListenerExplosion implements Listener
 {
 
+    private final BreakFFA main;
+
+
+    /**
+     * Creates a new instance of ListenerExplosion.
+     *
+     * @param   main    BreakFFA instance
+     */
+    public ListenerExplosion(BreakFFA main)
+    {
+        this.main = main;
+    }
+
+
     /**
      * Called when an entity explodes.
      * In this case, we only process TNT (for Instant TNTs).
@@ -24,6 +40,7 @@ public class ListenerExplosion implements Listener
             return;
 
         final TNTPrimed tnt = (TNTPrimed) event.getEntity();
+        final Player author = this.main.getServer().getPlayer(tnt.getCustomName());
         final Location tntLocation = tnt.getLocation();
         final double radius = 4.0;
 
@@ -32,14 +49,20 @@ public class ListenerExplosion implements Listener
 
         /* Pushes every entity around that TNT. */
         for (Entity entity : tnt.getNearbyEntities(radius, radius, radius)) {
-            if (!(entity instanceof Player)) // FIXME: Maybe useless.
+            if (!(entity instanceof Player))
                 continue;
 
             final Player player = (Player) entity;
+            final PlayerData playerData = this.main.getGameManager().getPlayerData(player);
             final Vector direction = player.getLocation().toVector().subtract(tntLocation.toVector()).normalize();
 
+            /* Applying knockback to the player. */
             direction.multiply(1.75);
             player.setVelocity(direction);
+
+            /* Setting player's last damager to explosion author. */
+            if (!author.equals(player))
+                playerData.setLastDamager(author);
         }
     }
 
