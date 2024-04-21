@@ -15,8 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
-
 public class Nexus implements HashLoggable
 {
 
@@ -82,7 +80,7 @@ public class Nexus implements HashLoggable
                     ChatColor.RED + "Brisé par " + playerRank.getColor() + corePlayerData.getUsername()
                 );
             } catch (Exception exception) {
-                HashError.SRV_PACKET_SEND_FAIL
+                HashError.UNKNOWN
                     .log(this.main.getHashLogger(), this, exception)
                     .sendToPlayer(p);
             }

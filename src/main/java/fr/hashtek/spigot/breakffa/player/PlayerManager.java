@@ -1,12 +1,15 @@
 package fr.hashtek.spigot.breakffa.player;
 
+import fr.hashtek.hashutils.ActionBar;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.kit.kits.KitLobby;
 import fr.hashtek.spigot.breakffa.kit.kits.KitStarter;
+import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategoryOffensive;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Random;
@@ -110,12 +113,7 @@ public class PlayerManager
             final fr.hashtek.tekore.common.player.PlayerData coreKillerData = killerData.getCorePlayerData();
             final Rank killerRank = coreKillerData.getRank();
 
-            killer.setHealth(killer.getMaxHealth());
-            killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 100, 2);
-            killerData.addTotalKills(1);
-            killerData.addShards(1);
-            this.main.getShopManager().giveShop(killerData);
-
+            updateKillerData(killerData, playerRank, this.playerData.getLastDamagerWeapon());
             killMessage += "s'est fait tuer par " + killerRank.getColor() + killerRank.getFullName() + " " + coreKillerData.getUsername();
         } else
             killMessage += "est mort.";
@@ -124,6 +122,8 @@ public class PlayerManager
 
         this.playerData.setKillStreak(0);
         this.playerData.setLastDamager(null);
+        this.playerData.setLastDamagerWeapon(null);
+        this.playerData.setKillRewardShards(1);
 
         for (PlayerData pData : this.gameManager.getPlayersData().values()) {
             if (pData.getPlayer().equals(this.player) || pData.getLastDamager() == null)
@@ -132,6 +132,29 @@ public class PlayerManager
             if (pData.getLastDamager().equals(this.player))
                 pData.setLastDamager(null);
         }
+    }
+
+    private void updateKillerData(PlayerData killerData, Rank playerRank, ItemStack weapon)
+    {
+        final Player killer = killerData.getPlayer();
+
+        killer.setHealth(killer.getMaxHealth());
+        killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 100, 2);
+
+        killerData.addTotalKills(1);
+
+        if (weapon != null && weapon.getType() != Material.AIR)
+            if (ShopCategoryOffensive.Articles.PERFECT_SWORD.equals(weapon))
+                killerData.setKillRewardShards(2);
+
+        new ActionBar(
+            "" + ChatColor.DARK_RED + ChatColor.UNDERLINE + ChatColor.BOLD + "⚔" +
+            playerRank.getColor() + " " + playerRank.getShortName() + " " + this.player.getName() + " " +
+            ChatColor.AQUA + ChatColor.BOLD + "+" + killerData.getKillRewardShards()
+        ).send(killer);
+
+        killerData.addShards(killerData.getKillRewardShards());
+        this.main.getShopManager().giveShop(killerData);
     }
 
     public Player getPlayer()

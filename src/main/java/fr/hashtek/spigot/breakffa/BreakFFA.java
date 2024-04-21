@@ -83,11 +83,11 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     @Override
     public void onDisable()
     {
-        logger.info(this, "Disabling Lobby...");
+        logger.info(this, "Disabling BreakFFA...");
 
         this.gameManager.reset();
 
-        logger.info(this, "Lobby disabled.");
+        logger.info(this, "BreakFFA disabled.");
     }
 
     /**

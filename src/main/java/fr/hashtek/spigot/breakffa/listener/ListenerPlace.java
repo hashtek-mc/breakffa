@@ -2,6 +2,7 @@ package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
+import fr.hashtek.spigot.breakffa.game.Nexus;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,6 +46,8 @@ public class ListenerPlace implements Listener
         final Location blockLocation = block.getLocation();
         final Material blockReplacedType = event.getBlockReplacedState().getType();
         final World world = block.getWorld();
+        final Nexus nexus = this.gameManager.getNexus();
+        final Location nexusLocation = nexus.getBlock().getLocation();
 
         /* If block is being placed where there's already a block, cancel the event. */
         if (blockReplacedType != Material.AIR) {
@@ -65,6 +68,11 @@ public class ListenerPlace implements Listener
             }
         }
 
+        if (nexusLocation.distanceSquared(blockLocation) < nearestDistanceSquared) {
+            nearestSpawn = nexusLocation;
+            nearestDistanceSquared = nexusLocation.distanceSquared(blockLocation);
+        }
+
         if (nearestSpawn != null) {
             if (Math.sqrt(nearestDistanceSquared) <= 3) {
                 event.setCancelled(true);
@@ -76,6 +84,9 @@ public class ListenerPlace implements Listener
         if (block.getType() == Material.TNT) {
             world.getBlockAt(blockLocation).setType(Material.AIR);
             final TNTPrimed tnt = (TNTPrimed) world.spawnEntity(blockLocation, EntityType.PRIMED_TNT);
+
+            tnt.setCustomName(player.getName());
+            tnt.setCustomNameVisible(false);
 
             tnt.setFuseTicks(0);
             return;
