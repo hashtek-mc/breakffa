@@ -6,12 +6,15 @@ import fr.hashtek.spigot.breakffa.shop.article.ShopArticleBuyAction;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategory;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
+import fr.hashtek.spigot.hashgui.handler.hold.HoldHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 
@@ -39,6 +42,35 @@ public class ShopCategoryDefensive extends ShopCategory
             3,
             (Player player, ShopArticle a) -> {
                 player.getInventory().setChestplate(a.getArticle().getItemStack());
+            }
+        ),
+
+        LUCKY_BOOTS (
+            new HashItem(Material.LEATHER_BOOTS)
+                .setName(ChatColor.BLUE + "Bottes Bonheurs")
+                .setLore(Arrays.asList(
+                    "",
+                    ChatColor.GRAY + "Mettez toutes les " + ChatColor.DARK_GREEN + "chances" + ChatColor.GRAY + " de votre côté !",
+                    ChatColor.GRAY + "Ces bottes " + ChatColor.YELLOW + "offrent" + ChatColor.GRAY + " un léger bonus de " + ChatColor.AQUA + "vitesse" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+10%)",
+                    "",
+                    ChatColor.GRAY + "Chaque " + ChatColor.DARK_RED + "Nexus" + ChatColor.GRAY + " cassé avec ces bottes " + ChatColor.YELLOW + "à vos pieds",
+                    ChatColor.GRAY + "vous donnera " + ChatColor.AQUA + "3 shards" + ChatColor.GRAY + " bonus !"
+                ))
+                .setUnbreakable(true)
+                .addHoldHandler(
+                    new HoldHandler()
+                        .setHoldAction((Player player, ItemStack itemStack, int slot) -> {
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 0), true);
+                        })
+                        .setNotHoldAction((Player player, ItemStack itemStack, int slot) -> {
+                            player.removePotionEffect(PotionEffectType.SPEED);
+                        })
+                )
+                .build(BreakFFA.getInstance().getGuiManager()),
+            7,
+            (Player player, ShopArticle a) -> {
+                player.getInventory().setBoots(a.getArticle().getItemStack());
+                BreakFFA.getInstance().getGuiManager().getHoldManager().refreshArmorState(player);
             }
         ),
 
