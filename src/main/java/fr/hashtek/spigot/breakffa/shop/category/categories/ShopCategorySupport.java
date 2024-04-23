@@ -45,7 +45,7 @@ public class ShopCategorySupport extends ShopCategory
 
         OPTIMISED_PICKAXE (
             new HashItem(Material.IRON_PICKAXE)
-                .setName(ChatColor.GREEN + "Pioche optimisée")
+                .setName(ChatColor.GREEN + "Pioche Optimisée")
                 .setLore(Arrays.asList(
                     "",
                     ChatColor.GRAY + "Procure un outil amélioré, " + ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et",
@@ -54,6 +54,8 @@ public class ShopCategorySupport extends ShopCategory
                     ChatColor.GRAY + "Cet outil est " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ",",
                     ChatColor.GRAY + "il disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + " !"
                 ))
+                .addEnchant(Enchantment.DIG_SPEED, 3)
+                .setUnbreakable(true)
                 .build(),
             3
         ),

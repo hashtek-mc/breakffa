@@ -139,7 +139,7 @@ public class ShopManager
             .setName(ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (clic gauche)")
             .setLore(Arrays.asList(
                 "",
-                ChatColor.GRAY + "Vous possédez actuellement " + ChatColor.AQUA + playerData.getShards() + " shards" + ChatColor.GRAY + ".",
+                ChatColor.GRAY + "Vous possédez actuellement " + ChatColor.AQUA + playerData.getShards() + " shard" + (playerData.getShards() == 1 ? "" : "s") + ChatColor.GRAY + ".",
                 ChatColor.GRAY + "Vos " + ChatColor.AQUA + "shards" + ChatColor.GRAY + " ne sont pas conservables.",
                 "",
                 ChatColor.GRAY + "Vous pouvez acheter des " + ChatColor.BLUE + "objets divers",
@@ -151,7 +151,7 @@ public class ShopManager
                 ChatColor.GRAY + "Leur " + ChatColor.DARK_GREEN + "prix" + ChatColor.GRAY + " ne représente " + ChatColor.RED + "pas" + ChatColor.GRAY + " leur efficacité",
                 ChatColor.GRAY + "et/ou leur utilité en " + ChatColor.WHITE + "jeu" + ChatColor.GRAY + ".",
                 "",
-                "" + ChatColor.AQUA + ChatColor.BOLD + "CLIC DROIT POUR " + (close ? "FERMER" : "OUVRIR")
+                "" + ChatColor.AQUA + ChatColor.BOLD + "CLIC GAUCHE POUR " + (close ? "FERMER" : "OUVRIR")
             ))
             .addClickHandler(
                 new ClickHandler()

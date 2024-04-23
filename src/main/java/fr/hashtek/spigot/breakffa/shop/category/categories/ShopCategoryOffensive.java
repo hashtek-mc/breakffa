@@ -28,7 +28,7 @@ public class ShopCategoryOffensive extends ShopCategory
                     "",
                     ChatColor.GRAY + "Procure une épée " + ChatColor.LIGHT_PURPLE + "charmée" + ChatColor.GRAY + " par les",
                     ChatColor.GRAY + "forces de la " + ChatColor.AQUA + "célérité" + ChatColor.GRAY + ", " + ChatColor.YELLOW + "incassable" + ChatColor.GRAY + ",",
-                    ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + "avec " + ChatColor.DARK_AQUA + "Tranchant I" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+7.25)",
+                    ChatColor.GRAY + "et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec " + ChatColor.DARK_AQUA + "Tranchant I" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+7.25)",
                     "",
                     ChatColor.GRAY + "Chaque élimination vous " + ChatColor.YELLOW + "imprègne" + ChatColor.GRAY + " avec l'effet",
                     ChatColor.AQUA + "Vitesse I" + ChatColor.GRAY + " pendant " + ChatColor.YELLOW + "5 secondes" + ChatColor.GRAY + ".",
