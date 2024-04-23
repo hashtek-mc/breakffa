@@ -10,6 +10,7 @@ import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -109,7 +110,7 @@ public class Death implements HashLoggable
         this.main.getServer().broadcastMessage(message.toString());
     }
 
-    private void displayConfirmation()
+    private void confirmDeath()
     {
         if (this.killer == null)
             return;
@@ -124,9 +125,11 @@ public class Death implements HashLoggable
             HashError.SRV_PACKET_SEND_FAIL
                 .log(this.main.getHashLogger(), this, exception);
         }
+
+        this.killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 100, 2);
     }
 
-    private void updateVictimData()
+    private void processVictim()
     {
         this.victimData.setKillStreak(0);
         this.victimData.setLastDamager(null);
@@ -134,7 +137,7 @@ public class Death implements HashLoggable
         this.victimData.setKillRewardShards(1);
     }
 
-    private void updateKillerData()
+    private void processKiller()
     {
         if (this.killerData == null)
             return;
@@ -142,15 +145,18 @@ public class Death implements HashLoggable
         this.killerData.addTotalKills(1);
         this.killerData.addKillStreak(1);
         this.killerData.addShards(this.killerData.getKillRewardShards());
+
+        this.killer.setHealth(killer.getMaxHealth());
+        this.main.getShopManager().giveShop(this.killerData);
     }
 
     public void execute()
     {
         this.victimData.getPlayerManager().backToLobby();
 
-        this.updateVictimData();
-        this.updateKillerData();
-        this.displayConfirmation();
+        this.processVictim();
+        this.processKiller();
+        this.confirmDeath();
         this.broadcast();
     }
 
