@@ -1,6 +1,7 @@
 package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
+import fr.hashtek.spigot.breakffa.death.DeathReason;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
@@ -40,7 +41,7 @@ public class ListenerMove implements Listener
         final PlayerData playerData = this.gameManager.getPlayerData(player);
         final PlayerManager playerManager = playerData.getPlayerManager();
 
-        playerManager.kill();
+        playerManager.kill(DeathReason.VOID);
     }
 
 }

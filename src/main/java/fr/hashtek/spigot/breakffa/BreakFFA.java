@@ -19,8 +19,8 @@ import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
 import java.util.HashMap;
+import java.io.IOException;
 
 public class BreakFFA extends JavaPlugin implements HashLoggable
 {
@@ -66,7 +66,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         this.setupHashLogger();
         this.setupConfig();
 
-        logger.info(this, "Starting BreakFFA...");
+        this.logger.info(this, "Starting BreakFFA...");
 
         this.setupManagers();
         this.setupWorld();
@@ -74,7 +74,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         this.registerListeners();
         this.registerCommands();
 
-        logger.info(this, "BreakFFA loaded.");
+        this.logger.info(this, "BreakFFA loaded.");
     }
 
     /**
@@ -83,11 +83,11 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     @Override
     public void onDisable()
     {
-        logger.info(this, "Disabling BreakFFA...");
+        this.logger.info(this, "Disabling BreakFFA...");
 
         this.gameManager.reset();
 
-        logger.info(this, "BreakFFA disabled.");
+        this.logger.info(this, "BreakFFA disabled.");
     }
 
     /**
@@ -96,7 +96,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
      */
     private void setupConfig()
     {
-        String configFilename = "config.yml";
+        final String configFilename = "config.yml";
 
         try {
             this.hashConfig = new HashConfig(
@@ -188,7 +188,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         try {
             this.tablist.setup(this.hashConfig.getYaml());
         } catch (NoSuchFieldException exception) {
-            HashError.CFG_FILE_NOT_FOUND
+            HashError.UNKNOWN
                 .log(this.logger, this, exception);
         }
 
@@ -209,7 +209,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
 
         this.pluginManager.registerEvents(new ListenerJoin(this), this);
         this.pluginManager.registerEvents(new ListenerQuit(this), this);
-        this.pluginManager.registerEvents(new ListenerDamage(), this);
+        this.pluginManager.registerEvents(new ListenerDamage(this), this);
         this.pluginManager.registerEvents(new ListenerFoodLose(), this);
         this.pluginManager.registerEvents(new ListenerMove(this), this);
         this.pluginManager.registerEvents(new ListenerBreak(this), this);

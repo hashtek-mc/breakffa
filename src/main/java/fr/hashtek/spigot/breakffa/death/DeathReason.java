@@ -1,6 +1,7 @@
 package fr.hashtek.spigot.breakffa.death;
 
 import org.bukkit.ChatColor;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 public enum DeathReason
 {
@@ -34,6 +35,24 @@ public enum DeathReason
         this.symbol = symbol;
         this.reason = reason;
         this.by = by;
+    }
+
+
+    /**
+     * "Converts" a {@link org.bukkit.event.entity.EntityDamageEvent.DamageCause} to a {@link DeathReason}.
+     *
+     * @param   cause   Damage cause
+     * @return  Converted DeathReason.
+     */
+    public static DeathReason fromDamageCause(EntityDamageEvent.DamageCause cause)
+    {
+        switch (cause) {
+            case FIRE:
+            case FIRE_TICK:
+                return DeathReason.FIRE;
+            default:
+                return DeathReason.VOID;
+        }
     }
 
 

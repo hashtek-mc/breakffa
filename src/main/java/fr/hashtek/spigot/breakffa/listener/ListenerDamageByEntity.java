@@ -1,6 +1,7 @@
 package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
+import fr.hashtek.spigot.breakffa.death.DeathReason;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
@@ -78,7 +79,7 @@ public class ListenerDamageByEntity implements Listener
         /* For kill. */
         if (victim.getHealth() - event.getFinalDamage() <= 0) {
             event.setCancelled(true);
-            victimData.getPlayerManager().kill();
+            victimData.getPlayerManager().kill(DeathReason.MELEE);
         }
     }
 
