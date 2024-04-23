@@ -1,6 +1,7 @@
 package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
+import fr.hashtek.spigot.breakffa.kit.kits.KitStarter;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -61,8 +62,10 @@ public class ListenerExplosion implements Listener
             player.setVelocity(direction);
 
             /* Setting player's last damager to explosion author. */
-            if (!author.equals(player))
+            if (!author.equals(player)) {
                 playerData.setLastDamager(author);
+                playerData.setLastDamagerWeapon(KitStarter.Items.INSTANT_TNT.getItem().getItemStack());
+            }
         }
     }
 
