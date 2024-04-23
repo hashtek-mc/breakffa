@@ -28,6 +28,9 @@ public class PlayerData
     private int nexusBreaks;
     private int nexusBreaksStreak;
 
+    private Player lastDamagedPlayer;
+    private ItemStack lastDamagedWith;
+
     private Player lastDamager;
     private ItemStack lastDamagerWeapon;
 
@@ -57,7 +60,11 @@ public class PlayerData
         this.nexusBreaks = 0;
         this.nexusBreaksStreak = 0;
 
+        this.lastDamagedPlayer = null;
+        this.lastDamagedWith = null;
+
         this.lastDamager = null;
+        this.lastDamagerWeapon = null;
     }
 
 
@@ -158,6 +165,22 @@ public class PlayerData
     }
 
     /**
+     * @return  Player's last damaged player
+     */
+    public Player getLastDamagedPlayer()
+    {
+        return this.lastDamagedPlayer;
+    }
+
+    /**
+     * @return  Player's last damaged player weapon
+     */
+    public ItemStack getLastDamagedWith()
+    {
+        return this.lastDamagedWith;
+    }
+
+    /**
      * @return  Player's last damager
      */
     public Player getLastDamager()
@@ -195,6 +218,22 @@ public class PlayerData
     public void setLastDamagerWeapon(ItemStack weapon)
     {
         this.lastDamagerWeapon = weapon;
+    }
+
+    /**
+     * @param   damagedPlayer   Player's last damager
+     */
+    public void setLastDamagedPlayer(Player damagedPlayer)
+    {
+        this.lastDamagedPlayer = damagedPlayer;
+    }
+
+    /**
+     * @param   weapon  Player's last damager's weapon
+     */
+    public void setLastDamagedWith(ItemStack weapon)
+    {
+        this.lastDamagedWith = weapon;
     }
 
     /**

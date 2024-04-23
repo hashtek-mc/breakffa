@@ -7,6 +7,7 @@ import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategorySupport;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -71,6 +72,8 @@ public class ListenerDamageByEntity implements Listener
         /* For kill author detection. */
         victimData.setLastDamager(damager);
         victimData.setLastDamagerWeapon(damagerWeapon);
+        damagerData.setLastDamagedPlayer(victim);
+        damagerData.setLastDamagedWith(damagerWeapon);
 
         /* Shop weapons abilities handling. */
         if (damagerWeapon == null || damagerWeapon.getType() != Material.AIR)
