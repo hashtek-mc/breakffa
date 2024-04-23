@@ -35,16 +35,40 @@ public class Death implements HashLoggable
     private final DeathReason reason;
 
 
+    /**
+     * Creates a new instance of Death (without killer).
+     *
+     * @param   main    BreakFFA instance
+     * @param   victim  Death victim
+     * @param   reason  Death reason
+     */
     public Death(BreakFFA main, Player victim, DeathReason reason)
     {
         this(main, victim, null, null, reason);
     }
 
+    /**
+     * Creates a new instance of Death (without weapon).
+     *
+     * @param   main    BreakFFA instance
+     * @param   victim  Death victim
+     * @param   killer  Death author
+     * @param   reason  Death reason
+     */
     public Death(BreakFFA main, Player victim, Player killer, DeathReason reason)
     {
         this(main, victim, killer, null, reason);
     }
 
+    /**
+     * Creates a new instance of Death.
+     *
+     * @param   main    BreakFFA instance
+     * @param   victim  Death victim
+     * @param   killer  Death author
+     * @param   weapon  Weapon used
+     * @param   reason  Death reason
+     */
     public Death(BreakFFA main, Player victim, Player killer, ItemStack weapon, DeathReason reason)
     {
         final Tekore core;
@@ -59,6 +83,7 @@ public class Death implements HashLoggable
         this.victimRank = this.victimCoreData.getRank();
 
         this.killer = killer;
+
         if (this.killer != null) {
             this.killerData = this.gameManager.getPlayerData(this.killer);
             this.killerCoreData = core.getPlayerData(this.killer);
@@ -75,6 +100,9 @@ public class Death implements HashLoggable
     }
 
 
+    /**
+     * Broadcasts the death.
+     */
     private void broadcast()
     {
         final StringBuilder message = new StringBuilder();
@@ -110,6 +138,9 @@ public class Death implements HashLoggable
         this.main.getServer().broadcastMessage(message.toString());
     }
 
+    /**
+     * Sends an action bar message and plays a little sound to the killer.
+     */
     private void confirmDeath()
     {
         if (this.killer == null)
@@ -129,6 +160,9 @@ public class Death implements HashLoggable
         this.killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 100, 2);
     }
 
+    /**
+     * Resets victim's wanted data.
+     */
     private void processVictim()
     {
         this.victimData.setKillStreak(0);
@@ -137,6 +171,9 @@ public class Death implements HashLoggable
         this.victimData.setKillRewardShards(1);
     }
 
+    /**
+     * Updates killer's data.
+     */
     private void processKiller()
     {
         if (this.killerData == null)
@@ -150,6 +187,9 @@ public class Death implements HashLoggable
         this.main.getShopManager().giveShop(this.killerData);
     }
 
+    /**
+     * Executes the death.
+     */
     public void execute()
     {
         this.victimData.getPlayerManager().backToLobby();
