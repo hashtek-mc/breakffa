@@ -15,6 +15,7 @@ public enum DeathReason
     DROWN       (ChatColor.BLUE         + "〰",  "s'est noyé",       "à cause de"    ),
     SUFFOCATION (ChatColor.DARK_AQUA    + "♻",  "a suffoqué",       "à cause de"    ),
     SQUASHED    (ChatColor.BLACK        + "⏍",  "a été écrasé",     "par"           ),
+    THORNS      (ChatColor.DARK_AQUA    + "✴",  "a été transpercé", "par"           ),
     OTHER       (ChatColor.DARK_GRAY    + "✖",  "est mort",         "à cause de"    );
 
 
@@ -50,6 +51,8 @@ public enum DeathReason
             case FIRE:
             case FIRE_TICK:
                 return DeathReason.FIRE;
+            case THORNS:
+                return DeathReason.THORNS;
             default:
                 return DeathReason.VOID;
         }
