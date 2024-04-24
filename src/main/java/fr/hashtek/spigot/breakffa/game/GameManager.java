@@ -25,6 +25,7 @@ public class GameManager implements HashLoggable
     private final Nexus nexus;
     private Location lobbySpawnLocation;
     private final List<Location> spawnLocations;
+    private Location spectatorModeSpawnLocation;
 
     private Date lastReset;
     private final Map<Player, PlayerData> playersData;
@@ -200,6 +201,40 @@ public class GameManager implements HashLoggable
     }
 
     /**
+     * Setups Spectator mode spawn location from the configuration file.
+     *
+     * @param   yaml                    Configuration file content
+     * @param   world                   Game world
+     * @throws  NoSuchFieldException    Field not found (invalid content)
+     */
+    public void setupSpectatorModeSpawnLocation(YamlFile yaml, World world)
+        throws NoSuchFieldException
+    {
+        this.logger.info(this, "Loading Spectator mode spawn...");
+
+        final String prefix = "spectatorModeSpawn";
+
+        final String missingKey = checkRequiredKeys(yaml,
+            prefix, prefix + ".x", prefix + ".y", prefix + ".z"
+        );
+
+        if (missingKey != null)
+            throw new NoSuchFieldException("\"" + missingKey + "\" field not found.");
+
+        final double x = yaml.getDouble(prefix + ".x");
+        final double y = yaml.getDouble(prefix + ".y");
+        final double z = yaml.getDouble(prefix + ".z");
+
+        this.spectatorModeSpawnLocation = new Location(world, x, y, z);
+
+        this.logger.info(this, String.format(
+            "Successfully loaded Spectator mode spawn.\n" +
+            "(X: %.2f, Y: %.2f, Z: %.2f)",
+            x, y, z
+        ));
+    }
+
+    /**
      * Setups the game from the configuration file.
      *
      * @param   config      Configuration file
@@ -217,6 +252,7 @@ public class GameManager implements HashLoggable
             this.setupNexusLocation(yaml, world);
             this.setupLobbySpawnLocation(yaml, world);
             this.setupSpawns(yaml, world);
+            this.setupSpectatorModeSpawnLocation(yaml, world);
             this.settings.setup(yaml);
         } catch (NoSuchFieldException exception) {
             HashError.UNKNOWN
@@ -272,6 +308,14 @@ public class GameManager implements HashLoggable
     public List<Location> getSpawnLocations()
     {
         return this.spawnLocations;
+    }
+
+    /**
+     * @return  Spectator mode Spawn location
+     */
+    public Location getSpectatorModeSpawnLocation()
+    {
+        return this.spectatorModeSpawnLocation;
     }
 
     /**

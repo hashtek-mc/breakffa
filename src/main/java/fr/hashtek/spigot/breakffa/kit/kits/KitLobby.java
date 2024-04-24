@@ -4,6 +4,8 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.gui.GuiHotbarEditor;
 import fr.hashtek.spigot.breakffa.kit.KitItems;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.player.PlayerManager;
+import fr.hashtek.spigot.breakffa.spectator.SpectatorMode;
 import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
 import fr.hashtek.spigot.hashgui.handler.interact.InteractHandler;
@@ -136,14 +138,28 @@ public class KitLobby
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
+                            final BreakFFA main = BreakFFA.getInstance();
+                            final PlayerData playerData = main.getGameManager().getPlayerData(player);
+                            final PlayerManager playerManager = playerData.getPlayerManager();
+
+                            if (playerManager.getSpectatorMode() == null)
+                                playerManager.setSpectatorMode(new SpectatorMode(main, player));
+
+                            playerManager.getSpectatorMode().go();
                         })
                 )
                 .addClickHandler(
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
+                            final BreakFFA main = BreakFFA.getInstance();
+                            final PlayerData playerData = main.getGameManager().getPlayerData(player);
+                            final PlayerManager playerManager = playerData.getPlayerManager();
+
+                            if (playerManager.getSpectatorMode() == null)
+                                playerManager.setSpectatorMode(new SpectatorMode(main, player));
+
+                            playerManager.getSpectatorMode().go();
                         })
                 )
                 .build(BreakFFA.getInstance().getGuiManager()),
