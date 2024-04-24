@@ -7,6 +7,7 @@ import fr.hashtek.spigot.breakffa.death.DeathReason;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.kit.kits.KitLobby;
 import fr.hashtek.spigot.breakffa.kit.kits.KitStarter;
+import fr.hashtek.spigot.breakffa.spectator.SpectatorMode;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
@@ -22,6 +23,8 @@ public class PlayerManager implements HashLoggable
     private final Player player;
     private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private final GameManager gameManager;
+
+    private SpectatorMode spectatorMode;
 
 
     /**
@@ -121,6 +124,16 @@ public class PlayerManager implements HashLoggable
     public PlayerData getPlayerData()
     {
         return this.playerData;
+    }
+
+    public SpectatorMode getSpectatorMode()
+    {
+        return this.spectatorMode;
+    }
+
+    public void setSpectatorMode(SpectatorMode spectatorMode)
+    {
+        this.spectatorMode = spectatorMode;
     }
 
 }
