@@ -7,6 +7,8 @@ import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
 import fr.hashtek.spigot.hashgui.handler.interact.InteractHandler;
+import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
+import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,41 +26,67 @@ public class KitLobby
     {
 
         BACK_TO_LOBBY (
-            new HashItem(Material.BED)
-                .setName(ChatColor.RED + "Retour au lobby")
-                .addInteractHandler(
-                    new InteractHandler()
-                        .addAllInteractTypes()
-                        .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            player.sendMessage("Will send you to the lobby when ready.");
-                        })
-                )
+            new HashItem(Material.IRON_DOOR)
+                .setName(ChatColor.RED + "Revenir au Lobby")
+                .setLore(Arrays.asList(
+                    ChatColor.GRAY + "Quittez le mode de jeu " + ChatColor.RED + "BreakFFA",
+                    ChatColor.GRAY + "pour revenir au " + ChatColor.WHITE + "Hub" + ChatColor.GRAY + " principal."
+                ))
                 .addClickHandler(
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            player.sendMessage("Will send you to the lobby when ready.");
+                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
                         })
                 )
                 .build(BreakFFA.getInstance().getGuiManager()),
-            0
+            -1
         ),
 
         COSMETICS (
             new HashItem(Material.EMERALD)
-                .setName(ChatColor.GREEN + "Cosmétiques")
+                .setName(ChatColor.AQUA + "Customisation")
+                .setLore(Arrays.asList(
+                    ChatColor.GRAY + "Accédez au menu des " + ChatColor.AQUA + "cosmétiques" + ChatColor.GRAY + " du",
+                    ChatColor.RED + "BreakFFA" + ChatColor.GRAY + " et gérez vos préférences."
+                ))
                 .addInteractHandler(
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            player.sendMessage("Cosmotikes!!!");
+                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
                         })
                 )
                 .addClickHandler(
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            player.sendMessage("Cosmotikes!!!");
+                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
+                        })
+                )
+                .build(BreakFFA.getInstance().getGuiManager()),
+            1
+        ),
+
+        HOTBAR_EDITOR (
+            new HashItem(Material.REDSTONE_COMPARATOR)
+                .setName(ChatColor.GOLD + "Hotbar")
+                .setLore(Arrays.asList(
+                    ChatColor.GRAY + "Personnalisez votre " + ChatColor.GOLD + "Hotbar" + ChatColor.GRAY + " en fonction",
+                    ChatColor.GRAY + "de votre " + ChatColor.YELLOW + "style" + ChatColor.GRAY + " de jeu."
+                ))
+                .addInteractHandler(
+                    new InteractHandler()
+                        .addAllInteractTypes()
+                        .setInteractAction((Player player, ItemStack item, int slot) -> {
+                            new GuiHotbarEditor(player).open(player);
+                        })
+                )
+                .addClickHandler(
+                    new ClickHandler()
+                        .addAllClickTypes()
+                        .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                            new GuiHotbarEditor(player).open(player);
                         })
                 )
                 .build(BreakFFA.getInstance().getGuiManager()),
@@ -66,8 +94,12 @@ public class KitLobby
         ),
 
         PLAY (
-            new HashItem(Material.DIAMOND_AXE)
-                .setName(ChatColor.AQUA + "Jouer")
+            new HashItem(Material.DIAMOND_SWORD)
+                .setName(ChatColor.YELLOW + "Jouer")
+                .setLore(Arrays.asList(
+                    ChatColor.GRAY + "Plongez dans " + ChatColor.GOLD + "l'action" + ChatColor.GRAY + " et tentez de",
+                    ChatColor.GRAY + "briser le " + ChatColor.DARK_RED + "Nexus" + ChatColor.GRAY + " au centre !"
+                ))
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES)
                 .addInteractHandler(
                     new InteractHandler()
@@ -93,62 +125,54 @@ public class KitLobby
             4
         ),
 
-        STATS (
-            new HashItem(Material.PAPER)
-                .setName(ChatColor.DARK_AQUA + "Statistiques")
-                .setLore(Arrays.asList(
-                    ChatColor.WHITE + "Map actuelle : " + ChatColor.RED + "Infection",
-                    "" + ChatColor.GRAY + ChatColor.ITALIC + "Réalisée par @mad et @hopecalypse",
-                    "",
-                    ChatColor.WHITE + "Total d'éliminations : " + 0,
-                    ChatColor.WHITE + "Série d'éliminations : " + 0,
-                    ChatColor.WHITE + "Nexus brisés : " + 0,
-                    ChatColor.WHITE + "Nexus brisés d'affilé : " + 0,
-                    ChatColor.WHITE + "Temps joué au total : 0m"
-                ))
-                .build(BreakFFA.getInstance().getGuiManager()),
-            6
-        ),
-
         SPECTATE (
             new HashItem(Material.EYE_OF_ENDER)
-                .setName(ChatColor.YELLOW + "Mode spectateur")
+                .setName(ChatColor.DARK_AQUA + "Observer")
+                .setLore(Arrays.asList(
+                    ChatColor.GRAY + "Devenez un " + ChatColor.DARK_AQUA + "fantôme spectateur",
+                    ChatColor.GRAY + "volant et sans collisions."
+                ))
                 .addInteractHandler(
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            player.sendMessage("pas mtn mdr");
+                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
                         })
                 )
                 .addClickHandler(
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            player.sendMessage("pas mtn mdr");
+                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
                         })
                 )
                 .build(BreakFFA.getInstance().getGuiManager()),
-            8
+            6
         ),
 
-        HOTBAR_EDITOR (
-            new HashItem(Material.COMMAND)
-                .setName(ChatColor.AQUA + "Modifier la hotbar")
+        STATS (
+            new HashItem(Material.PAPER)
+                .setName(ChatColor.BLUE + "Statistiques")
                 .setLore(Arrays.asList(
-                    "",
-                    ChatColor.GRAY + "Modifiez ici l'agencement de votre " + ChatColor.AQUA + "hotbar" + ChatColor.GRAY + " !",
-                    "",
-                    "" + ChatColor.AQUA + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
+                    ChatColor.GRAY + "Affichez vos " + ChatColor.BLUE + "statistiques détaillées",
+                    ChatColor.GRAY + "dans le mode " + ChatColor.RED + "BreakFFA"
                 ))
+                .addInteractHandler(
+                    new InteractHandler()
+                        .addAllInteractTypes()
+                        .setInteractAction((Player player, ItemStack item, int slot) -> {
+                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
+                        })
+                )
                 .addClickHandler(
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            new GuiHotbarEditor(player).open(player);
+                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
                         })
                 )
                 .build(BreakFFA.getInstance().getGuiManager()),
-            22
+            7
         );
 
 
@@ -207,7 +231,24 @@ public class KitLobby
      */
     public void giveItems(Player player)
     {
-        final Inventory playerInventory = player.getInventory();
+        final BreakFFA main = BreakFFA.getInstance();
+        final HashGuiManager guiManager = main.getGuiManager();
+        final Inventory inventory = player.getInventory();
+
+        final HashItem blackGlass = HashItem.separator((byte) 15, guiManager);
+        final HashItem redGlass = HashItem.separator((byte) 14, guiManager);
+
+        final Mask mask = new Mask(inventory);
+
+        mask.setItem('b', blackGlass)
+            .setItem('r', redGlass)
+            .setItem('l', Items.BACK_TO_LOBBY.getItem());
+
+        mask.pattern(2, "bbbrrrbbb")
+            .pattern(3, "bbbrlrbbb")
+            .pattern(4, "bbbrrrbbb");
+
+        mask.apply();
 
         for (Items item : Items.values())
             item.give(player);
