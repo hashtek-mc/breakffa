@@ -25,112 +25,100 @@ public class ShopCategoryDefensive extends ShopCategory
     {
 
         CHAINMAIL (
-            new HashItem(Material.CHAINMAIL_CHESTPLATE)
-                .setName(ChatColor.BLUE + "Côte de Maille")
-                .setLore(Arrays.asList(
-                    "",
-                    ChatColor.GRAY + "Equipez-vous d'une côte de maille",
-                    ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec",
-                    ChatColor.DARK_AQUA + "Protection contre les projectiles II" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+16%)",
-                    "",
-                    ChatColor.GRAY + "Cette armure est  " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ",",
-                    ChatColor.GRAY + "elle disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + "!"
-                ))
-                .addEnchant(Enchantment.PROTECTION_PROJECTILE, 2)
-                .setUnbreakable(true)
-                .build(),
-            3,
-            (Player player, ShopArticle a) -> {
+            new ShopArticle(
+                new HashItem(Material.CHAINMAIL_CHESTPLATE)
+                    .setName(ChatColor.BLUE + "Côte de Maille")
+                    .setLore(Arrays.asList(
+                        "",
+                        ChatColor.GRAY + "Equipez-vous d'une côte de maille",
+                        ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec",
+                        ChatColor.DARK_AQUA + "Protection contre les projectiles II" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+16%)"
+                    ))
+                    .addEnchant(Enchantment.PROTECTION_PROJECTILE, 2)
+                    .setUnbreakable(true)
+                    .build(),
+                3,
+                true
+            )
+            .setBuyAction((Player player, ShopArticle a) -> {
                 player.getInventory().setChestplate(a.getArticle().getItemStack());
-            }
+            })
+            .build(BreakFFA.getInstance())
         ),
 
         LUCKY_BOOTS (
-            new HashItem(Material.LEATHER_BOOTS)
-                .setName(ChatColor.BLUE + "Bottes Bonheurs")
-                .setLore(Arrays.asList(
-                    "",
-                    ChatColor.GRAY + "Mettez toutes les " + ChatColor.DARK_GREEN + "chances" + ChatColor.GRAY + " de votre côté !",
-                    ChatColor.GRAY + "Ces bottes " + ChatColor.YELLOW + "offrent" + ChatColor.GRAY + " un léger bonus de " + ChatColor.AQUA + "vitesse" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+10%)",
-                    "",
-                    ChatColor.GRAY + "Chaque " + ChatColor.DARK_RED + "Nexus" + ChatColor.GRAY + " cassé avec ces bottes " + ChatColor.YELLOW + "à vos pieds",
-                    ChatColor.GRAY + "vous donnera " + ChatColor.AQUA + "3 shards" + ChatColor.GRAY + " bonus !"
-                ))
-                .setUnbreakable(true)
-                .addHoldHandler(
-                    new HoldHandler()
-                        .setHoldAction((Player player, ItemStack itemStack, int slot) -> {
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 0), true);
-                        })
-                        .setNotHoldAction((Player player, ItemStack itemStack, int slot) -> {
-                            player.removePotionEffect(PotionEffectType.SPEED);
-                        })
-                )
-                .build(BreakFFA.getInstance().getGuiManager()),
-            7,
-            (Player player, ShopArticle a) -> {
+            new ShopArticle(
+                new HashItem(Material.LEATHER_BOOTS)
+                    .setName(ChatColor.BLUE + "Bottes Bonheurs")
+                    .setLore(Arrays.asList(
+                        "",
+                        ChatColor.GRAY + "Mettez toutes les " + ChatColor.DARK_GREEN + "chances" + ChatColor.GRAY + " de votre côté !",
+                        ChatColor.GRAY + "Ces bottes " + ChatColor.YELLOW + "offrent" + ChatColor.GRAY + " un léger bonus de " + ChatColor.AQUA + "vitesse" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+10%)",
+                        "",
+                        ChatColor.GRAY + "Chaque " + ChatColor.DARK_RED + "Nexus" + ChatColor.GRAY + " cassé avec ces bottes " + ChatColor.YELLOW + "à vos pieds",
+                        ChatColor.GRAY + "vous donnera " + ChatColor.AQUA + "3 shards" + ChatColor.GRAY + " bonus !"
+                    ))
+                    .setUnbreakable(true)
+                    .addHoldHandler(
+                        new HoldHandler()
+                            .setHoldAction((Player player, ItemStack itemStack, int slot) -> {
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 0), true);
+                            })
+                            .setNotHoldAction((Player player, ItemStack itemStack, int slot) -> {
+                                player.removePotionEffect(PotionEffectType.SPEED);
+                            })
+                    )
+                    .build(BreakFFA.getInstance().getGuiManager()),
+                7,
+                true
+            )
+            .setBuyAction((Player player, ShopArticle a) -> {
+                final BreakFFA main = BreakFFA.getInstance();
+
                 player.getInventory().setBoots(a.getArticle().getItemStack());
-                BreakFFA.getInstance().getGuiManager().getHoldManager().refreshArmorState(player);
-            }
+
+                main.getGuiManager().getHoldManager().refreshArmorState(player);
+            })
+            .build(BreakFFA.getInstance())
         ),
 
         SILVERMAIL (
-            new HashItem(Material.CHAINMAIL_CHESTPLATE)
-                .setName(ChatColor.BLUE + "Côte d'Argent")
-                .setLore(Arrays.asList(
-                    "",
-                    ChatColor.GRAY + "Equipez-vous d'une côte d'" + ChatColor.WHITE + "argent",
-                    ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec",
-                    ChatColor.DARK_AQUA + "Protection contre les projectiles IV" + ChatColor.DARK_GRAY + " (+32%)",
-                    ChatColor.GRAY + "et " + ChatColor.DARK_AQUA + "Epines I" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+15%)",
-                    "",
-                    ChatColor.GRAY + "Cette armure est  " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ",",
-                    ChatColor.GRAY + "elle disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + "!"
-                ))
-                .addEnchant(Enchantment.PROTECTION_PROJECTILE, 4)
-                .addEnchant(Enchantment.THORNS, 1)
-                .setUnbreakable(true)
-                .build(),
-            8,
-            (Player player, ShopArticle a) -> {
+            new ShopArticle(
+                new HashItem(Material.CHAINMAIL_CHESTPLATE)
+                    .setName(ChatColor.BLUE + "Côte d'Argent")
+                    .setLore(Arrays.asList(
+                        "",
+                        ChatColor.GRAY + "Equipez-vous d'une côte d'" + ChatColor.WHITE + "argent",
+                        ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec",
+                        ChatColor.DARK_AQUA + "Protection contre les projectiles IV" + ChatColor.DARK_GRAY + " (+32%)",
+                        ChatColor.GRAY + "et " + ChatColor.DARK_AQUA + "Epines I" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+15%)"
+                    ))
+                    .addEnchant(Enchantment.PROTECTION_PROJECTILE, 4)
+                    .addEnchant(Enchantment.THORNS, 1)
+                    .setUnbreakable(true)
+                    .build(),
+                8,
+                true
+            )
+            .setBuyAction((Player player, ShopArticle a) -> {
                 player.getInventory().setChestplate(a.getArticle().getItemStack());
-            }
+            })
+            .build(BreakFFA.getInstance())
         );
 
-        private final HashItem article;
-        private final int price;
-        private final ShopArticleBuyAction buyAction;
+        private final ShopArticle article;
 
 
-        Articles(HashItem article, int price)
-        {
-            this(article, price, null);
-        }
-
-        Articles(HashItem article, int price, ShopArticleBuyAction buyAction)
+        Articles(ShopArticle article)
         {
             this.article = article;
-            this.price = price;
-            this.buyAction = buyAction;
         }
 
 
         @Override
-        public HashItem getArticle()
+        public ShopArticle getArticle()
         {
             return this.article;
-        }
-
-        @Override
-        public int getPrice()
-        {
-            return this.price;
-        }
-
-        @Override
-        public ShopArticleBuyAction getBuyAction()
-        {
-            return this.buyAction;
         }
 
         @Override
@@ -141,7 +129,7 @@ public class ShopCategoryDefensive extends ShopCategory
                 .build()
                 .getItemStack();
 
-            final ItemStack article = new HashItem(this.article)
+            final ItemStack article = new HashItem(this.article.getShopArticle()) // Maybe article.getArticle();
                 .clearLore()
                 .clearFlags()
                 .build()
@@ -180,14 +168,7 @@ public class ShopCategoryDefensive extends ShopCategory
     public void loadArticles()
     {
         for (Articles article : Articles.values())
-            super.addArticle(
-                new ShopArticle(
-                    article.getArticle(),
-                    article.getPrice(),
-                    article.getBuyAction(),
-                    super.getMain()
-                )
-            );
+            super.addArticle(article.getArticle());
     }
 
 }

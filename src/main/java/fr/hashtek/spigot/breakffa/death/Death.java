@@ -6,6 +6,7 @@ import fr.hashtek.hashutils.ActionBar;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.hashgui.listener.HashGuiHitListener;
 import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.ChatColor;
@@ -178,6 +179,14 @@ public class Death implements HashLoggable
     {
         if (this.killerData == null)
             return;
+
+        HashGuiHitListener.processHit(
+            this.killer,
+            this.victim,
+            this.weapon,
+            true,
+            this.main.getGuiManager().getHitManager()
+        );
 
         this.killerData.addTotalKills(1);
         this.killerData.addKillStreak(1);

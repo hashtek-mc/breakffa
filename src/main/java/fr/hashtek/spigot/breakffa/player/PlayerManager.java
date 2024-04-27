@@ -64,13 +64,16 @@ public class PlayerManager implements HashLoggable
         final PlayerInventory inventory = this.player.getInventory();
         final KitStarter starterKit = new KitStarter(this.main);
 
+        /* Finds a random spawn and teleports the player to it. */
         final int spawnIndex = new Random().nextInt(this.gameManager.getSpawnLocations().size());
         final Location spawn = this.gameManager.getSpawnLocations().get(spawnIndex);
-
         this.player.teleport(spawn);
+
+        /* Updates player's data. */
         this.playerData.setState(PlayerState.PLAYING);
         this.player.setGameMode(GameMode.SURVIVAL);
 
+        /* Sets player's inventory. */
         inventory.clear();
         this.clearArmor(inventory);
         inventory.setHeldItemSlot(0);
@@ -85,17 +88,22 @@ public class PlayerManager implements HashLoggable
         final PlayerInventory playerInventory = this.player.getInventory();
         final KitLobby lobbyKit = new KitLobby(this.main);
 
+        /* Updates player's data. */
         this.playerData.setState(PlayerState.AT_LOBBY);
         this.player.setGameMode(GameMode.ADVENTURE);
 
+        /* Teleports player back to the lobby. */
         this.player.teleport(this.gameManager.getLobbySpawnLocation());
 
+        /* Resets player's health. */
         this.player.setMaxHealth(20.0);
         this.player.setHealth(this.player.getMaxHealth());
 
+        /* Resets player's potion effects. */
         for (PotionEffect potionEffect : this.player.getActivePotionEffects())
             this.player.removePotionEffect(potionEffect.getType());
 
+        /* Sets player's inventory. */
         playerInventory.clear();
         this.clearArmor(playerInventory);
         playerInventory.setHeldItemSlot(4);
@@ -108,29 +116,41 @@ public class PlayerManager implements HashLoggable
     public void kill(DeathReason reason)
     {
         new Death(
-            this.main,
-            this.player,
-            this.playerData.getLastDamager(),
-            this.playerData.getLastDamagerWeapon(),
-            reason
+                this.main,
+                this.player,
+                this.playerData.getLastDamager(),
+                this.playerData.getLastDamagerWeapon(),
+                reason
         ).execute();
     }
 
+    /**
+     * @return  Player
+     */
     public Player getPlayer()
     {
         return this.player;
     }
 
+    /**
+     * @return  Player's data
+     */
     public PlayerData getPlayerData()
     {
         return this.playerData;
     }
 
+    /**
+     * @return  Spectator mode
+     */
     public SpectatorMode getSpectatorMode()
     {
         return this.spectatorMode;
     }
 
+    /**
+     * @param   spectatorMode   Spectator mode
+     */
     public void setSpectatorMode(SpectatorMode spectatorMode)
     {
         this.spectatorMode = spectatorMode;

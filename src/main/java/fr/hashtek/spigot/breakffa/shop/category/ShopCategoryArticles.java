@@ -1,5 +1,6 @@
 package fr.hashtek.spigot.breakffa.shop.category;
 
+import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticleBuyAction;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.inventory.ItemStack;
@@ -13,17 +14,7 @@ public interface ShopCategoryArticles
     /**
      * @return  Article
      */
-    public abstract HashItem getArticle();
-
-    /**
-     * @return  Article price
-     */
-    public abstract int getPrice();
-
-    /**
-     * @return  Custom buy action
-     */
-    public abstract ShopArticleBuyAction getBuyAction();
+    public abstract ShopArticle getArticle();
 
     /**
      * @param   item    Item to compare with
