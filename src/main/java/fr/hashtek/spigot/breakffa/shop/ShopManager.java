@@ -174,29 +174,10 @@ public class ShopManager
         final PlayerInventory inventory = player.getInventory();
         final HashGuiManager guiManager = this.main.getGuiManager();
 
-        final HashItem darkBlueGlass =
-            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 9)
-                .setName("")
-                .setUntakable(true)
-                .build(guiManager);
-
-        final HashItem blueGlass =
-            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 3)
-                .setName("")
-                .setUntakable(true)
-                .build(guiManager);
-
-        final HashItem magentaGlass =
-            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 2)
-                .setName("")
-                .setUntakable(true)
-                .build(guiManager);
-
-        final HashItem whiteGlass =
-            new HashItem(Material.STAINED_GLASS_PANE, 1, (byte) 0)
-                .setName("")
-                .setUntakable(true)
-                .build(guiManager);
+        final HashItem darkBlueGlass = HashItem.separator((byte) 9, guiManager);
+        final HashItem blueGlass = HashItem.separator((byte) 3, guiManager);
+        final HashItem magentaGlass = HashItem.separator((byte) 2, guiManager);
+        final HashItem whiteGlass = HashItem.separator((byte) 0, guiManager);
 
         final HashItem shopItem = this.createShopItem(playerData, false);
 
