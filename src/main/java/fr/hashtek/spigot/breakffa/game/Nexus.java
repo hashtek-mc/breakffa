@@ -7,11 +7,14 @@ import fr.hashtek.hashutils.Title;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
+import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategoryDefensive;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -34,6 +37,22 @@ public class Nexus implements HashLoggable
         this.gameManager = gameManager;
     }
 
+
+    /**
+     * Executes Shop weapons abilities.
+     *
+     * @param   player      Player
+     * @param   playerData  Player's data
+     */
+    private void executeShopWeaponsAbilities(Player player, PlayerData playerData)
+    {
+        final PlayerInventory inventory = player.getInventory();
+
+        /* Lucky Boots handling */
+        for (ItemStack i : inventory.getArmorContents())
+            if (ShopCategoryDefensive.Articles.LUCKY_BOOTS.equals(i))
+                playerData.addShards(3);
+    }
 
     /**
      * Destroys the Nexus.
@@ -80,7 +99,7 @@ public class Nexus implements HashLoggable
                     ChatColor.RED + "Brisé par " + playerRank.getColor() + corePlayerData.getUsername()
                 );
             } catch (Exception exception) {
-                HashError.UNKNOWN
+                HashError.SRV_PACKET_SEND_FAIL
                     .log(this.main.getHashLogger(), this, exception)
                     .sendToPlayer(p);
             }
@@ -89,6 +108,8 @@ public class Nexus implements HashLoggable
             if (!pData.getPlayer().equals(player))
                 pData.setNexusBreaksStreak(0);
         }
+
+        this.executeShopWeaponsAbilities(player, playerData);
 
         /* Resetting game */
         this.gameManager.reset();
