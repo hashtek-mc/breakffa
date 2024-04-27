@@ -9,6 +9,7 @@ import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
 import fr.hashtek.spigot.hashgui.handler.hold.HoldHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -59,6 +60,7 @@ public class ShopCategoryDefensive extends ShopCategory
                         ChatColor.GRAY + "vous donnera " + ChatColor.AQUA + "3 shards" + ChatColor.GRAY + " bonus !"
                     ))
                     .setUnbreakable(true)
+                    .setLeatherArmorColor(Color.fromRGB(52, 249, 81))
                     .addHoldHandler(
                         new HoldHandler()
                             .setHoldAction((Player player, ItemStack itemStack, int slot) -> {
@@ -124,16 +126,24 @@ public class ShopCategoryDefensive extends ShopCategory
         @Override
         public boolean equals(ItemStack item)
         {
+            if (item == null || item.getType() == Material.AIR)
+                return false;
+
             final ItemStack i = new HashItem(item)
                 .clearFlags()
                 .build()
                 .getItemStack();
 
-            final ItemStack article = new HashItem(this.article.getShopArticle()) // Maybe article.getArticle();
+            final ItemStack article = new HashItem(this.article.getArticle())
                 .clearLore()
                 .clearFlags()
                 .build()
                 .getItemStack();
+
+            System.out.println(i);
+            System.out.println(article);
+
+            System.out.println(i.equals(article));
 
             return i.equals(article);
         }
