@@ -150,12 +150,15 @@ public class ShopCategorySupport extends ShopCategory
         @Override
         public boolean equals(ItemStack item)
         {
+            if (item == null || item.getType() == Material.AIR)
+                return false;
+
             final ItemStack i = new HashItem(item)
                 .clearFlags()
                 .build()
                 .getItemStack();
 
-            final ItemStack article = new HashItem(this.article.getShopArticle())
+            final ItemStack article = new HashItem(this.article.getArticle())
                 .clearLore()
                 .clearFlags()
                 .build()
