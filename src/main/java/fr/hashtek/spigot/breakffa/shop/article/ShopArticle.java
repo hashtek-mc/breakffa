@@ -5,9 +5,16 @@ import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.PaginatedHashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
+import fr.hashtek.spigot.hashgui.handler.destroy.DestroyAction;
+import fr.hashtek.spigot.hashgui.handler.destroy.DestroyHandler;
+import fr.hashtek.spigot.hashgui.handler.hit.HitAction;
+import fr.hashtek.spigot.hashgui.handler.hit.HitHandler;
+import fr.hashtek.spigot.hashgui.handler.hold.HoldAction;
+import fr.hashtek.spigot.hashgui.handler.hold.HoldHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -17,53 +24,45 @@ import java.util.Arrays;
 public class ShopArticle
 {
 
-    private final BreakFFA main;
-
     private final HashItem shopArticle;
     private final HashItem article;
     private final int price;
+    private final boolean isTemporary;
 
-    private final ShopArticleBuyAction buyAction;
+    private ShopArticleBuyAction buyAction;
 
 
     /**
-     * Creates a new Shop article (without custom buy action).
+     * Creates a new Shop article.
      *
      * @param   article     Article
      * @param   price       Price
-     * @param   main        BreakFFA instance
      */
-    public ShopArticle(HashItem article, int price, BreakFFA main)
+    public ShopArticle(HashItem article, int price)
     {
-        this(article, price, null, main);
+        this(article, price, false);
     }
 
     /**
-     * Creates a new Shop article (with custom buy action).
+     * Creates a new Shop article.
      *
-     * @param   article     Article
-     * @param   price       Price
-     * @param   buyAction   Custom buy action
-     * @param   main        BreakFFA instance
+     * @param   article         Article
+     * @param   price           Price
+     * @param   isTemporary     If the item is temporary
      */
-    public ShopArticle(HashItem article, int price, ShopArticleBuyAction buyAction, BreakFFA main)
+    public ShopArticle(HashItem article, int price, boolean isTemporary)
     {
-        this.main = main;
         this.shopArticle = new HashItem(article);
         this.article = new HashItem(article);
-
         this.price = price;
-
-        this.buyAction = buyAction;
-
-        this.initializeArticles();
+        this.isTemporary = isTemporary;
     }
 
 
     /**
      * Initializes articles (shop and the one which will be used by players).
      */
-    private void initializeArticles()
+    public ShopArticle build(BreakFFA main)
     {
         String articleName = this.getShopArticle().getItemMeta().getDisplayName();
         final String suffix = " " + ChatColor.WHITE + ChatColor.BOLD + "●" + ChatColor.AQUA + " " + this.price + " shards";
@@ -72,15 +71,23 @@ public class ShopArticle
             articleName += suffix;
 
         this.getShopArticle().setName(articleName);
+
+        if (this.isTemporary)
+            this.getShopArticle()
+                .addLore("")
+                .addLore(ChatColor.GRAY + "Cet objet est " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ", il")
+                .addLore(ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + " !");
+
         this.getShopArticle()
             .setFlags(Arrays.asList(
                 ItemFlag.HIDE_ENCHANTS,
                 ItemFlag.HIDE_ATTRIBUTES,
                 ItemFlag.HIDE_UNBREAKABLE
             ))
+            .clearHandlers()
             .build();
 
-        this.setShopArticleClickHandler();
+        this.setShopArticleClickHandler(main);
 
         this.article
             .setFlags(Arrays.asList(
@@ -89,7 +96,9 @@ public class ShopArticle
                 ItemFlag.HIDE_UNBREAKABLE
             ))
             .clearLore()
-            .build();
+            .build(main.getGuiManager());
+
+        return this;
     }
 
     /**
@@ -107,11 +116,9 @@ public class ShopArticle
         final boolean hasEnoughSpace = player.getInventory().firstEmpty() != -1;
         final boolean canBuy = hasEnoughShards && hasEnoughSpace;
 
+        /* If item can't be bought, then cancel the transaction. */
         if (!canBuy) {
             String reason = ChatColor.RED + "";
-
-            player.playSound(player.getLocation(), "random.break", 100, 0);
-            player.playSound(player.getLocation(), Sound.NOTE_BASS, 100, 0);
 
             if (!hasEnoughShards)
                 reason += "Vous ne possédez pas assez de " + ChatColor.AQUA + "shards" + ChatColor.RED + ".";
@@ -119,6 +126,10 @@ public class ShopArticle
                 reason += "Vous n'avez plus de place dans votre inventaire.";
 
             player.sendMessage(reason);
+
+            player.playSound(player.getLocation(), "random.break", 100, 0);
+            player.playSound(player.getLocation(), Sound.NOTE_BASS, 100, 0);
+
             return;
         }
 
@@ -150,7 +161,7 @@ public class ShopArticle
      * FIXME: If GUI is not an instance of PaginatedHashGui, you may
      *        want to throw an error.
      */
-    private void setShopArticleClickHandler()
+    private void setShopArticleClickHandler(BreakFFA main)
     {
         this.getShopArticle().addClickHandler(
             new ClickHandler()
@@ -160,13 +171,72 @@ public class ShopArticle
                         return;
 
                     final PaginatedHashGui paginatedGui = (PaginatedHashGui) gui;
-                    final PlayerData playerData = this.main.getGameManager().getPlayerData(player);
+                    final PlayerData playerData = main.getGameManager().getPlayerData(player);
 
                     this.buy(playerData, paginatedGui);
                 })
         );
 
-        this.getShopArticle().build(this.main.getGuiManager());
+        this.getShopArticle().build(main.getGuiManager());
+    }
+
+    public ShopArticle setBuyAction(ShopArticleBuyAction action)
+    {
+        this.buyAction = action;
+        return this;
+    }
+
+    public ShopArticle setHoldAction(HoldAction action)
+    {
+        this.getArticle().addHoldHandler(
+            new HoldHandler()
+                .setHoldAction(action)
+        );
+        return this;
+    }
+
+    public ShopArticle setNotHoldAction(HoldAction action)
+    {
+        this.getArticle().addHoldHandler(
+            new HoldHandler()
+                .setNotHoldAction(action)
+        );
+        return this;
+    }
+
+    public ShopArticle setHitAction(HitAction action)
+    {
+        this.getArticle().addHitHandler(
+            new HitHandler()
+                .setHitAction(action)
+        );
+        return this;
+    }
+
+    public ShopArticle setKillAction(HitAction action)
+    {
+        this.getArticle().addHitHandler(
+            new HitHandler()
+                .setOnlyKill(true)
+                .setHitAction(action)
+        );
+        return this;
+    }
+
+    public ShopArticle setNexusBreakAction(DestroyAction action)
+    {
+        this.getArticle().addDestroyHandler(
+            new DestroyHandler()
+                .setDestroyAction((Player player, ItemStack item, Block block) -> {
+                    final Block nexus = BreakFFA.getInstance().getGameManager().getNexus().getBlock();
+
+                    if (!block.equals(nexus))
+                        return;
+
+                    action.execute(player, item, block);
+                })
+        );
+        return this;
     }
 
     /**
@@ -191,6 +261,14 @@ public class ShopArticle
     public int getPrice()
     {
         return this.price;
+    }
+
+    /**
+     * @return  True if the item is temporary
+     */
+    public boolean isTemporary()
+    {
+        return this.isTemporary;
     }
 
 }
