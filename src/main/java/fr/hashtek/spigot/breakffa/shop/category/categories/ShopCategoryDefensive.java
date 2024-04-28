@@ -54,7 +54,7 @@ public class ShopCategoryDefensive extends ShopCategory
                     .setLore(Arrays.asList(
                         "",
                         ChatColor.GRAY + "Mettez toutes les " + ChatColor.DARK_GREEN + "chances" + ChatColor.GRAY + " de votre côté !",
-                        ChatColor.GRAY + "Ces bottes " + ChatColor.YELLOW + "offrent" + ChatColor.GRAY + " un léger bonus de " + ChatColor.AQUA + "vitesse" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+10%)",
+                        ChatColor.GRAY + "Ces bottes " + ChatColor.YELLOW + "offrent" + ChatColor.GRAY + " un léger bonus de " + ChatColor.AQUA + "vitesse" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+20%)",
                         "",
                         ChatColor.GRAY + "Chaque " + ChatColor.DARK_RED + "Nexus" + ChatColor.GRAY + " cassé avec ces bottes " + ChatColor.YELLOW + "à vos pieds",
                         ChatColor.GRAY + "vous donnera " + ChatColor.AQUA + "3 shards" + ChatColor.GRAY + " bonus !"
@@ -130,20 +130,13 @@ public class ShopCategoryDefensive extends ShopCategory
                 return false;
 
             final ItemStack i = new HashItem(item)
-                .clearFlags()
                 .build()
                 .getItemStack();
 
             final ItemStack article = new HashItem(this.article.getArticle())
                 .clearLore()
-                .clearFlags()
                 .build()
                 .getItemStack();
-
-            System.out.println(i);
-            System.out.println(article);
-
-            System.out.println(i.equals(article));
 
             return i.equals(article);
         }
