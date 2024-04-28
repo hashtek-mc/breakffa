@@ -41,7 +41,7 @@ public class KitStarter
 
         INSTANT_TNT (
             new HashItem(Material.TNT, 4)
-                .setName(ChatColor.RED + "TNT")
+                .setName(ChatColor.GREEN + "TNT")
                 .build()
         ),
 
