@@ -1,5 +1,9 @@
 package fr.hashtek.spigot.breakffa.shop.category.categories;
 
+import fr.hashtek.hasherror.HashError;
+import fr.hashtek.hashlogger.HashLoggable;
+import fr.hashtek.hashutils.HashUtils;
+import fr.hashtek.hashutils.Particle;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.kit.kits.KitStarter;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
@@ -8,16 +12,17 @@ import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
 import fr.hashtek.spigot.hashgui.handler.interact.InteractHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.Collection;
 
-public class ShopCategorySupport extends ShopCategory
+public class ShopCategorySupport extends ShopCategory implements HashLoggable
 {
 
     public enum Articles implements ShopCategoryArticles
@@ -74,29 +79,67 @@ public class ShopCategorySupport extends ShopCategory
                         new InteractHandler()
                             .addInteractTypes(Action.LEFT_CLICK_AIR, Action.RIGHT_CLICK_AIR)
                             .setInteractAction((Player player, ItemStack item, int slot) -> {
-//                                final int shots = 3;
-//
-//                                final short itemMaxDurability = item.getType().getMaxDurability();
-//                                final short itemDurability = (short) (itemMaxDurability - item.getDurability());
-//                                final short finalDurability = (short) (itemDurability - (itemMaxDurability / shots));
-//
-//                                item.setDurability((short) (itemMaxDurability - finalDurability));
-//
-//                                if (finalDurability <= 1)
-//                                    player.getInventory().setItem(slot, null);
-//
-//                                // TODO: particles gaming
-//
-//                                final Player victim = HashUtils.getAimedPlayer(player);
-//
-//                                if (victim == null)
-//                                    return;
-//
-//                                final Location playerLocation = player.getLocation();
-//                                final Location victimLocation = victim.getLocation();
+                                final BreakFFA main = BreakFFA.getInstance();
+
+                                final Location playerLocation = player.getEyeLocation();
+                                final World world = playerLocation.getWorld();
+                                Collection<? extends Player> onlinePlayers = main.getServer().getOnlinePlayers();
+
+                                final int range = 3;
+
+                                /* Sets the item's durability. */
+                                final int shots = 3;
+
+                                final short itemMaxDurability = item.getType().getMaxDurability();
+                                final short itemDurability = (short) (itemMaxDurability - item.getDurability());
+                                final short finalDurability = (short) (itemDurability - (itemMaxDurability / shots));
+
+                                item.setDurability((short) (itemMaxDurability - finalDurability));
+
+                                if (finalDurability <= 1)
+                                    player.getInventory().setItem(slot, null);
+
+                                for (Player p : onlinePlayers) {
+                                    /* Plays sound. */
+                                    p.playSound(playerLocation, Sound.FIREWORK_TWINKLE2, 1, 2);
+                                    p.playSound(playerLocation, Sound.FIZZ, 1, 2);
+                                    p.playSound(playerLocation, "item.fireCharge.use", 1, 2);
+
+                                    /* Spawns particles. */
+                                    try {
+                                        final double particleDistance = 0.25;
+
+                                        for (double k = 1; k < range; k += particleDistance) {
+                                            final Location location = playerLocation.clone();
+                                            final Vector vector = location.getDirection().multiply(k);
+                                            location.add(vector);
+
+                                            new Particle().spawnParticle(
+                                                p,
+                                                "FLAME",
+                                                location,
+                                                0.03f,
+                                                1
+                                            );
+                                        }
+                                    } catch (Exception exception) {
+                                        HashError.SRV_PACKET_SEND_FAIL
+                                            .log(main.getHashLogger(), main, exception)
+                                            .sendToPlayer(p);
+                                    }
+                                }
+
+                                /* Hurt victim if there is one. */
+                                final Player victim = HashUtils.getAimedPlayer(player, range);
+
+                                if (victim == null)
+                                    return;
+
+                                victim.setFireTicks(20 * 3);
+
+                                final Location victimLocation = victim.getLocation();
 //                                final Vector kb = victimLocation.toVector().subtract(playerLocation.toVector()).normalize();
-//
-//                                victim.setFireTicks(20 * 3);
+
 //                                victim.setVelocity(kb.multiply(1.5));
                             })
                     )
