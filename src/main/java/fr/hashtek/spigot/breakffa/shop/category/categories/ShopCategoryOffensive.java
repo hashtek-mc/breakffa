@@ -42,7 +42,7 @@ public class ShopCategoryOffensive extends ShopCategory
                 true
             )
             .setKillAction((Player attacker, Player victim, ItemStack item) -> {
-                attacker.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5, 1), true);
+                attacker.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 5, 1), true);
             })
             .build(BreakFFA.getInstance())
         ),
@@ -175,13 +175,11 @@ public class ShopCategoryOffensive extends ShopCategory
                 return false;
 
             final ItemStack i = new HashItem(item)
-                .clearFlags()
                 .build()
                 .getItemStack();
 
             final ItemStack article = new HashItem(this.article.getArticle())
                 .clearLore()
-                .clearFlags()
                 .build()
                 .getItemStack();
 

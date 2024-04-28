@@ -154,13 +154,11 @@ public class ShopCategorySupport extends ShopCategory
                 return false;
 
             final ItemStack i = new HashItem(item)
-                .clearFlags()
                 .build()
                 .getItemStack();
 
             final ItemStack article = new HashItem(this.article.getArticle())
                 .clearLore()
-                .clearFlags()
                 .build()
                 .getItemStack();
 
