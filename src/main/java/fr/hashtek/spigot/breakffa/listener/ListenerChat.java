@@ -17,7 +17,7 @@ public class ListenerChat implements Listener
 
 
     /**
-     * Creates a new instance of ListenerChat
+     * Creates a new instance of ListenerChat.
      *
      * @param   main    BreakFFA instance
      */
@@ -39,8 +39,8 @@ public class ListenerChat implements Listener
 
         event.setFormat(
             playerRank.getColor() + player.getName() + "@" + playerRank.getName()
-                + ChatColor.DARK_GRAY + " $ "
-                + ChatColor.WHITE + event.getMessage()
+            + ChatColor.DARK_GRAY + " $ "
+            + ChatColor.WHITE + event.getMessage()
         );
     }
 
