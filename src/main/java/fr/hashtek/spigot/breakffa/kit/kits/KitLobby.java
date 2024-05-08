@@ -12,6 +12,7 @@ import fr.hashtek.spigot.hashgui.handler.interact.InteractHandler;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashitem.HashItem;
+import fr.hashtek.tekore.bukkit.Tekore;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -38,7 +39,9 @@ public class KitLobby
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
+                            final Tekore core = BreakFFA.getInstance().getCore();
+
+                            core.getPlayerData(player).getPlayerManager().sendToServer("lobby01");
                         })
                 )
                 .build(BreakFFA.getInstance().getGuiManager()),
