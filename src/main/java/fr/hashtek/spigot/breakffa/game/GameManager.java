@@ -60,7 +60,7 @@ public class GameManager implements HashLoggable
      *
      * @param   yaml    Configuration file content
      * @param   keys    Keys to check
-     * @return  Missing key (if one, else returns null)
+     * @return  First missing key (if one, else returns null)
      */
     private String checkRequiredKeys(YamlFile yaml, String... keys)
     {
@@ -85,7 +85,7 @@ public class GameManager implements HashLoggable
 
         final String prefix = "nexusLocation";
 
-        final String missingKey = checkRequiredKeys(yaml,
+        final String missingKey = this.checkRequiredKeys(yaml,
             prefix, prefix + ".x", prefix + ".y", prefix + ".z"
         );
 
