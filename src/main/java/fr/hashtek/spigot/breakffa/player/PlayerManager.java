@@ -116,11 +116,11 @@ public class PlayerManager implements HashLoggable
     public void kill(DeathReason reason)
     {
         new Death(
-                this.main,
-                this.player,
-                this.playerData.getLastDamager(),
-                this.playerData.getLastDamagerWeapon(),
-                reason
+            this.main,
+            this.player,
+            this.playerData.getLastDamager(),
+            this.playerData.getLastDamagerWeapon(),
+            reason
         ).execute();
     }
 
