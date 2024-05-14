@@ -118,6 +118,8 @@ public class Nexus implements HashLoggable
         playerData.addNexusBreaks(1);
         playerData.addNexusBreaksStreak(1);
         playerData.addShards(5);
+
+        this.main.getBoardManager().getPlayerSidebar(player).refreshSidebar();
     }
 
 

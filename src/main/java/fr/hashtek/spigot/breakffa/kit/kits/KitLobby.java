@@ -250,7 +250,7 @@ public class KitLobby
      */
     public void giveItems(Player player)
     {
-        final BreakFFA main = BreakFFA.getInstance();
+        final BreakFFA main = this.main;
         final HashGuiManager guiManager = main.getGuiManager();
         final Inventory inventory = player.getInventory();
 

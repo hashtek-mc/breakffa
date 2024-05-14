@@ -170,6 +170,7 @@ public class Death implements HashLoggable
         this.victimData.setLastDamager(null);
         this.victimData.setLastDamagerWeapon(null);
         this.victimData.setKillRewardShards(1);
+        this.main.getBoardManager().getPlayerSidebar(this.victim).refreshSidebar();
     }
 
     /**
@@ -191,6 +192,7 @@ public class Death implements HashLoggable
         this.killerData.addTotalKills(1);
         this.killerData.addKillStreak(1);
         this.killerData.addShards(this.killerData.getKillRewardShards());
+        this.main.getBoardManager().getPlayerSidebar(this.killer).refreshSidebar();
 
         this.killer.setHealth(killer.getMaxHealth());
         this.main.getShopManager().giveShop(this.killerData);

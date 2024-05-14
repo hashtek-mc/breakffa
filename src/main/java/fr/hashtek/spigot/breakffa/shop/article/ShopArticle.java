@@ -144,9 +144,10 @@ public class ShopArticle
 
         /* Updates the shop items (for shards in lore). */
         final HashItem shopItem = playerData.getMain().getShopManager().createShopItem(playerData, true);
-
         playerData.getMain().getShopManager().giveShop(playerData);
         gui.replaceAll(shopItem.getItemMeta().getDisplayName(), shopItem);
+        BreakFFA.getInstance().getBoardManager().getPlayerSidebar(player).refreshSidebar();
+
 
         /* Plays buy sound to the player. */
         player.playSound(player.getLocation(), "mob.horse.leather", 100, 1);

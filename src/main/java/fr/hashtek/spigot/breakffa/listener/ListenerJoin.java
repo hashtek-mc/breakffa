@@ -1,13 +1,14 @@
 package fr.hashtek.spigot.breakffa.listener;
 
-import fr.hashktek.spigot.hashboard.exceptions.AlreadyInTeamException;
-import fr.hashktek.spigot.hashboard.exceptions.StrangeException;
-import fr.hashktek.spigot.hashboard.exceptions.TeamSizeException;
+import fr.hashtek.spigot.breakffa.scoreboard.ScoreboardManager;
+import fr.hashtek.spigot.hashboard.exceptions.AlreadyInTeamException;
+import fr.hashtek.spigot.hashboard.exceptions.StrangeException;
+import fr.hashtek.spigot.hashboard.exceptions.TeamSizeException;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
-import fr.hashtek.spigot.breakffa.tablist.Tablist;
+import fr.hashtek.spigot.breakffa.tablist.TablistManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,7 +41,8 @@ public class ListenerJoin implements Listener, HashLoggable
     {
         final Player player = event.getPlayer();
         final PlayerData playerData = new PlayerData(this.main, player);
-        final Tablist tablist = this.main.getTablist();
+        final ScoreboardManager scoreboardManager = this.main.getBoardManager();
+        final TablistManager tablistManager = this.main.getTablistManager();
 
         this.gameManager.addPlayerData(player, playerData);
 
@@ -48,17 +50,20 @@ public class ListenerJoin implements Listener, HashLoggable
 
         playerData.getPlayerManager().backToLobby();
 
-        this.main.getBoard().setToPlayers(player);
+        this.main.getBoardManager().getBoard().setToPlayers(player);
 
         try {
             final fr.hashtek.tekore.common.player.PlayerData pData = this.main.getCore().getPlayerData(player);
 
             this.main.getRankTeams().get(pData.getRank().getUuid()).add(player);
-            tablist.refresh();
-            tablist.update();
+            tablistManager.refresh();
+            tablistManager.update();
         } catch (AlreadyInTeamException | TeamSizeException | StrangeException exception) {
             // TODO: Write error handling (even if none of them should happen).
         }
+
+        scoreboardManager.addPlayerSidebar(player)
+            .refreshSidebar();
     }
 
 }

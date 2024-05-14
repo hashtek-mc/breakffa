@@ -1,10 +1,10 @@
 package fr.hashtek.spigot.breakffa.listener;
 
-import fr.hashktek.spigot.hashboard.exceptions.StrangeException;
+import fr.hashtek.spigot.hashboard.exceptions.StrangeException;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
-import fr.hashtek.spigot.breakffa.tablist.Tablist;
+import fr.hashtek.spigot.breakffa.tablist.TablistManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,7 +36,7 @@ public class ListenerQuit implements Listener, HashLoggable
     public void onQuit(PlayerQuitEvent event)
     {
         final Player player = event.getPlayer();
-        final Tablist tablist = this.main.getTablist();
+        final TablistManager tablist = this.main.getTablistManager();
 
         event.setQuitMessage(null);
 
