@@ -1,7 +1,8 @@
 package fr.hashtek.spigot.breakffa;
 
-import fr.hashktek.spigot.hashboard.HashBoard;
-import fr.hashktek.spigot.hashboard.HashTeam;
+import fr.hashtek.spigot.breakffa.scoreboard.ScoreboardManager;
+import fr.hashtek.spigot.hashboard.HashBoard;
+import fr.hashtek.spigot.hashboard.HashTeam;
 import fr.hashtek.hashconfig.HashConfig;
 import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
@@ -10,7 +11,7 @@ import fr.hashtek.spigot.breakffa.command.CommandGuiDump;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.listener.*;
 import fr.hashtek.spigot.breakffa.shop.ShopManager;
-import fr.hashtek.spigot.breakffa.tablist.Tablist;
+import fr.hashtek.spigot.breakffa.tablist.TablistManager;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
@@ -36,9 +37,8 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
 
     private GameManager gameManager;
     private ShopManager shopManager;
-
-    private HashBoard board;
-    private Tablist tablist;
+    private ScoreboardManager scoreboardManager;
+    private TablistManager tablistManager;
 
     private HashMap<String, HashTeam> rankTeams;
 
@@ -181,12 +181,12 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
      */
     private void setupBoard()
     {
-        this.board = new HashBoard();
-        this.tablist = new Tablist(this);
+        this.scoreboardManager = new ScoreboardManager(this);
+        this.tablistManager = new TablistManager(this);
         this.rankTeams = new HashMap<String, HashTeam>();
 
         try {
-            this.tablist.setup(this.hashConfig.getYaml());
+            this.tablistManager.setup(this.hashConfig.getYaml());
         } catch (NoSuchFieldException exception) {
             HashError.UNKNOWN
                 .log(this.logger, this, exception);
@@ -194,7 +194,13 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
 
         int i = 0;
         for (Rank rank : this.core.getRanks()) {
-            HashTeam team = new HashTeam(i, rank.getShortName() + " ", "", 10, this.board); // TODO: Set team size to 0 when HashBoard is updated.
+            HashTeam team = new HashTeam(
+                i,
+                rank.getShortName() + " ",
+                "",
+                10,
+                this.scoreboardManager.getBoard()
+            ); // TODO: Set team size to 0 when HashBoard is updated.
             rankTeams.put(rank.getUuid(), team);
             i++;
         }
@@ -298,17 +304,17 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     /**
      * @return  Main board
      */
-    public HashBoard getBoard()
+    public ScoreboardManager getBoardManager()
     {
-        return this.board;
+        return this.scoreboardManager;
     }
 
     /**
      * @return  Tablist
      */
-    public Tablist getTablist()
+    public TablistManager getTablistManager()
     {
-        return this.tablist;
+        return this.tablistManager;
     }
 
     /**
