@@ -1,7 +1,7 @@
 package fr.hashtek.spigot.breakffa.tablist;
 
-import fr.hashktek.spigot.hashboard.HashTabList;
-import fr.hashktek.spigot.hashboard.exceptions.StrangeException;
+import fr.hashtek.spigot.hashboard.HashTabList;
+import fr.hashtek.spigot.hashboard.exceptions.StrangeException;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashlogger.HashLogger;
 import fr.hashtek.spigot.breakffa.BreakFFA;
