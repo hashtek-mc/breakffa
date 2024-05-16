@@ -44,7 +44,6 @@ public class ShopCategoryOffensive extends ShopCategory
             .setKillAction((Player attacker, Player victim, ItemStack item) -> {
                 attacker.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 5, 1), true);
             })
-            .build(BreakFFA.getInstance())
         ),
 
         CLAYMORE (
@@ -63,7 +62,6 @@ public class ShopCategoryOffensive extends ShopCategory
                 4,
                 true
             )
-            .build(BreakFFA.getInstance())
         ),
 
         REINFORCED_SWORD (
@@ -81,7 +79,6 @@ public class ShopCategoryOffensive extends ShopCategory
                 3,
                 true
             )
-            .build(BreakFFA.getInstance())
         ),
 
         SHINY_SWORD (
@@ -99,7 +96,6 @@ public class ShopCategoryOffensive extends ShopCategory
                 8,
                 true
             )
-            .build(BreakFFA.getInstance())
         ),
 
         PERFECT_SWORD (
@@ -120,7 +116,6 @@ public class ShopCategoryOffensive extends ShopCategory
                 12,
                 true
             )
-            .build(BreakFFA.getInstance())
         ),
 
         HASH_ACTIVE (
@@ -150,7 +145,6 @@ public class ShopCategoryOffensive extends ShopCategory
                 20,
                 true
             )
-            .build(BreakFFA.getInstance())
         );
 
         private final ShopArticle article;
@@ -159,6 +153,8 @@ public class ShopCategoryOffensive extends ShopCategory
         Articles(ShopArticle article)
         {
             this.article = article;
+
+            this.article.build(BreakFFA.getInstance());
         }
 
 

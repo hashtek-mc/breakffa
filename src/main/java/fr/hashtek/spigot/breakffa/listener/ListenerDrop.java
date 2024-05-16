@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 public class ListenerDrop implements Listener
 {
 
-    private final BreakFFA main;
     private final GameManager gameManager;
 
 
@@ -23,8 +22,7 @@ public class ListenerDrop implements Listener
      */
     public ListenerDrop(BreakFFA main)
     {
-        this.main = main;
-        this.gameManager = this.main.getGameManager();
+        this.gameManager = main.getGameManager();
     }
 
 

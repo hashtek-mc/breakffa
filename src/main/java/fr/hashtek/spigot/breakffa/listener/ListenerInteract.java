@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class ListenerInteract implements Listener
 {
 
-    private final BreakFFA main;
     private final GameManager gameManager;
 
 
@@ -23,8 +22,7 @@ public class ListenerInteract implements Listener
      */
     public ListenerInteract(BreakFFA main)
     {
-        this.main = main;
-        this.gameManager = this.main.getGameManager();
+        this.gameManager = main.getGameManager();
     }
 
 

@@ -44,7 +44,6 @@ public class ShopCategoryDefensive extends ShopCategory
             .setBuyAction((Player player, ShopArticle a) -> {
                 player.getInventory().setChestplate(a.getArticle().getItemStack());
             })
-            .build(BreakFFA.getInstance())
         ),
 
         LUCKY_BOOTS (
@@ -81,7 +80,6 @@ public class ShopCategoryDefensive extends ShopCategory
 
                 main.getGuiManager().getHoldManager().refreshArmorState(player);
             })
-            .build(BreakFFA.getInstance())
         ),
 
         SILVERMAIL (
@@ -105,7 +103,6 @@ public class ShopCategoryDefensive extends ShopCategory
             .setBuyAction((Player player, ShopArticle a) -> {
                 player.getInventory().setChestplate(a.getArticle().getItemStack());
             })
-            .build(BreakFFA.getInstance())
         );
 
         private final ShopArticle article;
@@ -114,6 +111,8 @@ public class ShopCategoryDefensive extends ShopCategory
         Articles(ShopArticle article)
         {
             this.article = article;
+
+            this.article.build(BreakFFA.getInstance());
         }
 
 
@@ -143,12 +142,13 @@ public class ShopCategoryDefensive extends ShopCategory
 
     }
 
-    private static final ShopCategoryAttributes attributes = new ShopCategoryAttributes(
-        "DEFENSIF",
-        ChatColor.BLUE,
-        (byte) 11,
-        (byte) 3
-    );
+    private static final ShopCategoryAttributes attributes =
+        new ShopCategoryAttributes(
+            "DEFENSIF",
+            ChatColor.BLUE,
+            (byte) 11,
+            (byte) 3
+        );
 
 
     /**

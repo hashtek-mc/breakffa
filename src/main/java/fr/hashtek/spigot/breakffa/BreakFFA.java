@@ -1,7 +1,6 @@
 package fr.hashtek.spigot.breakffa;
 
 import fr.hashtek.spigot.breakffa.scoreboard.ScoreboardManager;
-import fr.hashtek.spigot.hashboard.HashBoard;
 import fr.hashtek.spigot.hashboard.HashTeam;
 import fr.hashtek.hashconfig.HashConfig;
 import fr.hashtek.hasherror.HashError;
@@ -240,7 +239,6 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         this.logger.info(this, "Registering commands...");
 
         getCommand("guidump").setExecutor(new CommandGuiDump());
-        /* ... */
 
         this.logger.info(this, "Commands registered!");
     }

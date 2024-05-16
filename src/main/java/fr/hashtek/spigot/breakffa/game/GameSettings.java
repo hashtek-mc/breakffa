@@ -12,8 +12,8 @@ public class GameSettings implements HashLoggable
 
     private final HashLogger logger;
 
-    private double maxHeight = 0;
-    private double minHeight = 0;
+    private double maxHeight;
+    private double minHeight;
 
 
     /**
@@ -24,6 +24,8 @@ public class GameSettings implements HashLoggable
     public GameSettings(HashLogger logger)
     {
         this.logger = logger;
+        this.maxHeight = 0;
+        this.minHeight = 0;
     }
 
 

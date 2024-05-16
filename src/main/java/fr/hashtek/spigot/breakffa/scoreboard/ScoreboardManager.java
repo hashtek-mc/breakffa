@@ -2,7 +2,6 @@ package fr.hashtek.spigot.breakffa.scoreboard;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.hashboard.HashBoard;
-import fr.hashtek.spigot.hashboard.HashSideBar;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

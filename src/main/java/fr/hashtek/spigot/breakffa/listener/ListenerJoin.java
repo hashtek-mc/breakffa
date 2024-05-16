@@ -18,7 +18,6 @@ public class ListenerJoin implements Listener, HashLoggable
 {
 
     private final BreakFFA main;
-    private final GameManager gameManager;
 
 
     /**
@@ -29,7 +28,6 @@ public class ListenerJoin implements Listener, HashLoggable
     public ListenerJoin(BreakFFA main)
     {
         this.main = main;
-        this.gameManager = this.main.getGameManager();
     }
 
 
@@ -41,12 +39,13 @@ public class ListenerJoin implements Listener, HashLoggable
     {
         final Player player = event.getPlayer();
         final PlayerData playerData = new PlayerData(this.main, player);
+        final GameManager gameManager = this.main.getGameManager();
         final ScoreboardManager scoreboardManager = this.main.getBoardManager();
         final TablistManager tablistManager = this.main.getTablistManager();
 
-        this.gameManager.addPlayerData(player, playerData);
-
         event.setJoinMessage(null);
+
+        gameManager.addPlayerData(player, playerData);
 
         playerData.getPlayerManager().backToLobby();
 
@@ -62,8 +61,7 @@ public class ListenerJoin implements Listener, HashLoggable
             // TODO: Write error handling (even if none of them should happen).
         }
 
-        scoreboardManager.addPlayerSidebar(player)
-            .refreshSidebar();
+        scoreboardManager.addPlayerSidebar(player).refreshSidebar();
     }
 
 }

@@ -22,7 +22,7 @@ public class KitSpectator
 
     /**
      * getSlotIndex() and give() functions are empty because
-     * they won't be used. Mask are going to carry this.
+     * they won't be used. Masks are going to carry this.
      */
     public enum Items implements KitItems
     {
@@ -183,9 +183,6 @@ public class KitSpectator
             .pattern(4, "bbgggggbb");
 
         mask.apply();
-
-        for (KitSpectator.Items item : KitSpectator.Items.values())
-            item.give(player);
     }
 
 }

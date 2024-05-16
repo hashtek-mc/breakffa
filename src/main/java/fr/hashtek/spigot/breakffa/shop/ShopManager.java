@@ -67,9 +67,8 @@ public class ShopManager
                 "",
                 "" + ChatColor.BLUE + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
             ),
-            (Player p, HashGui gui, ItemStack item, int slot) -> {
-                new ShopCategoryDefensive(this.main, p).open();
-            }
+            (Player p, HashGui gui, ItemStack item, int slot) ->
+                new ShopCategoryDefensive(this.main, p).open()
         ).build(this.guiManager);
 
         final HashItem offensiveCategory = new ShopCategoryItem(
@@ -83,9 +82,8 @@ public class ShopManager
                 "",
                 "" + ChatColor.RED + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
             ),
-            (Player p, HashGui gui, ItemStack item, int slot) -> {
-                new ShopCategoryOffensive(this.main, p).open();
-            }
+            (Player p, HashGui gui, ItemStack item, int slot) ->
+                new ShopCategoryOffensive(this.main, p).open()
         ).build(this.guiManager);
 
         final HashItem supportCategory = new ShopCategoryItem(
@@ -102,9 +100,8 @@ public class ShopManager
                 "",
                 "" + ChatColor.GREEN + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
             ),
-            (Player p, HashGui gui, ItemStack item, int slot) -> {
-                new ShopCategorySupport(this.main, p).open();
-            }
+            (Player p, HashGui gui, ItemStack item, int slot) ->
+                new ShopCategorySupport(this.main, p).open()
         ).build(this.guiManager);
 
         final Mask mask = new Mask(this.gui);
@@ -131,7 +128,7 @@ public class ShopManager
      *
      * @param   playerData  Player's data
      * @param   close       Should item close the shop or open it (only visual, in the item's lore)
-     * @return  Returns built item.
+     * @return  Built item.
      */
     public HashItem createShopItem(PlayerData playerData, boolean close)
     {

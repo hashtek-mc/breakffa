@@ -44,7 +44,6 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
             .setBuyAction((Player player, ShopArticle a) -> {
                 player.getInventory().addItem(KitStarter.Items.GOLDEN_APPLES.getItem().getItemStack());
             })
-            .build(BreakFFA.getInstance())
         ),
 
         OPTIMISED_PICKAXE (
@@ -62,7 +61,6 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
                 3,
                 true
             )
-            .build(BreakFFA.getInstance())
         ),
 
         COMBUSTOR (
@@ -87,7 +85,7 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
 
                                 final int range = 3;
 
-                                /* Sets the item's durability. */
+                                /* Updates the item's durability. */
                                 final int shots = 3;
 
                                 final short itemMaxDurability = item.getType().getMaxDurability();
@@ -137,17 +135,13 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
 
                                 victim.setFireTicks(20 * 3);
 
-                                final Location victimLocation = victim.getLocation();
-//                                final Vector kb = victimLocation.toVector().subtract(playerLocation.toVector()).normalize();
-
-//                                victim.setVelocity(kb.multiply(1.5));
+                                // TODO: Apply a knockback on the victim.
                             })
                     )
                     .build(BreakFFA.getInstance().getGuiManager()),
                 5,
                 true
             )
-            .build(BreakFFA.getInstance())
         ),
 
         BASEBALL_BAT (
@@ -172,7 +166,6 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
                 6,
                 true
             )
-            .build(BreakFFA.getInstance())
         );
 
         private final ShopArticle article;
@@ -181,6 +174,8 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
         Articles(ShopArticle article)
         {
             this.article = article;
+
+            this.article.build(BreakFFA.getInstance());
         }
 
 
@@ -210,12 +205,13 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
 
     }
 
-    private static final ShopCategoryAttributes attributes = new ShopCategoryAttributes(
-        "SUPPORT",
-        ChatColor.GREEN,
-        (byte) 13,
-        (byte) 5
-    );
+    private static final ShopCategoryAttributes attributes =
+        new ShopCategoryAttributes(
+            "SUPPORT",
+            ChatColor.GREEN,
+            (byte) 13,
+            (byte) 5
+        );
 
 
     /**
