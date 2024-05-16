@@ -35,6 +35,14 @@ public class ListenerDamageByEntity implements Listener
     }
 
 
+    /**
+     * Executes Shop weapons abilities.
+     * TODO: This CAN be optimised.
+     *
+     * @param   weapon      Weapon used
+     * @param   victim      Victim
+     * @param   damager     Damager
+     */
     private void executeShopWeaponsAbilities(ItemStack weapon, Player victim, Player damager)
     {
         /* Baseball bat handling */
@@ -56,7 +64,8 @@ public class ListenerDamageByEntity implements Listener
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent event)
     {
-        if (!(event.getEntity() instanceof Player && event.getDamager() instanceof Player))
+        if (!(event.getEntity() instanceof Player &&
+            event.getDamager() instanceof Player))
             return;
 
         final Player victim = (Player) event.getEntity();
@@ -79,7 +88,10 @@ public class ListenerDamageByEntity implements Listener
         if (damagerWeapon == null || damagerWeapon.getType() != Material.AIR)
             this.executeShopWeaponsAbilities(damagerWeapon, victim, damager);
 
-        /* For kill. */
+        /**
+         * For kill.
+         * FIXME: Is this really useful? (cf {@link ListenerDamage})
+         */
         if (victim.getHealth() - event.getFinalDamage() <= 0) {
             event.setCancelled(true);
             victimData.getPlayerManager().kill(DeathReason.MELEE);
