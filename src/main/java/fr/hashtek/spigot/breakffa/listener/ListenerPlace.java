@@ -19,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 public class ListenerPlace implements Listener
 {
 
-    private final BreakFFA main;
     private final GameManager gameManager;
 
 
@@ -30,13 +29,13 @@ public class ListenerPlace implements Listener
      */
     public ListenerPlace(BreakFFA main)
     {
-        this.main = main;
-        this.gameManager = this.main.getGameManager();
+        this.gameManager = main.getGameManager();
     }
 
 
     /**
      * Called when a player places a block.
+     * TODO: Split this function's content into multiple other functions.
      */
     @EventHandler
     public void onPlace(BlockPlaceEvent event)
@@ -55,7 +54,9 @@ public class ListenerPlace implements Listener
             return;
         }
 
-        /* If block is in the spawn protection, cancel the event. */
+        /*
+         * If block is in the spawn protection, cancel the event.
+         */
         Location nearestSpawn = null;
         double nearestDistanceSquared = Double.MAX_VALUE;
 

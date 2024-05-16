@@ -11,7 +11,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 public class ListenerRespawn implements Listener
 {
 
-    private final BreakFFA main;
     private final GameManager gameManager;
 
 
@@ -22,13 +21,13 @@ public class ListenerRespawn implements Listener
      */
     public ListenerRespawn(BreakFFA main)
     {
-        this.main = main;
-        this.gameManager = this.main.getGameManager();
+        this.gameManager = main.getGameManager();
     }
 
 
     /**
      * Called when a player respawns.
+     * Should never fire, but we're preventive ;)
      */
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event)
