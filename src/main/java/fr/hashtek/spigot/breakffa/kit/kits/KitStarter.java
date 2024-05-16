@@ -1,7 +1,6 @@
 package fr.hashtek.spigot.breakffa.kit.kits;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
-import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.kit.KitItems;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerSettings;
@@ -20,6 +19,10 @@ import java.util.Arrays;
 public class KitStarter
 {
 
+    /**
+     * getSlotIndex() and give() functions are empty because
+     * they won't be used. Masks are going to carry this.
+     */
     public enum Items implements KitItems
     {
 
@@ -81,7 +84,6 @@ public class KitStarter
 
 
         private final HashItem item;
-        private final int slotIndex;
 
 
         Items(HashItem item)
@@ -92,7 +94,6 @@ public class KitStarter
         Items(HashItem item, int slotIndex)
         {
             this.item = item;
-            this.slotIndex = slotIndex;
         }
 
 
@@ -111,22 +112,15 @@ public class KitStarter
         @Override
         public int getSlotIndex()
         {
-            return this.slotIndex;
+            return -1;
         }
 
         @Override
-        public void give(Player player)
-        {
-            if (this.slotIndex == -1)
-                return;
-
-            player.getInventory().setItem(this.slotIndex, this.getItem().getItemStack());
-        }
+        public void give(Player player) {}
 
     }
 
     private final BreakFFA main;
-    private final GameManager gameManager;
 
 
     /**
@@ -137,7 +131,6 @@ public class KitStarter
     public KitStarter(BreakFFA main)
     {
         this.main = main;
-        this.gameManager = this.main.getGameManager();
     }
 
     /**
