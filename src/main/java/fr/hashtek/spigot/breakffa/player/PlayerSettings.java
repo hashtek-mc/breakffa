@@ -5,7 +5,6 @@ public class PlayerSettings
 
     public static final String DEFAULT_HOTBAR_LAYOUT = "sptgb    ";
 
-
     private String hotbarLayout;
 
 

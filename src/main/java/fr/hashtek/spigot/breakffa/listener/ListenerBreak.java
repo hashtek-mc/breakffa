@@ -25,6 +25,7 @@ public class ListenerBreak implements Listener
         this.gameManager = main.getGameManager();
     }
 
+
     /**
      * Called when a player breaks a block.
      */

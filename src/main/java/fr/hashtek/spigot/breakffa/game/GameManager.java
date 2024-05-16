@@ -67,7 +67,6 @@ public class GameManager implements HashLoggable
         for (String key : keys)
             if (!yaml.contains(key))
                 return key;
-
         return null;
     }
 
@@ -257,7 +256,6 @@ public class GameManager implements HashLoggable
         } catch (NoSuchFieldException exception) {
             HashError.UNKNOWN
                 .log(this.logger, this, exception);
-
             throw new Exception("Could not properly setup game.");
         }
 
@@ -273,13 +271,11 @@ public class GameManager implements HashLoggable
         for (Player player : this.main.getServer().getOnlinePlayers()) {
             final PlayerData playerData = this.getPlayerData(player);
             final PlayerManager playerManager = playerData.getPlayerManager();
-
             playerManager.backToLobby();
         }
 
         for (Block block : this.placedBlocks)
             block.setType(Material.AIR);
-
         this.placedBlocks.clear();
 
         this.lastReset = new Date();
