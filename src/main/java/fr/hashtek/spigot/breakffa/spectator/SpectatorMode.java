@@ -75,7 +75,7 @@ public class SpectatorMode
         final fr.hashtek.tekore.common.player.PlayerData closestPlayerCoreData = this.main.getCore().getPlayerData(closestPlayer);
         final Rank closestPlayerRank = closestPlayerCoreData.getRank();
 
-        /* Teleport player to closest player */
+        /* Teleport player to the closest player */
         this.player.teleport(closestPlayer.getLocation());
         this.player.playSound(closestPlayer.getLocation(), Sound.ENDERMAN_TELEPORT, 100, 1);
 

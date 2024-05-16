@@ -29,7 +29,8 @@ public class Nexus implements HashLoggable
     /**
      * Creates a new Nexus.
      *
-     * @param   main    BreakFFA instance
+     * @param   main            BreakFFA instance
+     * @param   gameManager     Game manager
      */
     public Nexus(BreakFFA main, GameManager gameManager)
     {
@@ -40,6 +41,7 @@ public class Nexus implements HashLoggable
 
     /**
      * Executes Shop weapons abilities.
+     * TODO: This CAN be optimised.
      *
      * @param   player      Player
      * @param   playerData  Player's data
@@ -111,10 +113,9 @@ public class Nexus implements HashLoggable
 
         this.executeShopWeaponsAbilities(player, playerData);
 
-        /* Resetting game */
         this.gameManager.reset();
 
-        /* Updating player's data */
+        /* Updates player's data */
         playerData.addNexusBreaks(1);
         playerData.addNexusBreaksStreak(1);
         playerData.addShards(5);
@@ -124,7 +125,7 @@ public class Nexus implements HashLoggable
 
 
     /**
-     * @return  Block
+     * @return  Nexus' block
      */
     public Block getBlock()
     {
@@ -132,7 +133,7 @@ public class Nexus implements HashLoggable
     }
 
     /**
-     * @param   block   Block
+     * @param   block   Nexus' block
      */
     public void setBlock(Block block)
     {

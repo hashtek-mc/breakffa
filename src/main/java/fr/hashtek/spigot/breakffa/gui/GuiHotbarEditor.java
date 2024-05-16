@@ -51,6 +51,8 @@ public class GuiHotbarEditor extends HashGui
 
     /**
      * Creates the GUI.
+     * TODO: Store the items in an enum so that the
+     *       items gets built only once : on server start.
      */
     private void createGui()
     {
@@ -175,6 +177,7 @@ public class GuiHotbarEditor extends HashGui
     {
         final StringBuilder newHotbarLayout = new StringBuilder();
 
+        /* Not really explicit, but here we're getting the GUI's 3rd line content. */
         for (int k = 18; k < 27; k++) {
             final ItemStack item = gui.getInventory().getItem(k);
 

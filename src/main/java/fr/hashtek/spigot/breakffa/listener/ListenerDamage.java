@@ -5,7 +5,6 @@ import fr.hashtek.spigot.breakffa.death.DeathReason;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,8 +30,8 @@ public class ListenerDamage implements Listener
     /**
      * Called when an entity takes damage.
      * In this case, we only process players.
-     * FIXME: Detection only applies to chestplates, as the
-     *        only armor piece that will have Thorns enchantment
+     * FIXME: For THORNS damages, detection only applies to chestplates, as the
+     *        only armor piece that will have the THORNS enchantment
      *        are chestplates.
      */
     @EventHandler

@@ -29,7 +29,6 @@ public class ShopCategory
     private PaginatedHashGui gui;
 
     private final ShopCategoryAttributes attributes;
-
     private final List<ShopArticle> articles;
 
 
@@ -54,8 +53,8 @@ public class ShopCategory
         this.playerData = this.main.getGameManager().getPlayerData(player);
 
         this.attributes = attributes;
-
         this.articles = new ArrayList<ShopArticle>();
+
         this.createGui();
     }
 
@@ -135,6 +134,12 @@ public class ShopCategory
      */
     public void loadArticles() {}
 
+    /**
+     * Adds an article to the first free slot in the GUI.
+     * If current page is full, a new one will be created.
+     *
+     * @param   article     Article to add
+     */
     public void addArticle(ShopArticle article)
     {
         final Page lastPage = this.gui.getLastPage();

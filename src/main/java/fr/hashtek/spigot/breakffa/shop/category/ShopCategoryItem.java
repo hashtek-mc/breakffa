@@ -14,10 +14,14 @@ public class ShopCategoryItem extends HashItem
 
     /**
      * Creates a new Shop category item.
-     * TODO: Maybe only pass the class in the constructor,
-     *       so this one will create the class itself, which
-     *       can shorten the code.
-     *       Tried but it's hard, but this may be cool to implement.
+     * TODO:
+     *   - Maybe only pass the class in the constructor,
+     *     so this one will create the class itself, which
+     *     can shorten the code.
+     *     Tried but it's hard, but this may be cool to implement.
+     *   - Assign a color to this item ; then append a click indicator to the lore
+     *     based on the assigned color.
+     *   - Auto build?
      *
      * @param   type    Item material
      * @param   name    Item name

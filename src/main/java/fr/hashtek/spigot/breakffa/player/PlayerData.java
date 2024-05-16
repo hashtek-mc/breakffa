@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack;
 /**
  * Player's BreakFFA data.
  * Not to confuse with Tekore's PlayerData.
+ * TODO: Store this class instances in {@link PlayerManager}.
+ *       More logic.
  */
 public class PlayerData
 {

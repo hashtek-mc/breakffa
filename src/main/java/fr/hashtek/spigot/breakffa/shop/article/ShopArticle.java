@@ -181,12 +181,20 @@ public class ShopArticle
         this.getShopArticle().build(main.getGuiManager());
     }
 
+    /**
+     * @param   action  Custom action on buy
+     * @return  Returns itself.
+     */
     public ShopArticle setBuyAction(ShopArticleBuyAction action)
     {
         this.buyAction = action;
         return this;
     }
 
+    /**
+     * @param   action  Custom action on hold
+     * @return  Returns itself.
+     */
     public ShopArticle setHoldAction(HoldAction action)
     {
         this.getArticle().addHoldHandler(
@@ -196,6 +204,10 @@ public class ShopArticle
         return this;
     }
 
+    /**
+     * @param   action  Custom action on not hold
+     * @return  Returns itself.
+     */
     public ShopArticle setNotHoldAction(HoldAction action)
     {
         this.getArticle().addHoldHandler(
@@ -205,6 +217,10 @@ public class ShopArticle
         return this;
     }
 
+    /**
+     * @param   action  Custom action on hit
+     * @return  Returns itself.
+     */
     public ShopArticle setHitAction(HitAction action)
     {
         this.getArticle().addHitHandler(
@@ -214,6 +230,10 @@ public class ShopArticle
         return this;
     }
 
+    /**
+     * @param   action  Custom action on kill
+     * @return  Returns itself.
+     */
     public ShopArticle setKillAction(HitAction action)
     {
         this.getArticle().addHitHandler(
@@ -224,6 +244,10 @@ public class ShopArticle
         return this;
     }
 
+    /**
+     * @param   action  Custom action on Nexus break
+     * @return  Returns itself.
+     */
     public ShopArticle setNexusBreakAction(DestroyAction action)
     {
         this.getArticle().addDestroyHandler(

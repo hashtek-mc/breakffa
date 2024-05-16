@@ -112,7 +112,7 @@ public class TablistManager implements HashLoggable
     }
 
     /**
-     * Updates the tablist for every players online.
+     * Updates the tablist for every player online.
      *
      * @throws  StrangeException    Tablist exception
      */
