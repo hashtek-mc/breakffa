@@ -17,45 +17,68 @@ public class ScoreboardPersonal
     private final BreakFFA main;
     private final Player player;
 
-    private final HashBoard board;
     private final HashSideBar sidebar;
-    private final NumberFormat numberFormatter;
 
     private static final String sidebarTitle =
-        ChatColor.DARK_RED + "⚕" + ChatColor.BOLD + ChatColor.RED + " BreakFFA " + ChatColor.DARK_RED + "⚕";
+        ChatColor.DARK_RED + "⚕" +
+        ChatColor.BOLD + ChatColor.RED + " BreakFFA " +
+        ChatColor.DARK_RED + "⚕";
 
 
+    /**
+     * Creates a new instance of ScoreboardPersonal.
+     *
+     * @param   main    BreakFFA instance
+     * @param   player  Player
+     * @param   board   HashBoard instance
+     */
     public ScoreboardPersonal(BreakFFA main, Player player, HashBoard board)
     {
         this.main = main;
         this.player = player;
-        this.board = board;
-        this.sidebar = new HashSideBar(this.board);
-        this.numberFormatter = NumberFormat.getInstance();
+        this.sidebar = new HashSideBar(board);
     }
 
 
+    /**
+     * Creates the sidebar body using player's data.
+     * TODO: Uncomment the lines when HashBoard is fixed.
+     *
+     * @param   playerData  Player's data
+     * @return  Created sidebar body
+     */
     private List<String> createSidebarBody(PlayerData playerData)
     {
+        final NumberFormat numberFormatter = NumberFormat.getInstance();
+
         return Arrays.asList(
             " ",
-            ChatColor.WHITE + "Éliminations: " + this.numberFormatter.format(playerData.getTotalKills()),
-            ChatColor.WHITE + "Série d'éliminations: " + this.numberFormatter.format(playerData.getKillStreak()),
-            "  ",
-            ChatColor.WHITE + "Nexus brisés: " + this.numberFormatter.format(playerData.getNexusBreaks()),
-            ChatColor.WHITE + "Série de Nexus brisés: " + this.numberFormatter.format(playerData.getNexusBreaksStreak()),
-            ChatColor.WHITE + "Shards: " + this.numberFormatter.format(playerData.getShards()),
-            "   ",
+//            ChatColor.WHITE + "Éliminations: " + numberFormatter.format(playerData.getTotalKills()),
+//            ChatColor.WHITE + "Série d'éliminations: " + numberFormatter.format(playerData.getKillStreak()),
+//            "  ",
+//            ChatColor.WHITE + "Nexus brisés: " + numberFormatter.format(playerData.getNexusBreaks()),
+//            ChatColor.WHITE + "Série de Nexus brisés: " + numberFormatter.format(playerData.getNexusBreaksStreak()),
+//            ChatColor.WHITE + "Shards: " + numberFormatter.format(playerData.getShards()),
+//            "   ",
             ChatColor.RED + "mc.hashtek.fr"
         );
     }
 
+    /**
+     * Puts the body in the sidebar.
+     *
+     * @param   sidebar     Sidebar
+     * @param   body        Sidebar's body to put
+     */
     private void drawSidebar(HashSideBar sidebar, List<String> body)
     {
         for (int k = 0; k < body.size(); k++)
             sidebar.setLine(body.size() - k, body.get(k));
     }
 
+    /**
+     * Refreshes the sidebar for the linked player.
+     */
     public void refreshSidebar()
     {
         final PlayerData playerData = this.main.getGameManager().getPlayerData(this.player);
