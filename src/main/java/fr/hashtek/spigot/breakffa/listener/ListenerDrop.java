@@ -36,8 +36,9 @@ public class ListenerDrop implements Listener
         final PlayerData playerData = this.gameManager.getPlayerData(player);
 
         /* If player is in the lobby, cancel the event. */
-        if (playerData.getState() == PlayerState.AT_LOBBY)
+        if (playerData.getState() == PlayerState.AT_LOBBY) {
             event.setCancelled(true);
+        }
     }
 
 }

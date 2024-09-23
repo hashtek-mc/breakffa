@@ -44,9 +44,11 @@ public class GameSettings implements HashLoggable
 
         final List<String> requiredKeys = Arrays.asList("", ".maxHeight", ".minHeight");
 
-        for (String key : requiredKeys)
-            if (!yaml.contains(prefix + key))
+        for (String key : requiredKeys) {
+            if (!yaml.contains(prefix + key)) {
                 throw new NoSuchFieldException("\"" + prefix + key + "\" field not found.");
+            }
+        }
 
         this.maxHeight = yaml.getDouble(prefix + ".maxHeight");
         this.minHeight = yaml.getDouble(prefix + ".minHeight");

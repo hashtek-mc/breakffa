@@ -10,6 +10,8 @@ import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashitem.HashItem;
 import fr.hashtek.spigot.hashitem.HashSkull;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.ChatColor;
@@ -30,25 +32,21 @@ public class KitSpectator
         TELEPORT (
             new Object() {
                 HashItem evaluate() {
-                    try {
-                        return new HashSkull()
-                            .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTllNzk4MDM4YjU2MTA0M2U5YmNlZGQ1MmU0YTM2ZDVlZWJkOTkxNzA5NzM0ZWNjMzAxZDkyMmRhNjI1OWM0In19fQ==")
-                            .setName(ChatColor.BLUE + "Téléportation")
-                            .setLore(Arrays.asList(
-                                ChatColor.GRAY + "Cliquez pour vous " + ChatColor.BLUE + "téléporter" + ChatColor.GRAY + " au",
-                                ChatColor.GRAY + "joueur de votre choix."
-                            ))
-                            .addClickHandler(
-                                new ClickHandler()
-                                    .addAllClickTypes()
-                                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                                        // TODO: Open teleportation GUI.
-                                    })
-                            )
-                            .build(BreakFFA.getInstance().getGuiManager());
-                    } catch (NoSuchFieldException | IllegalAccessException exception) {
-                        throw new RuntimeException(exception);
-                    }
+                return new HashSkull()
+                    .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTllNzk4MDM4YjU2MTA0M2U5YmNlZGQ1MmU0YTM2ZDVlZWJkOTkxNzA5NzM0ZWNjMzAxZDkyMmRhNjI1OWM0In19fQ==")
+                    .setName(Component.text(ChatColor.BLUE + "Téléportation"))
+                    .setLore(Arrays.asList(
+                        Component.text(ChatColor.GRAY + "Cliquez pour vous " + ChatColor.BLUE + "téléporter" + ChatColor.GRAY + " au"),
+                        Component.text(ChatColor.GRAY + "joueur de votre choix.")
+                    ))
+                    .addClickHandler(
+                        new ClickHandler()
+                            .addAllClickTypes()
+                            .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                                // TODO: Open teleportation GUI.
+                            })
+                    )
+                    .build(BreakFFA.getInstance().getGuiManager());
                 }
             }.evaluate()
         ),
@@ -56,30 +54,26 @@ public class KitSpectator
         CLOSEST_PLAYER (
             new Object() {
                 HashItem evaluate() {
-                    try {
-                        return new HashSkull()
-                            .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjI5YjE5YWQzYzUxZWRhZDY0M2U0NGRkNWRhNmI5ZDczMTc1NGMxNWE5ZmZiZjgxYzMyYzI4ODZjOTI5MDU3NyJ9fX0=")
-                            .setName(ChatColor.DARK_GREEN + "Proximité")
-                            .setLore(Arrays.asList(
-                                ChatColor.GRAY + "Cliquez pour vous " + ChatColor.BLUE + "téléporter" + ChatColor.GRAY + " au",
-                                ChatColor.GRAY + "joueur le plus proche."
-                            ))
-                            .addClickHandler(
-                                new ClickHandler()
-                                    .addAllClickTypes()
-                                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                                        final BreakFFA main = BreakFFA.getInstance();
-                                        final PlayerData playerData = main.getGameManager().getPlayerData(player);
-                                        final PlayerManager playerManager = playerData.getPlayerManager();
+                return new HashSkull()
+                    .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjI5YjE5YWQzYzUxZWRhZDY0M2U0NGRkNWRhNmI5ZDczMTc1NGMxNWE5ZmZiZjgxYzMyYzI4ODZjOTI5MDU3NyJ9fX0=")
+                    .setName(Component.text(ChatColor.DARK_GREEN + "Proximité"))
+                    .setLore(Arrays.asList(
+                        Component.text(ChatColor.GRAY + "Cliquez pour vous " + ChatColor.BLUE + "téléporter" + ChatColor.GRAY + " au"),
+                        Component.text(ChatColor.GRAY + "joueur le plus proche.")
+                    ))
+                    .addClickHandler(
+                        new ClickHandler()
+                            .addAllClickTypes()
+                            .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                                final BreakFFA main = BreakFFA.getInstance();
+                                final PlayerData playerData = main.getGameManager().getPlayerData(player);
+                                final PlayerManager playerManager = playerData.getPlayerManager();
 
-                                        playerManager.getSpectatorMode().teleportToClosestPlayer();
-                                        gui.close(player);
-                                    })
-                            )
-                            .build(BreakFFA.getInstance().getGuiManager());
-                    } catch (NoSuchFieldException | IllegalAccessException exception) {
-                        throw new RuntimeException(exception);
-                    }
+                                playerManager.getSpectatorMode().teleportToClosestPlayer();
+                                gui.close(player);
+                            })
+                    )
+                    .build(BreakFFA.getInstance().getGuiManager());
                 }
             }.evaluate()
         ),
@@ -87,30 +81,26 @@ public class KitSpectator
         QUIT (
             new Object() {
                 HashItem evaluate() {
-                    try {
-                        return new HashSkull()
-                            .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ5NWVlNThkNzg4MmNkZTEyZmM4NzE1Y2EwZjIxN2IzNWFlZThkMjgzYTIwZjc0YmVhZTk2OTJmOWI4MGVlMyJ9fX0=")
-                            .setName(ChatColor.DARK_GRAY + "Quitter")
-                            .setLore(Arrays.asList(
-                                ChatColor.GRAY + "Cliquez pour quitter le mode " + ChatColor.DARK_AQUA + "fantôme",
-                                ChatColor.DARK_AQUA + "spectateur" + ChatColor.GRAY + " et redevenir mortel."
-                            ))
-                            .addClickHandler(
-                                new ClickHandler()
-                                    .addAllClickTypes()
-                                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                                        final BreakFFA main = BreakFFA.getInstance();
-                                        final PlayerData playerData = main.getGameManager().getPlayerData(player);
-                                        final PlayerManager playerManager = playerData.getPlayerManager();
+                return new HashSkull()
+                    .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ5NWVlNThkNzg4MmNkZTEyZmM4NzE1Y2EwZjIxN2IzNWFlZThkMjgzYTIwZjc0YmVhZTk2OTJmOWI4MGVlMyJ9fX0=")
+                    .setName(Component.text(ChatColor.DARK_GRAY + "Quitter"))
+                    .setLore(Arrays.asList(
+                        Component.text(ChatColor.GRAY + "Cliquez pour quitter le mode " + ChatColor.DARK_AQUA + "fantôme"),
+                        Component.text(ChatColor.DARK_AQUA + "spectateur" + ChatColor.GRAY + " et redevenir mortel.")
+                    ))
+                    .addClickHandler(
+                        new ClickHandler()
+                            .addAllClickTypes()
+                            .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                                final BreakFFA main = BreakFFA.getInstance();
+                                final PlayerData playerData = main.getGameManager().getPlayerData(player);
+                                final PlayerManager playerManager = playerData.getPlayerManager();
 
-                                        playerManager.getSpectatorMode().exit();
-                                        gui.close(player);
-                                    })
-                            )
-                            .build(BreakFFA.getInstance().getGuiManager());
-                    } catch (NoSuchFieldException | IllegalAccessException exception) {
-                        throw new RuntimeException(exception);
-                    }
+                                playerManager.getSpectatorMode().exit();
+                                gui.close(player);
+                            })
+                    )
+                    .build(BreakFFA.getInstance().getGuiManager());
                 }
             }.evaluate()
         );
@@ -167,8 +157,8 @@ public class KitSpectator
         final HashGuiManager guiManager = main.getGuiManager();
         final Inventory inventory = player.getInventory();
 
-        final HashItem blackGlass = HashItem.separator((byte) 15, guiManager);
-        final HashItem grayGlass = HashItem.separator((byte) 8, guiManager);
+        final HashItem blackGlass = HashItem.separator(Material.BLACK_STAINED_GLASS_PANE, guiManager);
+        final HashItem grayGlass = HashItem.separator(Material.GRAY_STAINED_GLASS_PANE, guiManager);
 
         final Mask mask = new Mask(inventory);
 

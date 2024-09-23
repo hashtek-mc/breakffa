@@ -11,6 +11,7 @@ import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashitem.HashItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,28 +45,29 @@ public class ShopManager
 
     /**
      * Creates the base shop GUIs.
+     * TODO: Put all static items in static enum
      */
     private void createGui()
     {
-        this.gui = new HashGui("" + ChatColor.AQUA + ChatColor.BOLD + "Marché ● CATÉGORIES", 3);
+        this.gui = new HashGui(Component.text("" + ChatColor.AQUA + ChatColor.BOLD + "Marché ● CATÉGORIES"), 3);
 
-        final HashItem darkBlueGlass = HashItem.separator((byte) 11, this.guiManager);
-        final HashItem blueGlass = HashItem.separator((byte) 3, this.guiManager);
-        final HashItem orangeGlass = HashItem.separator((byte) 1, this.guiManager);
-        final HashItem redGlass = HashItem.separator((byte) 14, this.guiManager);
-        final HashItem greenGlass = HashItem.separator((byte) 5, this.guiManager);
-        final HashItem darkGreenGlass = HashItem.separator((byte) 13, this.guiManager);
+        final HashItem darkBlueGlass = HashItem.separator(Material.BLUE_STAINED_GLASS_PANE, this.guiManager);
+        final HashItem blueGlass = HashItem.separator(Material.LIGHT_BLUE_STAINED_GLASS_PANE, this.guiManager);
+        final HashItem orangeGlass = HashItem.separator(Material.ORANGE_STAINED_GLASS_PANE, this.guiManager);
+        final HashItem redGlass = HashItem.separator(Material.RED_STAINED_GLASS_PANE, this.guiManager);
+        final HashItem greenGlass = HashItem.separator(Material.LIME_STAINED_GLASS_PANE, this.guiManager);
+        final HashItem darkGreenGlass = HashItem.separator(Material.GREEN_STAINED_GLASS_PANE, this.guiManager);
 
         final HashItem defensiveCategory = new ShopCategoryItem(
             Material.CHAINMAIL_CHESTPLATE,
-            ChatColor.BLUE + "Catégorie Défensive",
+            Component.text(ChatColor.BLUE + "Catégorie Défensive"),
             Arrays.asList(
-                "",
-                ChatColor.GRAY + "Cette catégorie contient l'ensemble des objets",
-                ChatColor.GRAY + "visant à vous " + ChatColor.BLUE + "protéger" + ChatColor.GRAY + ", que cela soit",
-                ChatColor.GRAY + "des types d'" + ChatColor.YELLOW + "armures" + ChatColor.GRAY + ", des " + ChatColor.YELLOW + "structures" + ChatColor.GRAY + ", ou autre.",
-                "",
-                "" + ChatColor.BLUE + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
+                Component.text(""),
+                Component.text(ChatColor.GRAY + "Cette catégorie contient l'ensemble des objets"),
+                Component.text(ChatColor.GRAY + "visant à vous " + ChatColor.BLUE + "protéger" + ChatColor.GRAY + ", que cela soit"),
+                Component.text(ChatColor.GRAY + "des types d'" + ChatColor.YELLOW + "armures" + ChatColor.GRAY + ", des " + ChatColor.YELLOW + "structures" + ChatColor.GRAY + ", ou autre."),
+                Component.text(""),
+                Component.text("" + ChatColor.BLUE + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR")
             ),
             (Player p, HashGui gui, ItemStack item, int slot) ->
                 new ShopCategoryDefensive(this.main, p).open()
@@ -73,14 +75,14 @@ public class ShopManager
 
         final HashItem offensiveCategory = new ShopCategoryItem(
             Material.IRON_SWORD,
-            ChatColor.RED + "Catégorie Offensive",
+            Component.text(ChatColor.RED + "Catégorie Offensive"),
             Arrays.asList(
-                "",
-                ChatColor.GRAY + "Cette catégorie contient l'ensemble des " + ChatColor.RED + "armes" + ChatColor.GRAY + ",",
-                ChatColor.YELLOW + "blanches" + ChatColor.GRAY + " ou à " + ChatColor.YELLOW + "distance" + ChatColor.GRAY + ", et autres objets ayant",
-                ChatColor.GRAY + "pour but de " + ChatColor.RED + "blesser" + ChatColor.GRAY + " votre " + ChatColor.WHITE + "cible" + ChatColor.GRAY + ".",
-                "",
-                "" + ChatColor.RED + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
+                Component.text(""),
+                Component.text(ChatColor.GRAY + "Cette catégorie contient l'ensemble des " + ChatColor.RED + "armes" + ChatColor.GRAY + ","),
+                Component.text(ChatColor.YELLOW + "blanches" + ChatColor.GRAY + " ou à " + ChatColor.YELLOW + "distance" + ChatColor.GRAY + ", et autres objets ayant"),
+                Component.text(ChatColor.GRAY + "pour but de " + ChatColor.RED + "blesser" + ChatColor.GRAY + " votre " + ChatColor.WHITE + "cible" + ChatColor.GRAY + "."),
+                Component.text(""),
+                Component.text("" + ChatColor.RED + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR")
             ),
             (Player p, HashGui gui, ItemStack item, int slot) ->
                 new ShopCategoryOffensive(this.main, p).open()
@@ -88,17 +90,17 @@ public class ShopManager
 
         final HashItem supportCategory = new ShopCategoryItem(
             Material.GOLDEN_APPLE,
-            ChatColor.GREEN + "Catégorie Supportive",
+                Component.text(ChatColor.GREEN + "Catégorie Supportive"),
             Arrays.asList(
-                "",
-                ChatColor.GRAY + "Cette catégorie représente les objets",
-                ChatColor.GRAY + "impliqués dans le " + ChatColor.GREEN + "support" + ChatColor.GRAY + ", permettant donc",
-                ChatColor.GRAY + "de vous aider " + ChatColor.DARK_GREEN + "vous ou vos alliés" + ChatColor.GRAY + ".",
-                "",
-                ChatColor.GRAY + "On y retrouve également le " + ChatColor.BLUE + "reste" + ChatColor.GRAY + " des",
-                ChatColor.GRAY + "objets " + ChatColor.YELLOW + "divers" + ChatColor.GRAY + " et " + ChatColor.YELLOW + "variés" + ChatColor.GRAY + ".",
-                "",
-                "" + ChatColor.GREEN + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR"
+                Component.text(""),
+                Component.text(ChatColor.GRAY + "Cette catégorie représente les objets"),
+                Component.text(ChatColor.GRAY + "impliqués dans le " + ChatColor.GREEN + "support" + ChatColor.GRAY + ", permettant donc"),
+                Component.text(ChatColor.GRAY + "de vous aider " + ChatColor.DARK_GREEN + "vous ou vos alliés" + ChatColor.GRAY + "."),
+                Component.text(""),
+                Component.text(ChatColor.GRAY + "On y retrouve également le " + ChatColor.BLUE + "reste" + ChatColor.GRAY + " des"),
+                Component.text(ChatColor.GRAY + "objets " + ChatColor.YELLOW + "divers" + ChatColor.GRAY + " et " + ChatColor.YELLOW + "variés" + ChatColor.GRAY + "."),
+                Component.text(""),
+                Component.text("" + ChatColor.GREEN + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR")
             ),
             (Player p, HashGui gui, ItemStack item, int slot) ->
                 new ShopCategorySupport(this.main, p).open()
@@ -133,22 +135,22 @@ public class ShopManager
     public HashItem createShopItem(PlayerData playerData, boolean close)
     {
         return new HashItem(Material.NETHER_STAR)
-            .setName(ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (clic gauche)")
+            .setName(Component.text(ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (clic gauche)"))
             .setLore(Arrays.asList(
-                "",
-                ChatColor.GRAY + "Vous possédez actuellement " + ChatColor.AQUA + playerData.getShards() + " shard" + (playerData.getShards() == 1 ? "" : "s") + ChatColor.GRAY + ".",
-                ChatColor.GRAY + "Vos " + ChatColor.AQUA + "shards" + ChatColor.GRAY + " ne sont pas conservables.",
-                "",
-                ChatColor.GRAY + "Vous pouvez acheter des " + ChatColor.BLUE + "objets divers",
-                ChatColor.GRAY + "grâce aux " + ChatColor.AQUA + "shards" + ChatColor.GRAY + " que vos obtenez",
-                ChatColor.GRAY + "durant votre session.",
-                "",
-                ChatColor.GRAY + "Les objets procurent des " + ChatColor.YELLOW + "avantages" + ChatColor.GRAY + " et",
-                ChatColor.GRAY + "sont " + ChatColor.YELLOW + "non-permanents" + ChatColor.GRAY + ".",
-                ChatColor.GRAY + "Leur " + ChatColor.DARK_GREEN + "prix" + ChatColor.GRAY + " ne représente " + ChatColor.RED + "pas" + ChatColor.GRAY + " leur efficacité",
-                ChatColor.GRAY + "et/ou leur utilité en " + ChatColor.WHITE + "jeu" + ChatColor.GRAY + ".",
-                "",
-                "" + ChatColor.AQUA + ChatColor.BOLD + "CLIC GAUCHE POUR " + (close ? "FERMER" : "OUVRIR")
+                Component.text(""),
+                Component.text(ChatColor.GRAY + "Vous possédez actuellement " + ChatColor.AQUA + playerData.getShards() + " shard" + (playerData.getShards() == 1 ? "" : "s") + ChatColor.GRAY + "."),
+                Component.text(ChatColor.GRAY + "Vos " + ChatColor.AQUA + "shards" + ChatColor.GRAY + " ne sont pas conservables."),
+                Component.text(""),
+                Component.text(ChatColor.GRAY + "Vous pouvez acheter des " + ChatColor.BLUE + "objets divers"),
+                Component.text(ChatColor.GRAY + "grâce aux " + ChatColor.AQUA + "shards" + ChatColor.GRAY + " que vos obtenez"),
+                Component.text(ChatColor.GRAY + "durant votre session."),
+                Component.text(""),
+                Component.text(ChatColor.GRAY + "Les objets procurent des " + ChatColor.YELLOW + "avantages" + ChatColor.GRAY + " et"),
+                Component.text(ChatColor.GRAY + "sont " + ChatColor.YELLOW + "non-permanents" + ChatColor.GRAY + "."),
+                Component.text(ChatColor.GRAY + "Leur " + ChatColor.DARK_GREEN + "prix" + ChatColor.GRAY + " ne représente " + ChatColor.RED + "pas" + ChatColor.GRAY + " leur efficacité"),
+                Component.text(ChatColor.GRAY + "et/ou leur utilité en " + ChatColor.WHITE + "jeu" + ChatColor.GRAY + "."),
+                Component.text(""),
+                Component.text("" + ChatColor.AQUA + ChatColor.BOLD + "CLIC GAUCHE POUR " + (close ? "FERMER" : "OUVRIR"))
             ))
             .addClickHandler(
                 new ClickHandler()
@@ -171,10 +173,10 @@ public class ShopManager
         final PlayerInventory inventory = player.getInventory();
         final HashGuiManager guiManager = this.main.getGuiManager();
 
-        final HashItem darkBlueGlass = HashItem.separator((byte) 9, guiManager);
-        final HashItem blueGlass = HashItem.separator((byte) 3, guiManager);
-        final HashItem magentaGlass = HashItem.separator((byte) 2, guiManager);
-        final HashItem whiteGlass = HashItem.separator((byte) 0, guiManager);
+        final HashItem darkBlueGlass = HashItem.separator(Material.BLUE_STAINED_GLASS_PANE, guiManager);
+        final HashItem blueGlass = HashItem.separator(Material.LIGHT_BLUE_STAINED_GLASS_PANE, guiManager);
+        final HashItem magentaGlass = HashItem.separator(Material.MAGENTA_STAINED_GLASS_PANE, guiManager);
+        final HashItem whiteGlass = HashItem.separator(Material.WHITE_STAINED_GLASS_PANE, guiManager);
 
         final HashItem shopItem = this.createShopItem(playerData, false);
 

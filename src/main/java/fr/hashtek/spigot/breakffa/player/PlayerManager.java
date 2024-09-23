@@ -96,12 +96,13 @@ public class PlayerManager implements HashLoggable
         this.player.teleport(this.gameManager.getLobbySpawnLocation());
 
         /* Resets player's health. */
-        this.player.setMaxHealth(20.0);
-        this.player.setHealth(this.player.getMaxHealth());
+        this.player.setHealthScale(20.0);
+        this.player.setHealth(this.player.getHealthScale());
 
         /* Resets player's potion effects. */
-        for (PotionEffect potionEffect : this.player.getActivePotionEffects())
+        for (PotionEffect potionEffect : this.player.getActivePotionEffects()) {
             this.player.removePotionEffect(potionEffect.getType());
+        }
 
         /* Sets player's inventory. */
         playerInventory.clear();

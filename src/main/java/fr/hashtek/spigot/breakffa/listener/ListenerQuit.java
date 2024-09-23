@@ -38,7 +38,7 @@ public class ListenerQuit implements Listener, HashLoggable
         final Player player = event.getPlayer();
         final TablistManager tablist = this.main.getTablistManager();
 
-        event.setQuitMessage(null);
+        event.quitMessage(null);
 
         this.gameManager.removePlayerData(player);
 

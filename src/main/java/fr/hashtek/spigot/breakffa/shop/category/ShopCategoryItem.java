@@ -3,6 +3,7 @@ package fr.hashtek.spigot.breakffa.shop.category;
 import fr.hashtek.spigot.hashgui.handler.click.ClickAction;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 
@@ -30,8 +31,8 @@ public class ShopCategoryItem extends HashItem
      */
     public ShopCategoryItem(
         Material type,
-        String name,
-        List<String> lore,
+        Component name,
+        List<Component> lore,
         ClickAction action
     )
     {

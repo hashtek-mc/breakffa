@@ -7,7 +7,6 @@ import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategorySupport;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -50,8 +49,8 @@ public class ListenerDamageByEntity implements Listener
 
         if (baseballBat.equals(weapon)) {
             for (Player player : this.main.getServer().getOnlinePlayers()) {
-                player.playSound(damager.getLocation(), Sound.ANVIL_LAND, 1, 1);
-                player.playSound(damager.getLocation(), Sound.ZOMBIE_METAL, 100, 1);
+                player.playSound(damager.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
+                player.playSound(damager.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 100, 1);
             }
             return;
         }
@@ -64,19 +63,19 @@ public class ListenerDamageByEntity implements Listener
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent event)
     {
-        if (!(event.getEntity() instanceof Player &&
-            event.getDamager() instanceof Player))
+        if (!(event.getEntity() instanceof Player victim &&
+            event.getDamager() instanceof Player damager)) {
             return;
+        }
 
-        final Player victim = (Player) event.getEntity();
-        final Player damager = (Player) event.getDamager();
         final PlayerData victimData = this.gameManager.getPlayerData(victim);
         final PlayerData damagerData = this.gameManager.getPlayerData(damager);
-        final ItemStack damagerWeapon = damager.getItemInHand();
+        final ItemStack damagerWeapon = damager.getItemOnCursor();
 
         /* If one of the two players is not playing, cancel the event. */
-        if (victimData.getState() != PlayerState.PLAYING || damagerData.getState() != PlayerState.PLAYING)
+        if (victimData.getState() != PlayerState.PLAYING || damagerData.getState() != PlayerState.PLAYING) {
             event.setCancelled(true);
+        }
 
         /* For kill author detection. */
         victimData.setLastDamager(damager);
@@ -85,10 +84,11 @@ public class ListenerDamageByEntity implements Listener
         damagerData.setLastDamagedWith(damagerWeapon);
 
         /* Shop weapons abilities handling. */
-        if (damagerWeapon == null || damagerWeapon.getType() != Material.AIR)
+        if (damagerWeapon.getType() != Material.AIR) {
             this.executeShopWeaponsAbilities(damagerWeapon, victim, damager);
+        }
 
-        /**
+        /*
          * For kill.
          * FIXME: Is this really useful? (cf {@link ListenerDamage})
          */

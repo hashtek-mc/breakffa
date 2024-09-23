@@ -15,12 +15,14 @@ import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.io.IOException;
+import java.util.Objects;
 
 public class BreakFFA extends JavaPlugin implements HashLoggable
 {
@@ -62,8 +64,8 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
             return;
         }
 
-        this.setupHashLogger();
         this.setupConfig();
+        this.setupHashLogger();
 
         this.logger.info(this, "Starting BreakFFA...");
 
@@ -102,7 +104,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
                 this.getClass(),
                 configFilename,
                 this.getDataFolder().getPath() + "/" + configFilename,
-                false
+                true
             );
         } catch (IOException exception) {
             this.logger.fatal(this, "Failed to read config file. Stopping server.", exception);
@@ -112,13 +114,17 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
 
     /**
      * Creates an instance of HashLogger.
-     * Based on Tekore's HashLogger's settings and history.
+     * This function doesn't use HashLogger because it is called before the
+     * initialization of HashLogger. System.err.println is used instead.
      */
     private void setupHashLogger()
     {
-        final HashLogger coreLogger = this.core.getHashLogger();
-
-        this.logger = new HashLogger(this, coreLogger.getSettings().getLogLevel(), coreLogger.getHistory());
+        try {
+            this.logger = HashLogger.fromEnvConfig(this, this.hashConfig.getEnv());
+        } catch (IllegalArgumentException | NullPointerException exception) {
+            System.err.println("Can't initialize HashLogger. Stopping.");
+            this.getServer().shutdown();
+        }
     }
 
     /**
@@ -164,12 +170,17 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     {
         this.world = this.getServer().getWorld("breakffa");
 
-        this.world.setGameRuleValue("doDaylightCycle", "false");
-        this.world.setGameRuleValue("doFireTick", "false");
-        this.world.setGameRuleValue("doMobLoot", "false");
-        this.world.setGameRuleValue("doMobSpawning", "false");
-        this.world.setGameRuleValue("doTileDrops", "false");
-        this.world.setGameRuleValue("keepInventory", "true");
+        if (this.world == null) {
+            // TODO: Log this.
+            return;
+        }
+
+        this.world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        this.world.setGameRule(GameRule.DO_FIRE_TICK, false);
+        this.world.setGameRule(GameRule.DO_MOB_LOOT, false);
+        this.world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        this.world.setGameRule(GameRule.DO_TILE_DROPS, false);
+        this.world.setGameRule(GameRule.KEEP_INVENTORY, true);
         this.world.setDifficulty(Difficulty.NORMAL);
         this.world.setAutoSave(false);
     }
@@ -238,7 +249,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     {
         this.logger.info(this, "Registering commands...");
 
-        getCommand("guidump").setExecutor(new CommandGuiDump());
+        Objects.requireNonNull(getCommand("guidump")).setExecutor(new CommandGuiDump());
 
         this.logger.info(this, "Commands registered!");
     }

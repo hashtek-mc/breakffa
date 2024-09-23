@@ -48,13 +48,13 @@ public class PlayerData
         this.main = main;
 
         this.player = player;
-        this.corePlayerData = this.main.getCore().getPlayerData(this.player);
+        this.corePlayerData = this.main.getCore().getPlayerManager(this.player).getData();
         this.state = PlayerState.AT_LOBBY;
 
         this.settings = new PlayerSettings();
         this.playerManager = new PlayerManager(this.main, this);
 
-        this.shards = 0;
+        this.shards = 1000; // TODO: DEBUG, TO REMOVE!!!!
         this.killRewardShards = 1;
 
         this.totalKills = 0;

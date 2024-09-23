@@ -47,15 +47,11 @@ public enum DeathReason
      */
     public static DeathReason fromDamageCause(EntityDamageEvent.DamageCause cause)
     {
-        switch (cause) {
-            case FIRE:
-            case FIRE_TICK:
-                return DeathReason.FIRE;
-            case THORNS:
-                return DeathReason.THORNS;
-            default:
-                return DeathReason.VOID;
-        }
+        return switch (cause) {
+            case FIRE, FIRE_TICK -> DeathReason.FIRE;
+            case THORNS -> DeathReason.THORNS;
+            default -> DeathReason.VOID;
+        };
     }
 
 

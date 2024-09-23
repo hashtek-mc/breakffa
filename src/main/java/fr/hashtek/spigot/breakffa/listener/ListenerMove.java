@@ -59,14 +59,17 @@ public class ListenerMove implements Listener
      */
     private void handleSpectatorModeBounds(PlayerMoveEvent event, Player player)
     {
-        if (event.getTo().getBlockY() < this.gameSettings.getMinHeight())
+        if (event.getTo().getBlockY() < this.gameSettings.getMinHeight()) {
             player.teleport(this.gameManager.getSpectatorModeSpawnLocation());
+        }
 
-        if (this.isOutsideBorder(this.main.getWorld(), event.getTo()))
+        if (this.isOutsideBorder(this.main.getWorld(), event.getTo())) {
             event.setCancelled(true);
+        }
 
-        if (event.getTo().getBlockY() >= this.gameManager.getLobbySpawnLocation().getBlockY())
+        if (event.getTo().getBlockY() >= this.gameManager.getLobbySpawnLocation().getBlockY()) {
             event.setCancelled(true);
+        }
     }
 
     /**
@@ -77,8 +80,9 @@ public class ListenerMove implements Listener
      */
     private void handleVoidDeath(PlayerMoveEvent event, PlayerData playerData)
     {
-        if (event.getTo().getBlockY() < this.gameSettings.getMinHeight())
+        if (event.getTo().getBlockY() < this.gameSettings.getMinHeight()) {
             playerData.getPlayerManager().kill(DeathReason.VOID);
+        }
     }
 
     /**

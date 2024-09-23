@@ -9,6 +9,7 @@ import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashgui.page.Page;
 import fr.hashtek.spigot.hashitem.HashItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -67,7 +68,7 @@ public class ShopCategory
         final ShopCategoryAttributes attributes = this.attributes;
 
         this.gui = new PaginatedHashGui(
-            "" + attributes.getColor() + ChatColor.BOLD + "Marché " + ChatColor.WHITE + ChatColor.BOLD + "●" + attributes.getColor() + ChatColor.BOLD + " " + attributes.getName(),
+            Component.text("" + attributes.getColor() + ChatColor.BOLD + "Marché " + ChatColor.WHITE + ChatColor.BOLD + "●" + attributes.getColor() + ChatColor.BOLD + " " + attributes.getName()),
             6,
             this.guiManager
         );
@@ -76,12 +77,12 @@ public class ShopCategory
         final HashItem secondaryGlass = HashItem.separator(attributes.getSecondaryColor(), this.guiManager);
 
         final HashItem previousPage = new HashItem(Material.ARROW)
-            .setName(attributes.getColor() + "Page précédente")
-            .addLore(ChatColor.GRAY + "Cliquez pour afficher la page précédente.");
+            .setName(Component.text(attributes.getColor() + "Page précédente"))
+            .addLore(Component.text(ChatColor.GRAY + "Cliquez pour afficher la page précédente."));
 
         final HashItem nextPage = new HashItem(Material.ARROW)
-            .setName(attributes.getColor() + "Page suivante")
-            .addLore(ChatColor.GRAY + "Cliquez pour afficher la page suivante.");
+            .setName(Component.text(attributes.getColor() + "Page suivante"))
+            .addLore(Component.text(ChatColor.GRAY + "Cliquez pour afficher la page suivante."));
 
         final HashItem shopItem = this.shopManager.createShopItem(this.playerData, true);
 

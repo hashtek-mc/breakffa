@@ -9,6 +9,7 @@ import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.hashgui.listener.HashGuiHitListener;
 import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -80,14 +81,14 @@ public class Death implements HashLoggable
 
         this.victim = victim;
         this.victimData = this.gameManager.getPlayerData(this.victim);
-        this.victimCoreData = core.getPlayerData(this.victim);
+        this.victimCoreData = core.getPlayerManager(this.victim).getData();
         this.victimRank = this.victimCoreData.getRank();
 
         this.killer = killer;
 
         if (this.killer != null) {
             this.killerData = this.gameManager.getPlayerData(this.killer);
-            this.killerCoreData = core.getPlayerData(this.killer);
+            this.killerCoreData = core.getPlayerManager(this.killer).getData();
             this.killerRank = this.killerCoreData.getRank();
         } else {
             this.killerData = null;
@@ -130,13 +131,13 @@ public class Death implements HashLoggable
             if (this.weapon != null && this.weapon.getType() != Material.AIR) {
                 message
                     .append(ChatColor.WHITE + " avec ")
-                    .append(this.weapon.getItemMeta().getDisplayName());
+                    .append(this.weapon.getItemMeta().displayName());
             }
         }
 
         message.append(ChatColor.WHITE + ".");
 
-        this.main.getServer().broadcastMessage(message.toString());
+        this.main.getServer().broadcast(Component.text(message.toString()));
     }
 
     /**
@@ -144,8 +145,9 @@ public class Death implements HashLoggable
      */
     private void confirmDeath()
     {
-        if (this.killer == null)
+        if (this.killer == null) {
             return;
+        }
 
         try {
             new ActionBar(
@@ -158,7 +160,7 @@ public class Death implements HashLoggable
                 .log(this.main.getHashLogger(), this, exception);
         }
 
-        this.killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 100, 2);
+        this.killer.playSound(killer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100, 2);
     }
 
     /**
@@ -178,8 +180,9 @@ public class Death implements HashLoggable
      */
     private void processKiller()
     {
-        if (this.killerData == null)
+        if (this.killerData == null) {
             return;
+        }
 
         HashGuiHitListener.processHit(
             this.killer,
@@ -194,7 +197,7 @@ public class Death implements HashLoggable
         this.killerData.addShards(this.killerData.getKillRewardShards());
         this.main.getBoardManager().getPlayerSidebar(this.killer).refreshSidebar();
 
-        this.killer.setHealth(killer.getMaxHealth());
+        this.killer.setHealth(killer.getHealthScale());
         this.main.getShopManager().giveShop(this.killerData);
     }
 

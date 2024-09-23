@@ -37,8 +37,10 @@ public class ListenerInteract implements Listener
         final Player player = event.getPlayer();
         final Block block = event.getClickedBlock();
 
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && this.gameManager.getNexus().getBlock().equals(block))
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK &&
+            this.gameManager.getNexus().getBlock().equals(block)) {
             event.setCancelled(true);
+        }
     }
 
 }

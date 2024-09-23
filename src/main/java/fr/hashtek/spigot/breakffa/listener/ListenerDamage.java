@@ -37,8 +37,9 @@ public class ListenerDamage implements Listener
     @EventHandler
     public void onDamage(EntityDamageEvent event)
     {
-        if (!(event.getEntity() instanceof Player))
+        if (!(event.getEntity() instanceof Player player)) {
             return;
+        }
 
         /* If damage cause is unwanted, cancel the event. */
         if (event.getCause() == EntityDamageEvent.DamageCause.FALL ||
@@ -47,17 +48,18 @@ public class ListenerDamage implements Listener
             return;
         }
 
-        final Player player = (Player) event.getEntity();
         final PlayerData playerData = this.gameManager.getPlayerData(player);
         final PlayerManager playerManager = playerData.getPlayerManager();
 
         /* If player is going to die, custom kill. */
         if (player.getHealth() - event.getFinalDamage() <= 0) {
-            if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK)
+            if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
                 return;
+            }
 
-            if (event.getCause() == EntityDamageEvent.DamageCause.THORNS)
+            if (event.getCause() == EntityDamageEvent.DamageCause.THORNS) {
                 playerData.setLastDamagerWeapon(playerData.getLastDamager().getInventory().getChestplate());
+            }
 
             event.setCancelled(true);
             playerManager.kill(DeathReason.fromDamageCause(event.getCause()));

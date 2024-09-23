@@ -14,7 +14,7 @@ public class ListenerDeath implements Listener
     @EventHandler
     public void onDeath(PlayerDeathEvent event)
     {
-        event.setDeathMessage(null);
+        event.deathMessage(null);
         event.getDrops().clear();
         event.getEntity().spigot().respawn();
     }

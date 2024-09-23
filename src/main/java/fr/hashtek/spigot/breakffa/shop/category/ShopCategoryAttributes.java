@@ -1,14 +1,15 @@
 package fr.hashtek.spigot.breakffa.shop.category;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 
 public class ShopCategoryAttributes
 {
 
     private final String name;
     private final ChatColor color;
-    private final Byte primaryColor;
-    private final Byte secondaryColor;
+    private final Material primaryColor;
+    private final Material secondaryColor;
 
 
     /**
@@ -22,8 +23,8 @@ public class ShopCategoryAttributes
     public ShopCategoryAttributes(
         String name,
         ChatColor color,
-        Byte primaryColor,
-        Byte secondaryColor
+        Material primaryColor,
+        Material secondaryColor
     )
     {
         this.name = name;
@@ -52,7 +53,7 @@ public class ShopCategoryAttributes
     /**
      * @return  Category primary color
      */
-    public Byte getPrimaryColor()
+    public Material getPrimaryColor()
     {
         return this.primaryColor;
     }
@@ -60,7 +61,7 @@ public class ShopCategoryAttributes
     /**
      * @return  Category secondary color
      */
-    public Byte getSecondaryColor()
+    public Material getSecondaryColor()
     {
         return this.secondaryColor;
     }

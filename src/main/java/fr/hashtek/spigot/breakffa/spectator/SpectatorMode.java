@@ -51,13 +51,15 @@ public class SpectatorMode
 
         /* Find the closest playing player */
         for (Player p : BreakFFA.getInstance().getServer().getOnlinePlayers()) {
-            if (p == null || p.equals(this.player))
+            if (p == null || p.equals(this.player)) {
                 continue;
+            }
 
             final PlayerData pData = this.gameManager.getPlayerData(p);
 
-            if (pData.getState() != PlayerState.PLAYING)
+            if (pData.getState() != PlayerState.PLAYING) {
                 continue;
+            }
 
             final double distanceSquared = playerLocation.distanceSquared(p.getLocation());
 
@@ -72,12 +74,13 @@ public class SpectatorMode
             return;
         }
 
-        final fr.hashtek.tekore.common.player.PlayerData closestPlayerCoreData = this.main.getCore().getPlayerData(closestPlayer);
+        final fr.hashtek.tekore.common.player.PlayerData closestPlayerCoreData =
+            this.main.getCore().getPlayerManager(closestPlayer).getData();
         final Rank closestPlayerRank = closestPlayerCoreData.getRank();
 
         /* Teleport player to the closest player */
         this.player.teleport(closestPlayer.getLocation());
-        this.player.playSound(closestPlayer.getLocation(), Sound.ENDERMAN_TELEPORT, 100, 1);
+        this.player.playSound(closestPlayer.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 100, 1);
 
         /* Notifying player */
         this.player.sendMessage(ChatColor.AQUA + "Téléportation à " + closestPlayerRank.getColor() + closestPlayerRank.getFullName() + " " + closestPlayerCoreData.getUsername());

@@ -12,6 +12,8 @@ import fr.hashtek.spigot.hashgui.handler.hit.HitHandler;
 import fr.hashtek.spigot.hashgui.handler.hold.HoldAction;
 import fr.hashtek.spigot.hashgui.handler.hold.HoldHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -20,6 +22,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class ShopArticle
 {
@@ -64,19 +67,23 @@ public class ShopArticle
      */
     public ShopArticle build(BreakFFA main)
     {
-        String articleName = this.getShopArticle().getItemMeta().getDisplayName();
-        final String suffix = " " + ChatColor.WHITE + ChatColor.BOLD + "●" + ChatColor.AQUA + " " + this.price + " shards";
+        final Component articleName = Objects.requireNonNull(this.getShopArticle().getItemMeta().displayName());
+        final Component suffix = Component.text(" " + ChatColor.WHITE + ChatColor.BOLD + "●" + ChatColor.AQUA + " " + this.price + " shards");
 
-        if (!articleName.endsWith(suffix))
-            articleName += suffix;
+        if (!articleName.contains(suffix)) {
+            articleName.append(suffix);
+        }
 
         this.getShopArticle().setName(articleName);
 
-        if (this.isTemporary)
+        if (this.isTemporary) {
             this.getShopArticle()
-                .addLore("")
-                .addLore(ChatColor.GRAY + "Cet objet est " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ", il")
-                .addLore(ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + " !");
+                .addLore(Arrays.asList(
+                    Component.text(""),
+                    Component.text(ChatColor.GRAY + "Cet objet est " + ChatColor.RED + "temporaire" + ChatColor.GRAY + ", il"),
+                    Component.text(ChatColor.GRAY + "disparaît à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + " !")
+                ));
+        }
 
         this.getShopArticle()
             .setFlags(Arrays.asList(
@@ -120,15 +127,17 @@ public class ShopArticle
         if (!canBuy) {
             String reason = ChatColor.RED + "";
 
-            if (!hasEnoughShards)
+            if (!hasEnoughShards) {
                 reason += "Vous ne possédez pas assez de " + ChatColor.AQUA + "shards" + ChatColor.RED + ".";
-            if (!hasEnoughSpace)
+            }
+            if (!hasEnoughSpace) {
                 reason += "Vous n'avez plus de place dans votre inventaire.";
+            }
 
             player.sendMessage(reason);
 
             player.playSound(player.getLocation(), "random.break", 100, 0);
-            player.playSound(player.getLocation(), Sound.NOTE_BASS, 100, 0);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 100, 0);
 
             return;
         }
@@ -137,24 +146,29 @@ public class ShopArticle
         playerData.setShards(playerShards - articlePrice);
 
         /* Gives the item to the player. */
-        if (this.buyAction == null)
+        if (this.buyAction == null) {
             player.getInventory().addItem(this.getArticle().getItemStack());
-        else
+        } else {
             this.buyAction.execute(player, this);
+        }
 
         /* Updates the shop items (for shards in lore). */
         final HashItem shopItem = playerData.getMain().getShopManager().createShopItem(playerData, true);
         playerData.getMain().getShopManager().giveShop(playerData);
-        gui.replaceAll(shopItem.getItemMeta().getDisplayName(), shopItem);
+        gui.replaceAll(shopItem.getItemMeta().displayName(), shopItem);
         BreakFFA.getInstance().getBoardManager().getPlayerSidebar(player).refreshSidebar();
 
 
         /* Plays buy sound to the player. */
         player.playSound(player.getLocation(), "mob.horse.leather", 100, 1);
-        player.playSound(player.getLocation(), Sound.WOOD_CLICK, 100, 1);
+        player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 100, 1);
 
         /* Sends buy confirmation to the player. */
-        player.sendMessage(ChatColor.AQUA + "Vous avez acheté " + this.article.getItemMeta().getDisplayName() + ChatColor.AQUA + ".");
+        player.sendMessage(
+            ChatColor.AQUA + "Vous avez acheté " +
+            ((TextComponent) Objects.requireNonNull(this.article.getItemMeta().displayName())).content() +
+            ChatColor.AQUA + "."
+        );
     }
 
     /**
@@ -168,12 +182,11 @@ public class ShopArticle
             new ClickHandler()
                 .addAllClickTypes()
                 .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                    if (!(gui instanceof PaginatedHashGui))
+                    if (!(gui instanceof PaginatedHashGui paginatedGui)) {
                         return;
+                    }
 
-                    final PaginatedHashGui paginatedGui = (PaginatedHashGui) gui;
                     final PlayerData playerData = main.getGameManager().getPlayerData(player);
-
                     this.buy(playerData, paginatedGui);
                 })
         );

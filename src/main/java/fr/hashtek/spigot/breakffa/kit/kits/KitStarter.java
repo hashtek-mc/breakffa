@@ -7,6 +7,7 @@ import fr.hashtek.spigot.breakffa.player.PlayerSettings;
 import fr.hashtek.spigot.breakffa.shop.ShopManager;
 import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashitem.HashItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -29,7 +30,7 @@ public class KitStarter
         /* Items */
         SWORD (
             new HashItem(Material.IRON_SWORD)
-                .setName(ChatColor.RED + "Epée Basique")
+                .setName(Component.text(ChatColor.RED + "Epée Basique"))
                 .setUnbreakable(true)
                 .addEnchant(Enchantment.DAMAGE_ALL, 1)
                 .build()
@@ -37,47 +38,47 @@ public class KitStarter
 
         PICKAXE (
             new HashItem(Material.IRON_PICKAXE)
-                .setName(ChatColor.GREEN + "Pioche Basique")
+                .setName(Component.text(ChatColor.GREEN + "Pioche Basique"))
                 .setUnbreakable(true)
                 .build()
         ),
 
         INSTANT_TNT (
             new HashItem(Material.TNT, 4)
-                .setName(ChatColor.GREEN + "TNT")
+                .setName(Component.text(ChatColor.GREEN + "TNT"))
                 .build()
         ),
 
         GOLDEN_APPLES(
             new HashItem(Material.GOLDEN_APPLE, 3)
-                .setName(ChatColor.GREEN + "Pomme d'Or")
+                .setName(Component.text(ChatColor.GREEN + "Pomme d'Or"))
                 .build()
         ),
 
         BLOCKS(
             new HashItem(Material.SANDSTONE, 64, (byte) 2)
-                .setName(ChatColor.GREEN + "Blocs")
+                .setName(Component.text(ChatColor.GREEN + "Blocs"))
                 .build()
         ),
 
         /* Armor */
         CHESTPLATE (
             new HashItem(Material.IRON_CHESTPLATE)
-                .setName(ChatColor.BLUE + "Plastron en fer")
+                .setName(Component.text(ChatColor.BLUE + "Plastron en fer"))
                 .setUnbreakable(true)
                 .build()
         ),
 
         LEGGINGS (
             new HashItem(Material.CHAINMAIL_LEGGINGS)
-                .setName(ChatColor.BLUE + "Jambières en maille")
+                .setName(Component.text(ChatColor.BLUE + "Jambières en maille"))
                 .setUnbreakable(true)
                 .build()
         ),
 
         BOOTS (
             new HashItem(Material.LEATHER_BOOTS)
-                .setName(ChatColor.BLUE + "Bottes en cuir")
+                .setName(Component.text(ChatColor.BLUE + "Bottes en cuir"))
                 .setUnbreakable(true)
                 .build()
         );

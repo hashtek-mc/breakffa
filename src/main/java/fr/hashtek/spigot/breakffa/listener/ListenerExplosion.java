@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.util.Vector;
 
+import java.util.Objects;
+
 public class ListenerExplosion implements Listener
 {
 
@@ -37,11 +39,12 @@ public class ListenerExplosion implements Listener
     @EventHandler
     public void onTNTExplode(EntityExplodeEvent event)
     {
-        if (event.getEntityType() != EntityType.PRIMED_TNT)
+        if (event.getEntityType() != EntityType.PRIMED_TNT) {
             return;
+            }
 
         final TNTPrimed tnt = (TNTPrimed) event.getEntity();
-        final Player author = this.main.getServer().getPlayer(tnt.getCustomName());
+        final Player author = this.main.getServer().getPlayer(Objects.requireNonNull(tnt.getCustomName()));
         final Location tntLocation = tnt.getLocation();
         final double radius = 4.0;
 
@@ -50,10 +53,10 @@ public class ListenerExplosion implements Listener
 
         /* Pushes every entity around that TNT. */
         for (Entity entity : tnt.getNearbyEntities(radius, radius, radius)) {
-            if (!(entity instanceof Player))
+            if (!(entity instanceof Player player)) {
                 continue;
+            }
 
-            final Player player = (Player) entity;
             final PlayerData playerData = this.main.getGameManager().getPlayerData(player);
             final Vector direction = player.getLocation().toVector().subtract(tntLocation.toVector()).normalize();
 
@@ -62,7 +65,7 @@ public class ListenerExplosion implements Listener
             player.setVelocity(direction);
 
             /* Setting player's last damager to explosion author. */
-            if (!author.equals(player)) {
+            if (!Objects.requireNonNull(author).equals(player)) {
                 playerData.setLastDamager(author);
                 playerData.setLastDamagerWeapon(KitStarter.Items.INSTANT_TNT.getItem().getItemStack());
             }

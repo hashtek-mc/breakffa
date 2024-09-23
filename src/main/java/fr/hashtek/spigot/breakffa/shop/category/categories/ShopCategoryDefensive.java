@@ -8,6 +8,7 @@ import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
 import fr.hashtek.spigot.hashgui.handler.hold.HoldHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -28,12 +29,12 @@ public class ShopCategoryDefensive extends ShopCategory
         CHAINMAIL (
             new ShopArticle(
                 new HashItem(Material.CHAINMAIL_CHESTPLATE)
-                    .setName(ChatColor.BLUE + "Côte de Maille")
+                    .setName(Component.text(ChatColor.BLUE + "Côte de Maille"))
                     .setLore(Arrays.asList(
-                        "",
-                        ChatColor.GRAY + "Equipez-vous d'une côte de maille",
-                        ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec",
-                        ChatColor.DARK_AQUA + "Protection contre les projectiles II" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+16%)"
+                        Component.text(""),
+                        Component.text(ChatColor.GRAY + "Equipez-vous d'une côte de maille"),
+                        Component.text(ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec"),
+                        Component.text(ChatColor.DARK_AQUA + "Protection contre les projectiles II" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+16%)")
                     ))
                     .addEnchant(Enchantment.PROTECTION_PROJECTILE, 2)
                     .setUnbreakable(true)
@@ -49,14 +50,14 @@ public class ShopCategoryDefensive extends ShopCategory
         LUCKY_BOOTS (
             new ShopArticle(
                 new HashItem(Material.LEATHER_BOOTS)
-                    .setName(ChatColor.BLUE + "Bottes Bonheurs")
+                    .setName(Component.text(ChatColor.BLUE + "Bottes Bonheurs"))
                     .setLore(Arrays.asList(
-                        "",
-                        ChatColor.GRAY + "Mettez toutes les " + ChatColor.DARK_GREEN + "chances" + ChatColor.GRAY + " de votre côté !",
-                        ChatColor.GRAY + "Ces bottes " + ChatColor.YELLOW + "offrent" + ChatColor.GRAY + " un léger bonus de " + ChatColor.AQUA + "vitesse" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+20%)",
-                        "",
-                        ChatColor.GRAY + "Chaque " + ChatColor.DARK_RED + "Nexus" + ChatColor.GRAY + " cassé avec ces bottes " + ChatColor.YELLOW + "à vos pieds",
-                        ChatColor.GRAY + "vous donnera " + ChatColor.AQUA + "3 shards" + ChatColor.GRAY + " bonus !"
+                        Component.text(""),
+                        Component.text(ChatColor.GRAY + "Mettez toutes les " + ChatColor.DARK_GREEN + "chances" + ChatColor.GRAY + " de votre côté !"),
+                        Component.text(ChatColor.GRAY + "Ces bottes " + ChatColor.YELLOW + "offrent" + ChatColor.GRAY + " un léger bonus de " + ChatColor.AQUA + "vitesse" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+20%)"),
+                        Component.text(""),
+                        Component.text(ChatColor.GRAY + "Chaque " + ChatColor.DARK_RED + "Nexus" + ChatColor.GRAY + " cassé avec ces bottes " + ChatColor.YELLOW + "à vos pieds"),
+                        Component.text(ChatColor.GRAY + "vous donnera " + ChatColor.AQUA + "3 shards" + ChatColor.GRAY + " bonus !")
                     ))
                     .setUnbreakable(true)
                     .setLeatherArmorColor(Color.fromRGB(52, 249, 81))
@@ -85,13 +86,13 @@ public class ShopCategoryDefensive extends ShopCategory
         SILVERMAIL (
             new ShopArticle(
                 new HashItem(Material.CHAINMAIL_CHESTPLATE)
-                    .setName(ChatColor.BLUE + "Côte d'Argent")
+                    .setName(Component.text(ChatColor.BLUE + "Côte d'Argent"))
                     .setLore(Arrays.asList(
-                        "",
-                        ChatColor.GRAY + "Equipez-vous d'une côte d'" + ChatColor.WHITE + "argent",
-                        ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec",
-                        ChatColor.DARK_AQUA + "Protection contre les projectiles IV" + ChatColor.DARK_GRAY + " (+32%)",
-                        ChatColor.GRAY + "et " + ChatColor.DARK_AQUA + "Epines I" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+15%)"
+                        Component.text(""),
+                        Component.text(ChatColor.GRAY + "Equipez-vous d'une côte d'" + ChatColor.WHITE + "argent"),
+                        Component.text(ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et " + ChatColor.DARK_PURPLE + "enchantée" + ChatColor.GRAY + " avec"),
+                        Component.text(ChatColor.DARK_AQUA + "Protection contre les projectiles IV" + ChatColor.DARK_GRAY + " (+32%)"),
+                        Component.text(ChatColor.GRAY + "et " + ChatColor.DARK_AQUA + "Epines I" + ChatColor.GRAY + "." + ChatColor.DARK_GRAY + " (+15%)")
                     ))
                     .addEnchant(Enchantment.PROTECTION_PROJECTILE, 4)
                     .addEnchant(Enchantment.THORNS, 1)
@@ -146,8 +147,8 @@ public class ShopCategoryDefensive extends ShopCategory
         new ShopCategoryAttributes(
             "DEFENSIF",
             ChatColor.BLUE,
-            (byte) 11,
-            (byte) 3
+            Material.BLUE_STAINED_GLASS_PANE,
+            Material.LIGHT_BLUE_STAINED_GLASS_PANE
         );
 
 
@@ -160,7 +161,6 @@ public class ShopCategoryDefensive extends ShopCategory
     public ShopCategoryDefensive(BreakFFA main, Player player)
     {
         super(main, player, attributes);
-
         this.loadArticles();
     }
 
@@ -170,8 +170,9 @@ public class ShopCategoryDefensive extends ShopCategory
     @Override
     public void loadArticles()
     {
-        for (Articles article : Articles.values())
+        for (Articles article : Articles.values()) {
             super.addArticle(article.getArticle());
+        }
     }
 
 }

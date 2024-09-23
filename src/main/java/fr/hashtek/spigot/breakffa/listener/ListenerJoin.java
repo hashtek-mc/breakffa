@@ -43,7 +43,7 @@ public class ListenerJoin implements Listener, HashLoggable
         final ScoreboardManager scoreboardManager = this.main.getBoardManager();
         final TablistManager tablistManager = this.main.getTablistManager();
 
-        event.setJoinMessage(null);
+        event.joinMessage(null);
 
         gameManager.addPlayerData(player, playerData);
 
@@ -52,7 +52,8 @@ public class ListenerJoin implements Listener, HashLoggable
         this.main.getBoardManager().getBoard().setToPlayers(player);
 
         try {
-            final fr.hashtek.tekore.common.player.PlayerData pData = this.main.getCore().getPlayerData(player);
+            final fr.hashtek.tekore.common.player.PlayerData pData =
+                this.main.getCore().getPlayerManager(player).getData();
 
             this.main.getRankTeams().get(pData.getRank().getUuid()).add(player);
             tablistManager.refresh();

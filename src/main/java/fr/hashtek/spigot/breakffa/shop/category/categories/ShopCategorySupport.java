@@ -12,6 +12,7 @@ import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
 import fr.hashtek.spigot.hashgui.handler.interact.InteractHandler;
 import fr.hashtek.spigot.hashitem.HashItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -31,12 +32,12 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
         GOLD_PACKAGE (
             new ShopArticle(
                 new HashItem(Material.GOLDEN_APPLE)
-                    .setName(ChatColor.GREEN + "Colis d'Or")
+                    .setName(Component.text(ChatColor.GREEN + "Colis d'Or"))
                     .setLore(Arrays.asList(
-                        "",
-                        ChatColor.GRAY + "Obtenez 3 " + ChatColor.GOLD + "pommes d'or" + ChatColor.GRAY + " supplémentaires",
-                        ChatColor.GRAY + "instantanément, augmentant vos " + ChatColor.GREEN + "chances",
-                        ChatColor.GRAY + "de " + ChatColor.DARK_GREEN + "survie" + ChatColor.GRAY + ", jusqu'à votre " + ChatColor.DARK_RED + "mort"
+                        Component.text(""),
+                        Component.text(ChatColor.GRAY + "Obtenez 3 " + ChatColor.GOLD + "pommes d'or" + ChatColor.GRAY + " supplémentaires"),
+                        Component.text(ChatColor.GRAY + "instantanément, augmentant vos " + ChatColor.GREEN + "chances"),
+                        Component.text(ChatColor.GRAY + "de " + ChatColor.DARK_GREEN + "survie" + ChatColor.GRAY + ", jusqu'à votre " + ChatColor.DARK_RED + "mort")
                     ))
                     .build(),
                 2
@@ -49,11 +50,11 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
         OPTIMISED_PICKAXE (
             new ShopArticle(
                 new HashItem(Material.IRON_PICKAXE)
-                    .setName(ChatColor.GREEN + "Pioche Optimisée")
+                    .setName(Component.text(ChatColor.GREEN + "Pioche Optimisée"))
                     .setLore(Arrays.asList(
-                        "",
-                        ChatColor.GRAY + "Procure un outil amélioré, " + ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et",
-                        ChatColor.DARK_PURPLE + "enchanté" + ChatColor.GRAY + " avec " + ChatColor.DARK_AQUA + "Efficacité III" + ChatColor.GRAY + "."
+                        Component.text(""),
+                        Component.text(ChatColor.GRAY + "Procure un outil amélioré, " + ChatColor.YELLOW + "incassable" + ChatColor.GRAY + " et"),
+                        Component.text(ChatColor.DARK_PURPLE + "enchanté" + ChatColor.GRAY + " avec " + ChatColor.DARK_AQUA + "Efficacité III" + ChatColor.GRAY + ".")
                     ))
                     .addEnchant(Enchantment.DIG_SPEED, 3)
                     .setUnbreakable(true)
@@ -66,12 +67,12 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
         COMBUSTOR (
             new ShopArticle(
                 new HashItem(Material.FLINT_AND_STEEL)
-                    .setName(ChatColor.GREEN + "Combusteur")
+                    .setName(Component.text(ChatColor.GREEN + "Combusteur"))
                     .setLore(Arrays.asList(
-                        "",
-                        ChatColor.GRAY + "Procure un dispositif à " + ChatColor.YELLOW + "3 utilisations",
-                        ChatColor.GRAY + "permettant " + ChatColor.GOLD + "d'enflammer" + ChatColor.GRAY + " une " + ChatColor.RED + "cible" + ChatColor.GRAY + " proche " + ChatColor.DARK_GRAY + "(3 blocs)",
-                        ChatColor.GRAY + "tout en la " + ChatColor.AQUA + "repoussant" + ChatColor.GRAY + " légèrement."
+                        Component.text(""),
+                        Component.text(ChatColor.GRAY + "Procure un dispositif à " + ChatColor.YELLOW + "3 utilisations"),
+                        Component.text(ChatColor.GRAY + "permettant " + ChatColor.GOLD + "d'enflammer" + ChatColor.GRAY + " une " + ChatColor.RED + "cible" + ChatColor.GRAY + " proche " + ChatColor.DARK_GRAY + "(3 blocs)"),
+                        Component.text(ChatColor.GRAY + "tout en la " + ChatColor.AQUA + "repoussant" + ChatColor.GRAY + " légèrement.")
                     ))
                     .addInteractHandler(
                         new InteractHandler()
@@ -89,18 +90,19 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
                                 final int shots = 3;
 
                                 final short itemMaxDurability = item.getType().getMaxDurability();
-                                final short itemDurability = (short) (itemMaxDurability - item.getDurability());
+                                final short itemDurability = (short) (itemMaxDurability - item.getMaxItemUseDuration());
                                 final short finalDurability = (short) (itemDurability - (itemMaxDurability / shots));
 
                                 item.setDurability((short) (itemMaxDurability - finalDurability));
 
-                                if (finalDurability <= 1)
+                                if (finalDurability <= 1) {
                                     player.getInventory().setItem(slot, null);
+                                }
 
                                 for (Player p : onlinePlayers) {
                                     /* Plays sound. */
-                                    p.playSound(playerLocation, Sound.FIREWORK_TWINKLE2, 1, 2);
-                                    p.playSound(playerLocation, Sound.FIZZ, 1, 2);
+                                    p.playSound(playerLocation, Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1, 2);
+                                    p.playSound(playerLocation, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 2); // FIZZ
                                     p.playSound(playerLocation, "item.fireCharge.use", 1, 2);
 
                                     /* Spawns particles. */
@@ -130,8 +132,9 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
                                 /* Hurt victim if there is one. */
                                 final Player victim = HashUtils.getAimedPlayer(player, range);
 
-                                if (victim == null)
+                                if (victim == null) {
                                     return;
+                                }
 
                                 victim.setFireTicks(20 * 3);
 
@@ -147,18 +150,18 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
         BASEBALL_BAT (
             new ShopArticle(
                 new HashItem(Material.STONE_SWORD)
-                    .setName(ChatColor.GREEN + "Batte de Baseball")
+                    .setName(Component.text(ChatColor.GREEN + "Batte de Baseball"))
                     .setLore(Arrays.asList(
-                        "",
-                        ChatColor.GRAY + "Mêlée permettant de " + ChatColor.AQUA + "pousser",
-                        ChatColor.GRAY + "une " + ChatColor.RED + "cible" + ChatColor.GRAY + " quelconque à plus de",
-                        ChatColor.YELLOW + "5 blocks " + ChatColor.GRAY + "en un seul coup.",
-                        "",
-                        ChatColor.GRAY + "Cependant, cette batte se " + ChatColor.DARK_RED + "casse",
-                        ChatColor.GRAY + "après " + ChatColor.YELLOW + "un seul" + ChatColor.GRAY + " coup!",
-                        "",
-                        ChatColor.GRAY + "Disparaît également à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + ",",
-                        ChatColor.GRAY + "en cas de non utilisation."
+                        Component.text(""),
+                        Component.text(ChatColor.GRAY + "Mêlée permettant de " + ChatColor.AQUA + "pousser"),
+                        Component.text(ChatColor.GRAY + "une " + ChatColor.RED + "cible" + ChatColor.GRAY + " quelconque à plus de"),
+                        Component.text(ChatColor.YELLOW + "5 blocks " + ChatColor.GRAY + "en un seul coup."),
+                        Component.text(""),
+                        Component.text(ChatColor.GRAY + "Cependant, cette batte se " + ChatColor.DARK_RED + "casse"),
+                        Component.text(ChatColor.GRAY + "après " + ChatColor.YELLOW + "un seul" + ChatColor.GRAY + " coup!"),
+                        Component.text(""),
+                        Component.text(ChatColor.GRAY + "Disparaît également à votre " + ChatColor.DARK_RED + "mort" + ChatColor.GRAY + ","),
+                        Component.text(ChatColor.GRAY + "en cas de non utilisation.")
                     ))
                     .addEnchant(Enchantment.KNOCKBACK, 4)
                     .setDurability((short) 0)
@@ -174,7 +177,6 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
         Articles(ShopArticle article)
         {
             this.article = article;
-
             this.article.build(BreakFFA.getInstance());
         }
 
@@ -188,8 +190,9 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
         @Override
         public boolean equals(ItemStack item)
         {
-            if (item == null || item.getType() == Material.AIR)
+            if (item == null || item.getType() == Material.AIR) {
                 return false;
+            }
 
             final ItemStack i = new HashItem(item)
                 .build()
@@ -209,8 +212,8 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
         new ShopCategoryAttributes(
             "SUPPORT",
             ChatColor.GREEN,
-            (byte) 13,
-            (byte) 5
+            Material.GREEN_STAINED_GLASS_PANE,
+            Material.LIME_STAINED_GLASS_PANE
         );
 
 
@@ -223,7 +226,6 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
     public ShopCategorySupport(BreakFFA main, Player player)
     {
         super(main, player, attributes);
-
         this.loadArticles();
     }
 
@@ -234,8 +236,9 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
     @Override
     public void loadArticles()
     {
-        for (Articles article : Articles.values())
+        for (Articles article : Articles.values()) {
             super.addArticle(article.getArticle());
+        }
     }
 
 }

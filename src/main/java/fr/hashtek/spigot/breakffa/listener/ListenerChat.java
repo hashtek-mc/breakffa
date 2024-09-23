@@ -4,11 +4,13 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
 import fr.hashtek.tekore.common.player.PlayerData;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ListenerChat implements Listener
 {
@@ -31,17 +33,17 @@ public class ListenerChat implements Listener
      * Called when a player sends a message in the chat.
      */
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent event)
+    public void onChat(AsyncChatEvent event)
     {
         final Player player = event.getPlayer();
-        final PlayerData playerData = this.core.getPlayerData(player);
+        final PlayerData playerData = this.core.getPlayerManager(player).getData();
         final Rank playerRank = playerData.getRank();
 
-        event.setFormat(
+        event.message(Component.text(
             playerRank.getColor() + player.getName() + "@" + playerRank.getName()
             + ChatColor.DARK_GRAY + " $ "
-            + ChatColor.WHITE + event.getMessage()
-        );
+            + ChatColor.WHITE + ((TextComponent) event.message()).content()
+        ));
     }
 
 }

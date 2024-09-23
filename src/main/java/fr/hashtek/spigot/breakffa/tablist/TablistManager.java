@@ -54,9 +54,11 @@ public class TablistManager implements HashLoggable
 
         final List<String> requiredKeys = Arrays.asList("", ".header", ".footer");
 
-        for (String key : requiredKeys)
-            if (!yaml.contains(prefix + key))
+        for (String key : requiredKeys) {
+            if (!yaml.contains(prefix + key)) {
                 throw new NoSuchFieldException("\"" + prefix + key + "\" field not found.");
+            }
+        }
 
         this.header = ChatColor.translateAlternateColorCodes('&', yaml.getString(prefix + ".header"));
         this.footer = ChatColor.translateAlternateColorCodes('&', yaml.getString(prefix + ".footer"));
@@ -77,8 +79,9 @@ public class TablistManager implements HashLoggable
     {
         int onlinePlayers = this.main.getServer().getOnlinePlayers().size();
 
-        if (minusOnePlayer)
+        if (minusOnePlayer) {
             onlinePlayers--;
+        }
 
         this.tablist.setHeader(this.header);
 
@@ -119,8 +122,9 @@ public class TablistManager implements HashLoggable
     public void update()
         throws StrangeException
     {
-        for (Player player : Bukkit.getServer().getOnlinePlayers())
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             this.update(player);
+        }
     }
 
 

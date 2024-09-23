@@ -64,9 +64,11 @@ public class GameManager implements HashLoggable
      */
     private String checkRequiredKeys(YamlFile yaml, String... keys)
     {
-        for (String key : keys)
-            if (!yaml.contains(key))
+        for (String key : keys) {
+            if (!yaml.contains(key)) {
                 return key;
+            }
+        }
         return null;
     }
 
@@ -88,8 +90,9 @@ public class GameManager implements HashLoggable
             prefix, prefix + ".x", prefix + ".y", prefix + ".z"
         );
 
-        if (missingKey != null)
+        if (missingKey != null) {
             throw new NoSuchFieldException("\"" + missingKey + "\" field not found.");
+        }
 
         final double x = yaml.getDouble(prefix + ".x");
         final double y = yaml.getDouble(prefix + ".y");
@@ -122,8 +125,9 @@ public class GameManager implements HashLoggable
             prefix, prefix + ".x", prefix + ".y", prefix + ".z"
         );
 
-        if (missingKey != null)
+        if (missingKey != null) {
             throw new NoSuchFieldException("\"" + missingKey + "\" field not found.");
+        }
 
         final double x = yaml.getDouble(prefix + ".x");
         final double y = yaml.getDouble(prefix + ".y");
@@ -217,8 +221,9 @@ public class GameManager implements HashLoggable
             prefix, prefix + ".x", prefix + ".y", prefix + ".z"
         );
 
-        if (missingKey != null)
+        if (missingKey != null) {
             throw new NoSuchFieldException("\"" + missingKey + "\" field not found.");
+        }
 
         final double x = yaml.getDouble(prefix + ".x");
         final double y = yaml.getDouble(prefix + ".y");
@@ -274,8 +279,9 @@ public class GameManager implements HashLoggable
             playerManager.backToLobby();
         }
 
-        for (Block block : this.placedBlocks)
+        for (Block block : this.placedBlocks) {
             block.setType(Material.AIR);
+        }
         this.placedBlocks.clear();
 
         this.lastReset = new Date();

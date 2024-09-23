@@ -44,8 +44,9 @@ public class ListenerBreak implements Listener
         }
 
         /* If block was not placed by a player, cancel the event. */
-        if (!this.gameManager.getPlacedBlocks().contains(block))
+        if (!this.gameManager.getPlacedBlocks().contains(block)) {
             event.setCancelled(true);
+        }
     }
 
 }

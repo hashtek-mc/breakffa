@@ -6,6 +6,8 @@ plugins {
 group = 'fr.hashtek.spigot'
 version = 'D0.1-SNAPSHOT'
 
+def hashrc = '/home/shuvly/Hashtek/hashrc'
+
 repositories {
     mavenCentral()
     maven {
@@ -23,12 +25,12 @@ configurations {
 }
 
 dependencies {
-    compileOnly 'org.github.paperspigot:paperspigot-api:1.8.8-R0.1-SNAPSHOT'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-def targetJavaVersion = 8
+def targetJavaVersion = 16
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -63,7 +65,7 @@ shadowJar {
     exclude '**/BungeeCord.jar'
 
     dependencies {
-        exclude(dependency('org.github.paperspigot:paperspigot-api:1.8.8-R0.1-SNAPSHOT'))
+        exclude(dependency('com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'))
     }
 
     mergeServiceFiles()
@@ -72,7 +74,7 @@ shadowJar {
 
 tasks.register('make', Copy) {
     from ('build/libs/')
-    into 'C:\\Users\\Shuvly\\Documents\\Hashtek\\Plugins\\hashrc'
+    into hashrc
     include '*.jar'
 }
 

@@ -2,5 +2,7 @@ name: '${name}'
 author: Lysandre B.
 version: '${version}'
 main: fr.hashtek.spigot.breakffa.BreakFFA
+api-version: '1.16'
+depend: ['Tekore']
 commands:
   guidump:

@@ -13,6 +13,7 @@ import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashitem.HashItem;
 import fr.hashtek.tekore.bukkit.Tekore;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,10 +31,10 @@ public class KitLobby
 
         BACK_TO_LOBBY (
             new HashItem(Material.IRON_DOOR)
-                .setName(ChatColor.RED + "Revenir au Lobby")
+                .setName(Component.text(ChatColor.RED + "Revenir au Lobby"))
                 .setLore(Arrays.asList(
-                    ChatColor.GRAY + "Quittez le mode de jeu " + ChatColor.RED + "BreakFFA",
-                    ChatColor.GRAY + "pour revenir au " + ChatColor.WHITE + "Hub" + ChatColor.GRAY + " principal."
+                    Component.text(ChatColor.GRAY + "Quittez le mode de jeu " + ChatColor.RED + "BreakFFA"),
+                    Component.text(ChatColor.GRAY + "pour revenir au " + ChatColor.WHITE + "Hub" + ChatColor.GRAY + " principal.")
                 ))
                 .addClickHandler(
                     new ClickHandler()
@@ -41,7 +42,7 @@ public class KitLobby
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
                             final Tekore core = BreakFFA.getInstance().getCore();
 
-                            core.getPlayerData(player).getPlayerManager().sendToServer("lobby01");
+                            core.getPlayerManager(player).sendToServer("lobby01");
                         })
                 )
                 .build(BreakFFA.getInstance().getGuiManager()),
@@ -50,10 +51,10 @@ public class KitLobby
 
         COSMETICS (
             new HashItem(Material.EMERALD)
-                .setName(ChatColor.AQUA + "Customisation")
+                .setName(Component.text(ChatColor.AQUA + "Customisation"))
                 .setLore(Arrays.asList(
-                    ChatColor.GRAY + "Accédez au menu des " + ChatColor.AQUA + "cosmétiques" + ChatColor.GRAY + " du",
-                    ChatColor.RED + "BreakFFA" + ChatColor.GRAY + " et gérez vos préférences."
+                    Component.text(ChatColor.GRAY + "Accédez au menu des " + ChatColor.AQUA + "cosmétiques" + ChatColor.GRAY + " du"),
+                    Component.text(ChatColor.RED + "BreakFFA" + ChatColor.GRAY + " et gérez vos préférences.")
                 ))
                 .addInteractHandler(
                     new InteractHandler()
@@ -74,11 +75,11 @@ public class KitLobby
         ),
 
         HOTBAR_EDITOR (
-            new HashItem(Material.REDSTONE_COMPARATOR)
-                .setName(ChatColor.GOLD + "Hotbar")
+            new HashItem(Material.COMPARATOR)
+                .setName(Component.text(ChatColor.GOLD + "Hotbar"))
                 .setLore(Arrays.asList(
-                    ChatColor.GRAY + "Personnalisez votre " + ChatColor.GOLD + "Hotbar" + ChatColor.GRAY + " en fonction",
-                    ChatColor.GRAY + "de votre " + ChatColor.YELLOW + "style" + ChatColor.GRAY + " de jeu."
+                    Component.text(ChatColor.GRAY + "Personnalisez votre " + ChatColor.GOLD + "Hotbar" + ChatColor.GRAY + " en fonction"),
+                    Component.text(ChatColor.GRAY + "de votre " + ChatColor.YELLOW + "style" + ChatColor.GRAY + " de jeu.")
                 ))
                 .addInteractHandler(
                     new InteractHandler()
@@ -100,10 +101,10 @@ public class KitLobby
 
         PLAY (
             new HashItem(Material.DIAMOND_SWORD)
-                .setName(ChatColor.YELLOW + "Jouer")
+                .setName(Component.text(ChatColor.YELLOW + "Jouer"))
                 .setLore(Arrays.asList(
-                    ChatColor.GRAY + "Plongez dans " + ChatColor.GOLD + "l'action" + ChatColor.GRAY + " et tentez de",
-                    ChatColor.GRAY + "briser le " + ChatColor.DARK_RED + "Nexus" + ChatColor.GRAY + " au centre !"
+                    Component.text(ChatColor.GRAY + "Plongez dans " + ChatColor.GOLD + "l'action" + ChatColor.GRAY + " et tentez de"),
+                    Component.text(ChatColor.GRAY + "briser le " + ChatColor.DARK_RED + "Nexus" + ChatColor.GRAY + " au centre !")
                 ))
                 .addFlag(ItemFlag.HIDE_ATTRIBUTES)
                 .addInteractHandler(
@@ -131,11 +132,11 @@ public class KitLobby
         ),
 
         SPECTATE (
-            new HashItem(Material.EYE_OF_ENDER)
-                .setName(ChatColor.DARK_AQUA + "Observer")
+            new HashItem(Material.ENDER_EYE)
+                .setName(Component.text(ChatColor.DARK_AQUA + "Observer"))
                 .setLore(Arrays.asList(
-                    ChatColor.GRAY + "Devenez un " + ChatColor.DARK_AQUA + "fantôme spectateur",
-                    ChatColor.GRAY + "volant et sans collisions."
+                    Component.text(ChatColor.GRAY + "Devenez un " + ChatColor.DARK_AQUA + "fantôme spectateur"),
+                    Component.text(ChatColor.GRAY + "volant et sans collisions.")
                 ))
                 .addInteractHandler(
                     new InteractHandler()
@@ -145,8 +146,9 @@ public class KitLobby
                             final PlayerData playerData = main.getGameManager().getPlayerData(player);
                             final PlayerManager playerManager = playerData.getPlayerManager();
 
-                            if (playerManager.getSpectatorMode() == null)
+                            if (playerManager.getSpectatorMode() == null) {
                                 playerManager.setSpectatorMode(new SpectatorMode(main, player));
+                            }
 
                             playerManager.getSpectatorMode().go();
                         })
@@ -159,8 +161,9 @@ public class KitLobby
                             final PlayerData playerData = main.getGameManager().getPlayerData(player);
                             final PlayerManager playerManager = playerData.getPlayerManager();
 
-                            if (playerManager.getSpectatorMode() == null)
+                            if (playerManager.getSpectatorMode() == null) {
                                 playerManager.setSpectatorMode(new SpectatorMode(main, player));
+                            }
 
                             playerManager.getSpectatorMode().go();
                         })
@@ -171,10 +174,10 @@ public class KitLobby
 
         STATS (
             new HashItem(Material.PAPER)
-                .setName(ChatColor.BLUE + "Statistiques")
+                .setName(Component.text(ChatColor.BLUE + "Statistiques"))
                 .setLore(Arrays.asList(
-                    ChatColor.GRAY + "Affichez vos " + ChatColor.BLUE + "statistiques détaillées",
-                    ChatColor.GRAY + "dans le mode " + ChatColor.RED + "BreakFFA"
+                    Component.text(ChatColor.GRAY + "Affichez vos " + ChatColor.BLUE + "statistiques détaillées"),
+                    Component.text(ChatColor.GRAY + "dans le mode " + ChatColor.RED + "BreakFFA")
                 ))
                 .addInteractHandler(
                     new InteractHandler()
@@ -221,9 +224,9 @@ public class KitLobby
         @Override
         public void give(Player player)
         {
-            if (this.slotIndex == -1)
+            if (this.slotIndex == -1) {
                 return;
-
+            }
             player.getInventory().setItem(this.slotIndex, this.getItem().getItemStack());
         }
 
@@ -254,8 +257,8 @@ public class KitLobby
         final HashGuiManager guiManager = main.getGuiManager();
         final Inventory inventory = player.getInventory();
 
-        final HashItem blackGlass = HashItem.separator((byte) 15, guiManager);
-        final HashItem redGlass = HashItem.separator((byte) 14, guiManager);
+        final HashItem blackGlass = HashItem.separator(Material.BLACK_STAINED_GLASS_PANE, guiManager);
+        final HashItem redGlass = HashItem.separator(Material.RED_STAINED_GLASS_PANE, guiManager);
 
         final Mask mask = new Mask(inventory);
 
@@ -269,8 +272,9 @@ public class KitLobby
 
         mask.apply();
 
-        for (Items item : Items.values())
+        for (Items item : Items.values()) {
             item.give(player);
+        }
     }
 
 }

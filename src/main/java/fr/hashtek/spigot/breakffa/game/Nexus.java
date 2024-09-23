@@ -51,9 +51,11 @@ public class Nexus implements HashLoggable
         final PlayerInventory inventory = player.getInventory();
 
         /* Lucky Boots handling */
-        for (ItemStack i : inventory.getArmorContents())
-            if (ShopCategoryDefensive.Articles.LUCKY_BOOTS.equals(i))
+        for (ItemStack i : inventory.getArmorContents()) {
+            if (ShopCategoryDefensive.Articles.LUCKY_BOOTS.equals(i)) {
                 playerData.addShards(3);
+            }
+        }
     }
 
     /**
@@ -74,14 +76,15 @@ public class Nexus implements HashLoggable
         for (Player p : this.main.getServer().getOnlinePlayers()) {
             final PlayerData pData = this.gameManager.getPlayerData(p);
 
-            if (pData.getState() != PlayerState.PLAYING)
+            if (pData.getState() != PlayerState.PLAYING) {
                 continue;
+            }
 
             /* Nexus breaking SFX / VFX */
-            p.playSound(p.getLocation(), Sound.IRONGOLEM_DEATH, 100, 0);
-            p.playSound(p.getLocation(), Sound.EXPLODE, 100, 0);
+            p.playSound(p.getLocation(), Sound.ENTITY_IRON_GOLEM_DEATH, 100, 0);
+            p.playSound(p.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 100, 0);
             p.playSound(p.getLocation(), "mob.guardian.curse", 100, 0);
-            p.playSound(p.getLocation(), Sound.WITHER_DEATH, 100, 0);
+            p.playSound(p.getLocation(), Sound.ENTITY_WITHER_DEATH, 100, 0);
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1, 0), false);
 
             /* Nexus breaking messages */
@@ -107,8 +110,9 @@ public class Nexus implements HashLoggable
             }
 
             /* Resetting player's nexus break streak */
-            if (!pData.getPlayer().equals(player))
+            if (!pData.getPlayer().equals(player)) {
                 pData.setNexusBreaksStreak(0);
+            }
         }
 
         this.executeShopWeaponsAbilities(player, playerData);
