@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.text.NumberFormat;
 import java.util.Arrays;
 
 public class ShopManager
@@ -138,7 +139,7 @@ public class ShopManager
             .setName(Component.text(ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (clic gauche)"))
             .setLore(Arrays.asList(
                 Component.text(""),
-                Component.text(ChatColor.GRAY + "Vous possédez actuellement " + ChatColor.AQUA + playerData.getShards() + " shard" + (playerData.getShards() == 1 ? "" : "s") + ChatColor.GRAY + "."),
+                Component.text(ChatColor.GRAY + "Vous possédez actuellement " + ChatColor.AQUA + NumberFormat.getInstance().format(playerData.getShards()) + " shard" + (playerData.getShards() == 1 ? "" : "s") + ChatColor.GRAY + "."),
                 Component.text(ChatColor.GRAY + "Vos " + ChatColor.AQUA + "shards" + ChatColor.GRAY + " ne sont pas conservables."),
                 Component.text(""),
                 Component.text(ChatColor.GRAY + "Vous pouvez acheter des " + ChatColor.BLUE + "objets divers"),
