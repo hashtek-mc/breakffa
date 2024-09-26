@@ -67,11 +67,11 @@ public class GuiHotbarEditor extends HashGui
             .setName(Component.text(ChatColor.GOLD + "Configuration de la Hotbar"))
             .setLore(Arrays.asList(
                 Component.text(""),
-                Component.text(ChatColor.GRAY + "La " + ChatColor.GOLD + "hotbar" + ChatColor.GRAY + "représente les 9 et uniques " + ChatColor.YELLOW + "emplacements"),
+                Component.text(ChatColor.GRAY + "La " + ChatColor.GOLD + "hotbar" + ChatColor.GRAY + " représente les 9 et uniques " + ChatColor.YELLOW + "emplacements"),
                 Component.text(ChatColor.GRAY + "d'inventaire que vous pouvez utiliser dans le " + ChatColor.RED + "BreakFFA" + ChatColor.GRAY + "."),
                 Component.text(""),
                 Component.text(ChatColor.GRAY + "Les objets obtenus via le " + ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (ou autre)"),
-                Component.text(ChatColor.GRAY + "seront " + ChatColor.GREEN + "placés" + ChatColor.GRAY + "dans le slot libre le plus " + ChatColor.YELLOW + "à gauche" + ChatColor.GRAY + ".")
+                Component.text(ChatColor.GRAY + "seront " + ChatColor.GREEN + "placés" + ChatColor.GRAY + " dans le slot libre le plus " + ChatColor.YELLOW + "à gauche" + ChatColor.GRAY + ".")
             ))
             .setUntakable(true)
             .build(this.guiManager);
