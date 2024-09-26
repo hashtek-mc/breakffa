@@ -14,7 +14,10 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public class ListenerPlace implements Listener
 {
@@ -54,9 +57,7 @@ public class ListenerPlace implements Listener
             return;
         }
 
-        /*
-         * If block is in the spawn protection, cancel the event.
-         */
+        /* If block is in the spawn protection, cancel the event. */
         Location nearestSpawn = null;
         double nearestDistanceSquared = Double.MAX_VALUE;
 
@@ -101,8 +102,13 @@ public class ListenerPlace implements Listener
 
         /* If neither of the above cases, keep the item in hand and add the block to placed blocks list. */
         final ItemStack item = event.getItemInHand();
+        final PlayerInventory inv = player.getInventory();
 
-        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), item);
+        if (event.getHand() == EquipmentSlot.OFF_HAND) { // Second hand handling
+            inv.setItemInOffHand(item);
+        } else {
+            inv.setItem(player.getInventory().getHeldItemSlot(), item);
+        }
 
         this.gameManager.getPlacedBlocks().add(block);
     }
