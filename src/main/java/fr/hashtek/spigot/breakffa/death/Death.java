@@ -10,17 +10,19 @@ import fr.hashtek.spigot.hashgui.listener.HashGuiHitListener;
 import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Objects;
+
 public class Death implements HashLoggable
 {
 
     private final BreakFFA main;
-    private final GameManager gameManager;
 
     private final Player victim;
     private final PlayerData victimData;
@@ -73,21 +75,20 @@ public class Death implements HashLoggable
      */
     public Death(BreakFFA main, Player victim, Player killer, ItemStack weapon, DeathReason reason)
     {
-        final Tekore core;
-
         this.main = main;
-        core = this.main.getCore();
-        this.gameManager = this.main.getGameManager();
+
+        final Tekore core = this.main.getCore();
+        final GameManager gameManager = this.main.getGameManager();
 
         this.victim = victim;
-        this.victimData = this.gameManager.getPlayerData(this.victim);
+        this.victimData = gameManager.getPlayerData(this.victim);
         this.victimCoreData = core.getPlayerManager(this.victim).getData();
         this.victimRank = this.victimCoreData.getRank();
 
         this.killer = killer;
 
         if (this.killer != null) {
-            this.killerData = this.gameManager.getPlayerData(this.killer);
+            this.killerData = gameManager.getPlayerData(this.killer);
             this.killerCoreData = core.getPlayerManager(this.killer).getData();
             this.killerRank = this.killerCoreData.getRank();
         } else {
@@ -97,7 +98,6 @@ public class Death implements HashLoggable
         }
 
         this.weapon = weapon;
-
         this.reason = reason;
     }
 
@@ -131,7 +131,7 @@ public class Death implements HashLoggable
             if (this.weapon != null && this.weapon.getType() != Material.AIR) {
                 message
                     .append(ChatColor.WHITE + " avec ")
-                    .append(this.weapon.getItemMeta().displayName());
+                    .append(((TextComponent) Objects.requireNonNull(this.weapon.getItemMeta().displayName())).content());
             }
         }
 
