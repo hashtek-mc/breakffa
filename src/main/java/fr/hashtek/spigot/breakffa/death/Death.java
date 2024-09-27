@@ -1,8 +1,6 @@
 package fr.hashtek.spigot.breakffa.death;
 
-import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
-import fr.hashtek.hashutils.ActionBar;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
@@ -149,16 +147,11 @@ public class Death implements HashLoggable
             return;
         }
 
-        try {
-            new ActionBar(
-                "" + ChatColor.DARK_RED + ChatColor.UNDERLINE + ChatColor.BOLD + "⚔" +
-                this.victimRank.getColor() + " " + this.victimRank.getShortName() + " " + this.victimCoreData.getUsername() + " " +
-                ChatColor.AQUA + ChatColor.BOLD + "+" + killerData.getKillRewardShards()
-            ).send(this.killer);
-        } catch (Exception exception) {
-            HashError.SRV_PACKET_SEND_FAIL
-                .log(this.main.getHashLogger(), this, exception);
-        }
+        this.killer.sendActionBar(Component.text(
+            "" + ChatColor.DARK_RED + ChatColor.UNDERLINE + ChatColor.BOLD + "⚔" +
+            this.victimRank.getColor() + " " + this.victimRank.getShortName() + " " + this.victimCoreData.getUsername() + " " +
+            ChatColor.AQUA + ChatColor.BOLD + "+" + killerData.getKillRewardShards()
+        ));
 
         this.killer.playSound(killer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100, 2);
     }

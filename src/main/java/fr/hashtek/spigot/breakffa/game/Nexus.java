@@ -1,9 +1,7 @@
 package fr.hashtek.spigot.breakffa.game;
 
-import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashutils.HashUtils;
-import fr.hashtek.hashutils.Title;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
@@ -68,7 +66,6 @@ public class Nexus implements HashLoggable
         final PlayerData playerData = this.gameManager.getPlayerData(player);
         final fr.hashtek.tekore.common.player.PlayerData corePlayerData = playerData.getCorePlayerData();
         final Rank playerRank = corePlayerData.getRank();
-        final Title title = new Title();
 
         /* Clears all drops. */
         new HashUtils.World(this.main.getWorld()).clearItems();
@@ -94,20 +91,13 @@ public class Nexus implements HashLoggable
                 ChatColor.RED + "a brisé le " + ChatColor.DARK_RED + ChatColor.BOLD + "Nexus" + ChatColor.RESET + ChatColor.RED + " !"
             );
 
-            try {
-                title.send(
-                    p,
-                    0,
-                    20,
-                    40,
-                    ChatColor.RED + "⚕ " + ChatColor.DARK_RED + ChatColor.BOLD + "NEXUS" + ChatColor.RED + " ⚕",
-                    ChatColor.RED + "Brisé par " + playerRank.getColor() + corePlayerData.getUsername()
-                );
-            } catch (Exception exception) {
-                HashError.SRV_PACKET_SEND_FAIL
-                    .log(this.main.getHashLogger(), this, exception)
-                    .sendToPlayer(p);
-            }
+            p.sendTitle(
+                ChatColor.RED + "⚕ " + ChatColor.DARK_RED + ChatColor.BOLD + "NEXUS" + ChatColor.RED + " ⚕",
+                ChatColor.RED + "Brisé par " + playerRank.getColor() + corePlayerData.getUsername(),
+                0,
+                20,
+                40
+            );
 
             /* Resetting player's nexus break streak */
             if (!pData.getPlayer().equals(player)) {
