@@ -2,6 +2,7 @@ package fr.hashtek.spigot.breakffa.player;
 
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
+import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 import fr.hashtek.spigot.breakffa.death.Death;
 import fr.hashtek.spigot.breakffa.death.DeathReason;
 import fr.hashtek.spigot.breakffa.game.GameManager;
@@ -22,8 +23,8 @@ public class PlayerManager implements HashLoggable
     private final PlayerData playerData;
     private final Player player;
     private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
-    private final GameManager gameManager;
 
+    private final CosmeticManager cosmeticManager;
     private SpectatorMode spectatorMode;
 
 
@@ -39,7 +40,7 @@ public class PlayerManager implements HashLoggable
         this.playerData = playerData;
         this.corePlayerData = this.playerData.getCorePlayerData();
         this.player = this.playerData.getPlayer();
-        this.gameManager = this.main.getGameManager();
+        this.cosmeticManager = new CosmeticManager();
     }
 
 
@@ -61,12 +62,14 @@ public class PlayerManager implements HashLoggable
      */
     public void play()
     {
+        final GameManager gameManager = this.main.getGameManager();
+
         final PlayerInventory inventory = this.player.getInventory();
         final KitStarter starterKit = new KitStarter(this.main);
 
         /* Finds a random spawn and teleports the player to it. */
-        final int spawnIndex = new Random().nextInt(this.gameManager.getSpawnLocations().size());
-        final Location spawn = this.gameManager.getSpawnLocations().get(spawnIndex);
+        final int spawnIndex = new Random().nextInt(gameManager.getSpawnLocations().size());
+        final Location spawn = gameManager.getSpawnLocations().get(spawnIndex);
         this.player.teleport(spawn);
 
         /* Updates player's data. */
@@ -85,6 +88,8 @@ public class PlayerManager implements HashLoggable
      */
     public void backToLobby()
     {
+        final GameManager gameManager = this.main.getGameManager();
+
         final PlayerInventory playerInventory = this.player.getInventory();
         final KitLobby lobbyKit = new KitLobby(this.main);
 
@@ -93,7 +98,7 @@ public class PlayerManager implements HashLoggable
         this.player.setGameMode(GameMode.ADVENTURE);
 
         /* Teleports player back to the lobby. */
-        this.player.teleport(this.gameManager.getLobbySpawnLocation());
+        this.player.teleport(gameManager.getLobbySpawnLocation());
 
         /* Resets player's health. */
         this.player.setHealthScale(20.0);
@@ -139,6 +144,14 @@ public class PlayerManager implements HashLoggable
     public PlayerData getPlayerData()
     {
         return this.playerData;
+    }
+
+    /**
+     * @return  Cosmetic manager
+     */
+    public CosmeticManager getCosmeticManager()
+    {
+        return this.cosmeticManager;
     }
 
     /**
