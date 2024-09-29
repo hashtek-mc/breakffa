@@ -70,11 +70,12 @@ public class ListenerDamageByEntity implements Listener
 
         final PlayerData victimData = this.gameManager.getPlayerData(victim);
         final PlayerData damagerData = this.gameManager.getPlayerData(damager);
-        final ItemStack damagerWeapon = damager.getInventory().getItemInMainHand();
+        final ItemStack damagerWeapon = damager.getInventory().getItemInMainHand().clone();
 
         /* If one of the two players is not playing, cancel the event. */
         if (victimData.getState() != PlayerState.PLAYING || damagerData.getState() != PlayerState.PLAYING) {
             event.setCancelled(true);
+            return;
         }
 
         /* For kill author detection. */
