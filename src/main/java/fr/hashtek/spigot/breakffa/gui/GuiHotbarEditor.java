@@ -22,10 +22,99 @@ import java.util.Map;
 public class GuiHotbarEditor extends HashGui
 {
 
+    protected enum Items
+    {
+
+        ORANGE_SEP (HashItem.separator(Material.ORANGE_STAINED_GLASS_PANE, BreakFFA.getInstance().getGuiManager())),
+        RED_SEP (HashItem.separator(Material.RED_STAINED_GLASS_PANE, BreakFFA.getInstance().getGuiManager())),
+
+        TITLE (new HashItem(Material.OAK_SIGN)
+            .setName(Component.text(ChatColor.GOLD + "Configuration de la Hotbar"))
+            .setLore(Arrays.asList(
+                Component.text(""),
+                Component.text(ChatColor.GRAY + "La " + ChatColor.GOLD + "hotbar" + ChatColor.GRAY + " représente les 9 et uniques " + ChatColor.YELLOW + "emplacements"),
+                Component.text(ChatColor.GRAY + "d'inventaire que vous pouvez utiliser dans le " + ChatColor.RED + "BreakFFA" + ChatColor.GRAY + "."),
+                Component.text(""),
+                Component.text(ChatColor.GRAY + "Les objets obtenus via le " + ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (ou autre)"),
+                Component.text(ChatColor.GRAY + "seront " + ChatColor.GREEN + "placés" + ChatColor.GRAY + " dans le slot libre le plus " + ChatColor.YELLOW + "à gauche" + ChatColor.GRAY + ".")
+            ))
+            .setUntakable(true)
+            .build(BreakFFA.getInstance().getGuiManager())
+        ),
+
+        CONFIRM (new HashItem(Material.INK_SAC, 1, (byte) 10)
+            .setName(Component.text(ChatColor.GREEN + "Valider"))
+            .addLore(Component.text(ChatColor.GRAY + "Ferme la configuration en sauvegardant."))
+            .addClickHandler(
+                new ClickHandler()
+                    .addAllClickTypes()
+                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                        if (!(gui instanceof GuiHotbarEditor guiHotbarEditor)) {
+                            return;
+                        }
+
+                        guiHotbarEditor.updatePlayerHotbarLayout(guiHotbarEditor);
+                        player.sendMessage(ChatColor.GREEN + "Vos modifications ont été enregistrées.");
+                        guiHotbarEditor.close(player);
+                    })
+            )
+            .build(BreakFFA.getInstance().getGuiManager())
+        ),
+
+        RESET (new HashItem(Material.PAPER)
+            .setName(Component.text(ChatColor.AQUA + "Réinitialiser"))
+            .addLore(Component.text(ChatColor.GRAY + "Restore la hotbar par défaut."))
+            .addClickHandler(
+                new ClickHandler()
+                    .addAllClickTypes()
+                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                        if (!(gui instanceof GuiHotbarEditor guiHotbarEditor)) {
+                            return;
+                        }
+
+                        guiHotbarEditor.getMask()
+                            .pattern(3, PlayerSettings.DEFAULT_HOTBAR_LAYOUT)
+                            .apply();
+
+                        guiHotbarEditor.update(player);
+                    })
+            )
+            .build(BreakFFA.getInstance().getGuiManager())
+        ),
+
+        CANCEL (new HashItem(Material.INK_SAC, 1, (byte) 1)
+            .setName(Component.text(ChatColor.RED + "Annuler"))
+            .addLore(Component.text(ChatColor.GRAY + "Ferme la configuration sans sauvegarder."))
+            .addClickHandler(
+                new ClickHandler()
+                    .addAllClickTypes()
+                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                        gui.close(player);
+                        player.sendMessage(ChatColor.RED + "Modifications annulées.");
+                    })
+            )
+            .build(BreakFFA.getInstance().getGuiManager())
+        );
+
+
+        private final HashItem item;
+
+
+        Items(HashItem item)
+        {
+            this.item = item;
+        }
+
+
+        public HashItem getItem()
+        {
+            return this.item;
+        }
+
+    }
+
+
     private Mask mask;
-
-    private final HashGuiManager guiManager;
-
     private final PlayerSettings playerSettings;
 
 
@@ -45,8 +134,6 @@ public class GuiHotbarEditor extends HashGui
         final GameManager gameManager = main.getGameManager();
         final PlayerData playerData = gameManager.getPlayerData(player);
 
-        this.guiManager = main.getGuiManager();
-
         this.playerSettings = playerData.getPlayerSettings();
 
         this.createGui();
@@ -55,86 +142,18 @@ public class GuiHotbarEditor extends HashGui
 
     /**
      * Creates the GUI.
-     * TODO: Store the items in an enum so that the
-     *       items gets built only once : on server start.
      */
     private void createGui()
     {
-        final HashItem orangeGlass = HashItem.separator(Material.ORANGE_STAINED_GLASS_PANE, this.guiManager);
-        final HashItem redGlass = HashItem.separator(Material.RED_STAINED_GLASS_PANE, this.guiManager);
-
-        final HashItem titleItem = new HashItem(Material.OAK_SIGN)
-            .setName(Component.text(ChatColor.GOLD + "Configuration de la Hotbar"))
-            .setLore(Arrays.asList(
-                Component.text(""),
-                Component.text(ChatColor.GRAY + "La " + ChatColor.GOLD + "hotbar" + ChatColor.GRAY + " représente les 9 et uniques " + ChatColor.YELLOW + "emplacements"),
-                Component.text(ChatColor.GRAY + "d'inventaire que vous pouvez utiliser dans le " + ChatColor.RED + "BreakFFA" + ChatColor.GRAY + "."),
-                Component.text(""),
-                Component.text(ChatColor.GRAY + "Les objets obtenus via le " + ChatColor.AQUA + "Marché Nexus" + ChatColor.GRAY + " (ou autre)"),
-                Component.text(ChatColor.GRAY + "seront " + ChatColor.GREEN + "placés" + ChatColor.GRAY + " dans le slot libre le plus " + ChatColor.YELLOW + "à gauche" + ChatColor.GRAY + ".")
-            ))
-            .setUntakable(true)
-            .build(this.guiManager);
-
-        final HashItem confirmItem = new HashItem(Material.INK_SAC, 1, (byte) 10)
-            .setName(Component.text(ChatColor.GREEN + "Valider"))
-            .addLore(Component.text(ChatColor.GRAY + "Ferme la configuration en sauvegardant."))
-            .addClickHandler(
-                new ClickHandler()
-                    .addAllClickTypes()
-                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                        if (!(gui instanceof GuiHotbarEditor guiHotbarEditor)) {
-                            return;
-                        }
-
-                        guiHotbarEditor.updatePlayerHotbarLayout(player, guiHotbarEditor);
-                        player.sendMessage(ChatColor.GREEN + "Vos modifications ont été enregistrées.");
-                        guiHotbarEditor.close(player);
-                    })
-            )
-            .build(this.guiManager);
-
-        final HashItem resetItem = new HashItem(Material.PAPER)
-            .setName(Component.text(ChatColor.AQUA + "Réinitialiser"))
-            .addLore(Component.text(ChatColor.GRAY + "Restore la hotbar par défaut."))
-            .addClickHandler(
-                new ClickHandler()
-                    .addAllClickTypes()
-                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                        if (!(gui instanceof GuiHotbarEditor guiHotbarEditor))
-                            return;
-
-                        guiHotbarEditor.getMask()
-                            .pattern(3, PlayerSettings.DEFAULT_HOTBAR_LAYOUT)
-                            .apply();
-
-                        guiHotbarEditor.update(player);
-                    })
-            )
-            .build(this.guiManager);
-
-        final HashItem cancelItem = new HashItem(Material.INK_SAC, 1, (byte) 1)
-            .setName(Component.text(ChatColor.RED + "Annuler"))
-            .addLore(Component.text(ChatColor.GRAY + "Ferme la configuration sans sauvegarder."))
-            .addClickHandler(
-                new ClickHandler()
-                    .addAllClickTypes()
-                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                        gui.close(player);
-                        player.sendMessage(ChatColor.RED + "Modifications annulées.");
-                    })
-            )
-            .build(this.guiManager);
-
         this.mask = new Mask(this);
 
         this.mask
-            .setItem('T', titleItem)
-            .setItem('C', confirmItem)
-            .setItem('R', resetItem)
-            .setItem('c', cancelItem)
-            .setItem('O', orangeGlass)
-            .setItem('r', redGlass);
+            .setItem('T', Items.TITLE.getItem())
+            .setItem('C', Items.CONFIRM.getItem())
+            .setItem('R', Items.RESET.getItem())
+            .setItem('c', Items.CANCEL.getItem())
+            .setItem('O', Items.ORANGE_SEP.getItem())
+            .setItem('r', Items.RED_SEP.getItem());
 
         this.setHotbar();
 
@@ -171,10 +190,9 @@ public class GuiHotbarEditor extends HashGui
     /**
      * Updates Player's Hotbar layout based on the GUI content.
      *
-     * @param   player  Player
      * @param   gui     GUI
      */
-    public void updatePlayerHotbarLayout(Player player, GuiHotbarEditor gui)
+    public void updatePlayerHotbarLayout(GuiHotbarEditor gui)
     {
         final StringBuilder newHotbarLayout = new StringBuilder();
 
