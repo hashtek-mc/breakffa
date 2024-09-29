@@ -31,6 +31,7 @@ public class ShopArticle
     private final HashItem article;
     private final int price;
     private final boolean isTemporary;
+    private final boolean needsNewSlot;
 
     private ShopArticleBuyAction buyAction;
 
@@ -39,7 +40,7 @@ public class ShopArticle
      * Creates a new Shop article.
      *
      * @param   article     Article
-     * @param   price       Price
+     * @param   price       Article price
      */
     public ShopArticle(HashItem article, int price)
     {
@@ -50,15 +51,29 @@ public class ShopArticle
      * Creates a new Shop article.
      *
      * @param   article         Article
-     * @param   price           Price
-     * @param   isTemporary     If the item is temporary
+     * @param   price           Article price
+     * @param   isTemporary     Is the item temporary
      */
     public ShopArticle(HashItem article, int price, boolean isTemporary)
+    {
+        this(article, price, isTemporary, true);
+    }
+
+    /**
+     * Creates a new Shop article.
+     *
+     * @param   article         Article
+     * @param   price           Article price
+     * @param   isTemporary     Is the item temporary
+     * @param   needsNewSlot    Does item needs a new slot in the hotbar
+     */
+    public ShopArticle(HashItem article, int price, boolean isTemporary, boolean needsNewSlot)
     {
         this.shopArticle = new HashItem(article);
         this.article = new HashItem(article);
         this.price = price;
         this.isTemporary = isTemporary;
+        this.needsNewSlot = needsNewSlot;
     }
 
 
@@ -120,11 +135,11 @@ public class ShopArticle
         final int articlePrice = this.getPrice();
 
         final boolean hasEnoughShards = playerShards >= articlePrice;
-        final boolean hasEnoughSpace = player.getInventory().firstEmpty() != -1;
-        final boolean canBuy = hasEnoughShards && hasEnoughSpace;
+        final boolean hasEnoughSpace =
+            player.getInventory().firstEmpty() != -1 || !this.needsNewSlot;
 
         /* If item can't be bought, then cancel the transaction. */
-        if (!canBuy) {
+        if (!hasEnoughShards || !hasEnoughSpace) {
             String reason = ChatColor.RED + "";
 
             if (!hasEnoughShards) {
@@ -136,7 +151,7 @@ public class ShopArticle
 
             player.sendMessage(reason);
 
-            player.playSound(player.getLocation(), "random.break", 100, 0);
+            player.playSound(player.getLocation(), Sound.BLOCK_STONE_BREAK, 100, 0); // FIXME: Sound was "random.break", verify the new enum value
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 100, 0);
 
             return;
@@ -160,7 +175,7 @@ public class ShopArticle
 
 
         /* Plays buy sound to the player. */
-        player.playSound(player.getLocation(), Sound.ENTITY_HORSE_AMBIENT /*"mob.horse.leather"*/, 100, 1);
+        player.playSound(player.getLocation(), Sound.ENTITY_HORSE_AMBIENT, 100, 1); // FIXME: Sound was "mob.horse.leather", verify the new enum value
         player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 100, 1);
 
         /* Sends buy confirmation to the player. */
@@ -308,6 +323,14 @@ public class ShopArticle
     public boolean isTemporary()
     {
         return this.isTemporary;
+    }
+
+    /**
+     * @return  True if the item needs a new slot in the hotbar
+     */
+    public boolean doesNeedNewSlot()
+    {
+        return this.needsNewSlot;
     }
 
 }

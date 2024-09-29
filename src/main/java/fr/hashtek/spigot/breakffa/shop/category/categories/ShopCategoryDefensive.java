@@ -40,7 +40,8 @@ public class ShopCategoryDefensive extends ShopCategory
                     .setUnbreakable(true)
                     .build(),
                 3,
-                true
+                true,
+                false
             )
             .setBuyAction((Player player, ShopArticle a) -> {
                 player.getInventory().setChestplate(a.getArticle().getItemStack());
@@ -72,7 +73,8 @@ public class ShopCategoryDefensive extends ShopCategory
                     )
                     .build(BreakFFA.getInstance().getGuiManager()),
                 7,
-                true
+                true,
+                false
             )
             .setBuyAction((Player player, ShopArticle a) -> {
                 final BreakFFA main = BreakFFA.getInstance();
@@ -99,7 +101,8 @@ public class ShopCategoryDefensive extends ShopCategory
                     .setUnbreakable(true)
                     .build(),
                 8,
-                true
+                true,
+                false
             )
             .setBuyAction((Player player, ShopArticle a) -> {
                 player.getInventory().setChestplate(a.getArticle().getItemStack());
