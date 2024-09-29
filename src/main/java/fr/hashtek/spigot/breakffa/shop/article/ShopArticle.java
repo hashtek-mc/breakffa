@@ -67,14 +67,14 @@ public class ShopArticle
      */
     public ShopArticle build(BreakFFA main)
     {
-        final Component articleName = Objects.requireNonNull(this.getShopArticle().getItemMeta().displayName());
-        final Component suffix = Component.text(" " + ChatColor.WHITE + ChatColor.BOLD + "●" + ChatColor.AQUA + " " + this.price + " shards");
+        String articleName = ((TextComponent) this.getShopArticle().getItemMeta().displayName()).content();
+        final String suffix = " " + ChatColor.WHITE + ChatColor.BOLD + "●" + ChatColor.AQUA + " " + this.price + " shards";
 
-        if (!articleName.contains(suffix)) {
-            articleName.append(suffix);
+        if (!articleName.endsWith(suffix)) {
+            articleName += suffix;
         }
 
-        this.getShopArticle().setName(articleName);
+        this.getShopArticle().setName(Component.text(articleName));
 
         if (this.isTemporary) {
             this.getShopArticle()
@@ -160,7 +160,7 @@ public class ShopArticle
 
 
         /* Plays buy sound to the player. */
-        player.playSound(player.getLocation(), "mob.horse.leather", 100, 1);
+        player.playSound(player.getLocation(), Sound.ENTITY_HORSE_AMBIENT /*"mob.horse.leather"*/, 100, 1);
         player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 100, 1);
 
         /* Sends buy confirmation to the player. */
@@ -268,8 +268,9 @@ public class ShopArticle
                 .setDestroyAction((Player player, ItemStack item, Block block) -> {
                     final Block nexus = BreakFFA.getInstance().getGameManager().getNexus().getBlock();
 
-                    if (!block.equals(nexus))
+                    if (!block.equals(nexus)) {
                         return;
+                    }
 
                     action.execute(player, item, block);
                 })
