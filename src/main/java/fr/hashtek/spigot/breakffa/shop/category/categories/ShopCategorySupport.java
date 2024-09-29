@@ -1,6 +1,5 @@
 package fr.hashtek.spigot.breakffa.shop.category.categories;
 
-import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashutils.HashUtils;
 import fr.hashtek.spigot.breakffa.BreakFFA;
@@ -17,6 +16,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
@@ -87,10 +87,10 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
                                 final int shots = 3;
 
                                 final short itemMaxDurability = item.getType().getMaxDurability();
-                                final short itemDurability = (short) (itemMaxDurability - item.getMaxItemUseDuration());
-                                final short finalDurability = (short) (itemDurability - (itemMaxDurability / shots));
+                                final int itemDurability = itemMaxDurability - ((Damageable) item.getItemMeta()).getDamage();
+                                final int finalDurability = itemDurability - (itemMaxDurability / shots);
 
-                                HashItem.setDurability(item, itemMaxDurability - finalDurability);
+                                HashItem.setDurability(item, finalDurability);
 
                                 if (finalDurability <= 1) {
                                     player.getInventory().setItem(slot, null);
