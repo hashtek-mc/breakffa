@@ -3,7 +3,6 @@ package fr.hashtek.spigot.breakffa.shop.category.categories;
 import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashutils.HashUtils;
-import fr.hashtek.hashutils.Particle;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.kit.kits.KitStarter;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
@@ -82,9 +81,7 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
 
                                 final Location playerLocation = player.getEyeLocation();
                                 final World world = playerLocation.getWorld();
-                                Collection<? extends Player> onlinePlayers = main.getServer().getOnlinePlayers();
-
-                                final int range = 3;
+                                Collection<? extends Player> onlinePlayers = main.getCore().getOnlinePlayers();
 
                                 /* Updates the item's durability. */
                                 final int shots = 3;
@@ -93,43 +90,48 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
                                 final short itemDurability = (short) (itemMaxDurability - item.getMaxItemUseDuration());
                                 final short finalDurability = (short) (itemDurability - (itemMaxDurability / shots));
 
-                                item.setDurability((short) (itemMaxDurability - finalDurability));
+                                HashItem.setDurability(item, itemMaxDurability - finalDurability);
 
                                 if (finalDurability <= 1) {
                                     player.getInventory().setItem(slot, null);
                                 }
 
+                                final int range = 3;
+
                                 for (Player p : onlinePlayers) {
                                     /* Plays sound. */
                                     p.playSound(playerLocation, Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1, 2);
-                                    p.playSound(playerLocation, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 2); // FIZZ
-                                    p.playSound(playerLocation, "item.fireCharge.use", 1, 2);
+                                    p.playSound(playerLocation, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 2); // FIXME: FIZZ, not ORB_PICKUP
+                                    p.playSound(playerLocation, Sound.ITEM_FIRECHARGE_USE, 1, 2);
 
-                                    /* Spawns particles. */
-                                    try {
-                                        final double particleDistance = 0.25;
+                                    /*
+                                     * Spawn particles.
+                                     *
+                                     * /==>     *     *     *
+                                     *     └0.25┘└0.25┘└0.25┘
+                                     *
+                                     * Legend:
+                                     * `*`      Particle
+                                     * `/==>`   Combustor
+                                     */
+                                    final double particleDistance = 0.25; // In blocks
 
-                                        for (double k = 1; k < range; k += particleDistance) {
-                                            final Location location = playerLocation.clone();
-                                            final Vector vector = location.getDirection().multiply(k);
-                                            location.add(vector);
+                                    for (double k = 1; k < range; k += particleDistance) {
+                                        final Location location = playerLocation.clone();
+                                        final Vector vector = location.getDirection().multiply(k);
+                                        location.add(vector);
 
-                                            new Particle().spawnParticle(
-                                                p,
-                                                "FLAME",
-                                                location,
-                                                0.03f,
-                                                1
-                                            );
-                                        }
-                                    } catch (Exception exception) {
-                                        HashError.SRV_PACKET_SEND_FAIL
-                                            .log(main.getHashLogger(), main, exception)
-                                            .sendToPlayer(p);
+                                        world.spawnParticle(
+                                            Particle.FLAME,
+                                            location,
+                                            1,
+                                            0, 0, 0,
+                                            0
+                                        );
                                     }
                                 }
 
-                                /* Hurt victim if there is one. */
+                                /* Apply damage to victim if there is one. */
                                 final Player victim = HashUtils.getAimedPlayer(player, range);
 
                                 if (victim == null) {
@@ -164,7 +166,7 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
                         Component.text(ChatColor.GRAY + "en cas de non utilisation.")
                     ))
                     .addEnchant(Enchantment.KNOCKBACK, 4)
-                    .setDurability((short) 0)
+                    .setDurability(0)
                     .build(),
                 6,
                 true
