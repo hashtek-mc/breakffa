@@ -129,8 +129,9 @@ public class ShopCategoryDefensive extends ShopCategory
         @Override
         public boolean equals(ItemStack item)
         {
-            if (item == null || item.getType() == Material.AIR)
+            if (item == null || item.getType() == Material.AIR) {
                 return false;
+            }
 
             final ItemStack i = new HashItem(item)
                 .build()

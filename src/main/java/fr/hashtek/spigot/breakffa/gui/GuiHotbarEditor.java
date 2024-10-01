@@ -22,11 +22,15 @@ import java.util.Map;
 public class GuiHotbarEditor extends HashGui
 {
 
-    protected enum Items
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
+    private static final HashGuiManager GUI_MANAGER = MAIN.getGuiManager();
+
+
+    private enum Items
     {
 
-        ORANGE_SEP (HashItem.separator(Material.ORANGE_STAINED_GLASS_PANE, BreakFFA.getInstance().getGuiManager())),
-        RED_SEP (HashItem.separator(Material.RED_STAINED_GLASS_PANE, BreakFFA.getInstance().getGuiManager())),
+        ORANGE_SEP (HashItem.separator(Material.ORANGE_STAINED_GLASS_PANE, GUI_MANAGER)),
+        RED_SEP (HashItem.separator(Material.RED_STAINED_GLASS_PANE, GUI_MANAGER)),
 
         TITLE (new HashItem(Material.OAK_SIGN)
             .setName(Component.text(ChatColor.GOLD + "Configuration de la Hotbar"))
@@ -39,7 +43,7 @@ public class GuiHotbarEditor extends HashGui
                 Component.text(ChatColor.GRAY + "seront " + ChatColor.GREEN + "placés" + ChatColor.GRAY + " dans le slot libre le plus " + ChatColor.YELLOW + "à gauche" + ChatColor.GRAY + ".")
             ))
             .setUntakable(true)
-            .build(BreakFFA.getInstance().getGuiManager())
+            .build(GUI_MANAGER)
         ),
 
         CONFIRM (new HashItem(Material.INK_SAC, 1, (byte) 10)
@@ -58,7 +62,7 @@ public class GuiHotbarEditor extends HashGui
                         guiHotbarEditor.close(player);
                     })
             )
-            .build(BreakFFA.getInstance().getGuiManager())
+            .build(GUI_MANAGER)
         ),
 
         RESET (new HashItem(Material.PAPER)
@@ -79,7 +83,7 @@ public class GuiHotbarEditor extends HashGui
                         guiHotbarEditor.update(player);
                     })
             )
-            .build(BreakFFA.getInstance().getGuiManager())
+            .build(GUI_MANAGER)
         ),
 
         CANCEL (new HashItem(Material.INK_SAC, 1, (byte) 1)
@@ -93,7 +97,7 @@ public class GuiHotbarEditor extends HashGui
                         player.sendMessage(ChatColor.RED + "Modifications annulées.");
                     })
             )
-            .build(BreakFFA.getInstance().getGuiManager())
+            .build(GUI_MANAGER)
         );
 
 
@@ -109,7 +113,7 @@ public class GuiHotbarEditor extends HashGui
         public HashItem getItem()
         {
             return this.item;
-        }
+    }
 
     }
 
@@ -130,8 +134,7 @@ public class GuiHotbarEditor extends HashGui
             6
         );
 
-        final BreakFFA main = BreakFFA.getInstance();
-        final GameManager gameManager = main.getGameManager();
+        final GameManager gameManager = MAIN.getGameManager();
         final PlayerData playerData = gameManager.getPlayerData(player);
 
         this.playerSettings = playerData.getPlayerSettings();

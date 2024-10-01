@@ -1,6 +1,7 @@
 package fr.hashtek.spigot.breakffa.kit.kits;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
+import fr.hashtek.spigot.breakffa.gui.GuiCosmetics;
 import fr.hashtek.spigot.breakffa.gui.GuiHotbarEditor;
 import fr.hashtek.spigot.breakffa.kit.KitItems;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
@@ -26,6 +27,10 @@ import java.util.Arrays;
 public class KitLobby
 {
 
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
+    private static final HashGuiManager GUI_MANAGER = MAIN.getGuiManager();
+
+
     public enum Items implements KitItems
     {
 
@@ -45,7 +50,7 @@ public class KitLobby
                             core.getPlayerManager(player).sendToServer("lobby01");
                         })
                 )
-                .build(BreakFFA.getInstance().getGuiManager()),
+                .build(GUI_MANAGER),
             -1
         ),
 
@@ -60,17 +65,17 @@ public class KitLobby
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
+                            new GuiCosmetics(player).open(player);
                         })
                 )
                 .addClickHandler(
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            player.sendMessage(ChatColor.GOLD + "En cours de développement.");
+                            new GuiCosmetics(player).open(player);
                         })
                 )
-                .build(BreakFFA.getInstance().getGuiManager()),
+                .build(GUI_MANAGER),
             1
         ),
 
@@ -95,7 +100,7 @@ public class KitLobby
                             new GuiHotbarEditor(player).open(player);
                         })
                 )
-                .build(BreakFFA.getInstance().getGuiManager()),
+                .build(GUI_MANAGER),
             2
         ),
 
@@ -111,8 +116,7 @@ public class KitLobby
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            final BreakFFA main = BreakFFA.getInstance();
-                            final PlayerData playerData = main.getGameManager().getPlayerData(player);
+                            final PlayerData playerData = MAIN.getGameManager().getPlayerData(player);
 
                             playerData.getPlayerManager().play();
                         })
@@ -121,13 +125,12 @@ public class KitLobby
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            final BreakFFA main = BreakFFA.getInstance();
-                            final PlayerData playerData = main.getGameManager().getPlayerData(player);
+                            final PlayerData playerData = MAIN.getGameManager().getPlayerData(player);
 
                             playerData.getPlayerManager().play();
                         })
                 )
-                .build(BreakFFA.getInstance().getGuiManager()),
+                .build(GUI_MANAGER),
             4
         ),
 
@@ -142,12 +145,11 @@ public class KitLobby
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            final BreakFFA main = BreakFFA.getInstance();
-                            final PlayerData playerData = main.getGameManager().getPlayerData(player);
+                            final PlayerData playerData = MAIN.getGameManager().getPlayerData(player);
                             final PlayerManager playerManager = playerData.getPlayerManager();
 
                             if (playerManager.getSpectatorMode() == null) {
-                                playerManager.setSpectatorMode(new SpectatorMode(main, player));
+                                playerManager.setSpectatorMode(new SpectatorMode(MAIN, player));
                             }
 
                             playerManager.getSpectatorMode().go();
@@ -157,18 +159,17 @@ public class KitLobby
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            final BreakFFA main = BreakFFA.getInstance();
-                            final PlayerData playerData = main.getGameManager().getPlayerData(player);
+                            final PlayerData playerData = MAIN.getGameManager().getPlayerData(player);
                             final PlayerManager playerManager = playerData.getPlayerManager();
 
                             if (playerManager.getSpectatorMode() == null) {
-                                playerManager.setSpectatorMode(new SpectatorMode(main, player));
+                                playerManager.setSpectatorMode(new SpectatorMode(MAIN, player));
                             }
 
                             playerManager.getSpectatorMode().go();
                         })
                 )
-                .build(BreakFFA.getInstance().getGuiManager()),
+                .build(GUI_MANAGER),
             6
         ),
 
@@ -193,7 +194,7 @@ public class KitLobby
                             player.sendMessage(ChatColor.GOLD + "En cours de développement.");
                         })
                 )
-                .build(BreakFFA.getInstance().getGuiManager()),
+                .build(GUI_MANAGER),
             7
         );
 

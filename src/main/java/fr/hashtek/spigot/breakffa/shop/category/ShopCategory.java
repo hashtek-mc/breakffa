@@ -108,7 +108,7 @@ public class ShopCategory
     }
 
     /**
-     * Opens the GUI to a player.
+     * Opens the GUI.
      */
     public void open()
     {
@@ -160,8 +160,9 @@ public class ShopCategory
      */
     public void addArticles(List<ShopArticle> articles)
     {
-        for (ShopArticle article : articles)
+        for (ShopArticle article : articles) {
             this.addArticle(article);
+        }
     }
 
 
