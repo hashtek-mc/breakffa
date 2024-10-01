@@ -1,18 +1,25 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
-public abstract class AbstractCosmetic
+public class Cosmetic<T>
 {
 
     private final String name;
     private final String description;
     private final int price;
+    private final T cosmetic;
 
 
-    public AbstractCosmetic(String name, String description, int price)
+    public Cosmetic(
+        String name,
+        String description,
+        int price,
+        T cosmetic
+    )
     {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.cosmetic = cosmetic;
     }
 
 
@@ -38,6 +45,14 @@ public abstract class AbstractCosmetic
     public int getPrice()
     {
         return this.price;
+    }
+
+    /**
+     * @return  Cosmetic
+     */
+    public T getCosmetic()
+    {
+        return this.cosmetic;
     }
 
 }
