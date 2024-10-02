@@ -4,7 +4,8 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.death.DeathReason;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.game.GameSettings;
-import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.player.PlayerManager;
+import fr.hashtek.spigot.breakffa.player.PlayerState;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -75,13 +76,13 @@ public class ListenerMove implements Listener
     /**
      * Handles void death (for players in game).
      *
-     * @param   event       Move event
-     * @param   playerData  Player's data
+     * @param   event           Move event
+     * @param   playerManager   Player's manager
      */
-    private void handleVoidDeath(PlayerMoveEvent event, PlayerData playerData)
+    private void handleVoidDeath(PlayerMoveEvent event, PlayerManager playerManager)
     {
         if (event.getTo().getBlockY() < this.gameSettings.getMinHeight()) {
-            playerData.getPlayerManager().kill(DeathReason.VOID);
+            playerManager.kill(DeathReason.VOID);
         }
     }
 
@@ -93,11 +94,12 @@ public class ListenerMove implements Listener
     public void onMove(PlayerMoveEvent event)
     {
         final Player player = event.getPlayer();
-        final PlayerData playerData = this.gameManager.getPlayerData(player);
+        final PlayerManager playerManager = this.gameManager.getPlayerManager(player);
+        final PlayerState playerState = playerManager.getData().getState();
 
-        switch (playerData.getState()) {
+        switch (playerState) {
             case PLAYING:
-                this.handleVoidDeath(event, playerData);
+                this.handleVoidDeath(event, playerManager);
                 break;
             case SPECTATING:
                 this.handleSpectatorModeBounds(event, player);

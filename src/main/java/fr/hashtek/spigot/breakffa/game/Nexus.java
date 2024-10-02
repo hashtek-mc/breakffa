@@ -63,15 +63,15 @@ public class Nexus implements HashLoggable
      */
     public void destroy(Player player)
     {
-        final PlayerData playerData = this.gameManager.getPlayerData(player);
-        final fr.hashtek.tekore.common.player.PlayerData corePlayerData = playerData.getCorePlayerData();
+        final PlayerData playerData = this.gameManager.getPlayerManager(player).getData();
+        final fr.hashtek.tekore.common.player.PlayerData corePlayerData = playerData.getCoreData();
         final Rank playerRank = corePlayerData.getRank();
 
         /* Clears all drops. */
         new HashUtils.World(this.main.getWorld()).clearItems();
 
         for (Player p : this.main.getServer().getOnlinePlayers()) {
-            final PlayerData pData = this.gameManager.getPlayerData(p);
+            final PlayerData pData = this.gameManager.getPlayerManager(p).getData();
 
             if (pData.getState() != PlayerState.PLAYING) {
                 continue;
@@ -80,7 +80,7 @@ public class Nexus implements HashLoggable
             /* Nexus breaking SFX / VFX */
             p.playSound(p.getLocation(), Sound.ENTITY_IRON_GOLEM_DEATH, 100, 0);
             p.playSound(p.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 100, 0);
-            p.playSound(p.getLocation(), "mob.guardian.curse", 100, 0);
+            p.playSound(p.getLocation(), Sound.ENTITY_ELDER_GUARDIAN_CURSE, 100, 0);
             p.playSound(p.getLocation(), Sound.ENTITY_WITHER_DEATH, 100, 0);
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1, 0), false);
 

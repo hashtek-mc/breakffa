@@ -116,18 +116,18 @@ public class KitLobby
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            final PlayerData playerData = MAIN.getGameManager().getPlayerData(player);
+                            final PlayerManager playerManager = MAIN.getGameManager().getPlayerManager(player);
 
-                            playerData.getPlayerManager().play();
+                            playerManager.play();
                         })
                 )
                 .addClickHandler(
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            final PlayerData playerData = MAIN.getGameManager().getPlayerData(player);
+                            final PlayerManager playerManager = MAIN.getGameManager().getPlayerManager(player);
 
-                            playerData.getPlayerManager().play();
+                            playerManager.play();
                         })
                 )
                 .build(GUI_MANAGER),
@@ -145,8 +145,8 @@ public class KitLobby
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            final PlayerData playerData = MAIN.getGameManager().getPlayerData(player);
-                            final PlayerManager playerManager = playerData.getPlayerManager();
+                            final PlayerManager playerManager = MAIN.getGameManager().getPlayerManager(player);
+                            final PlayerData playerData = playerManager.getData();
 
                             if (playerManager.getSpectatorMode() == null) {
                                 playerManager.setSpectatorMode(new SpectatorMode(MAIN, player));
@@ -159,8 +159,8 @@ public class KitLobby
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            final PlayerData playerData = MAIN.getGameManager().getPlayerData(player);
-                            final PlayerManager playerManager = playerData.getPlayerManager();
+                            final PlayerManager playerManager = MAIN.getGameManager().getPlayerManager(player);
+                            final PlayerData playerData = playerManager.getData();
 
                             if (playerManager.getSpectatorMode() == null) {
                                 playerManager.setSpectatorMode(new SpectatorMode(MAIN, player));

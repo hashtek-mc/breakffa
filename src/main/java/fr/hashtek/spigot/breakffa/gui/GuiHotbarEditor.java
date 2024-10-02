@@ -135,7 +135,7 @@ public class GuiHotbarEditor extends HashGui
         );
 
         final GameManager gameManager = MAIN.getGameManager();
-        final PlayerData playerData = gameManager.getPlayerData(player);
+        final PlayerData playerData = gameManager.getPlayerManager(player).getData();
 
         this.playerSettings = playerData.getPlayerSettings();
 

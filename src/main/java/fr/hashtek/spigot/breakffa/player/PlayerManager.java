@@ -20,9 +20,8 @@ public class PlayerManager implements HashLoggable
 {
 
     private final BreakFFA main;
-    private final PlayerData playerData;
     private final Player player;
-    private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
+    private final PlayerData playerData;
 
     private final CosmeticManager cosmeticManager;
     private SpectatorMode spectatorMode;
@@ -31,16 +30,16 @@ public class PlayerManager implements HashLoggable
     /**
      * Creates a new instance of PlayerManager.
      *
-     * @param   main        BreakFFA instance
-     * @param   playerData  Player's data
+     * @param   main    BreakFFA instance
+     * @param   player  Player's data
      */
-    public PlayerManager(BreakFFA main, PlayerData playerData)
+    public PlayerManager(BreakFFA main, Player player)
     {
         this.main = main;
-        this.playerData = playerData;
-        this.corePlayerData = this.playerData.getCorePlayerData();
-        this.player = this.playerData.getPlayer();
-        this.cosmeticManager = new CosmeticManager();
+        this.player = player;
+        this.playerData = new PlayerData(this.main, this.player);
+
+        this.cosmeticManager = new CosmeticManager(this.main, this.player);
     }
 
 
@@ -141,7 +140,7 @@ public class PlayerManager implements HashLoggable
     /**
      * @return  Player's data
      */
-    public PlayerData getPlayerData()
+    public PlayerData getData()
     {
         return this.playerData;
     }

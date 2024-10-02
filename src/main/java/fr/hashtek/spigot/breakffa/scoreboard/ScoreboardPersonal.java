@@ -81,7 +81,7 @@ public class ScoreboardPersonal
      */
     public void refreshSidebar()
     {
-        final PlayerData playerData = this.main.getGameManager().getPlayerData(this.player);
+        final PlayerData playerData = this.main.getGameManager().getPlayerManager(this.player).getData();
         final List<String> body = this.createSidebarBody(playerData);
 
         this.sidebar.flush();

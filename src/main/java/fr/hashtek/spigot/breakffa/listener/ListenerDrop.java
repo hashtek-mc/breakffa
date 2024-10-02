@@ -2,7 +2,6 @@ package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
-import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,10 +32,11 @@ public class ListenerDrop implements Listener
     public void onDrop(PlayerDropItemEvent event)
     {
         final Player player = event.getPlayer();
-        final PlayerData playerData = this.gameManager.getPlayerData(player);
+        final PlayerState playerState =
+            this.gameManager.getPlayerManager(player).getData().getState();
 
         /* If player is in the lobby, cancel the event. */
-        if (playerData.getState() == PlayerState.AT_LOBBY) {
+        if (playerState == PlayerState.AT_LOBBY) {
             event.setCancelled(true);
         }
     }

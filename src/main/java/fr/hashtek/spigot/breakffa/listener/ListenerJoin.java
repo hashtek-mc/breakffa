@@ -1,5 +1,6 @@
 package fr.hashtek.spigot.breakffa.listener;
 
+import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import fr.hashtek.spigot.breakffa.scoreboard.ScoreboardManager;
 import fr.hashtek.spigot.hashboard.exceptions.AlreadyInTeamException;
 import fr.hashtek.spigot.hashboard.exceptions.StrangeException;
@@ -38,16 +39,16 @@ public class ListenerJoin implements Listener, HashLoggable
     public void onJoin(PlayerJoinEvent event)
     {
         final Player player = event.getPlayer();
-        final PlayerData playerData = new PlayerData(this.main, player);
+        final PlayerManager playerManager = new PlayerManager(this.main, player);
         final GameManager gameManager = this.main.getGameManager();
         final ScoreboardManager scoreboardManager = this.main.getBoardManager();
         final TablistManager tablistManager = this.main.getTablistManager();
 
         event.joinMessage(null);
 
-        gameManager.addPlayerData(player, playerData);
+        gameManager.addPlayerManager(player, playerManager);
 
-        playerData.getPlayerManager().backToLobby();
+        playerManager.backToLobby();
 
         this.main.getBoardManager().getBoard().setToPlayers(player);
 

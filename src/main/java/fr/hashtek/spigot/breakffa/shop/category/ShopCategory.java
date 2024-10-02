@@ -51,7 +51,7 @@ public class ShopCategory
         this.shopManager = this.main.getShopManager();
 
         this.player = player;
-        this.playerData = this.main.getGameManager().getPlayerData(player);
+        this.playerData = this.main.getGameManager().getPlayerManager(player).getData();
 
         this.attributes = attributes;
         this.articles = new ArrayList<ShopArticle>();
@@ -112,8 +112,7 @@ public class ShopCategory
      */
     public void open()
     {
-        this.gui.open(this.player);
-        this.gui.update(this.player);
+        this.open(this.player);
     }
 
     /**

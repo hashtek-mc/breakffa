@@ -4,6 +4,7 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.kit.kits.KitSpectator;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
 import fr.hashtek.tekore.common.Rank;
 import org.bukkit.ChatColor;
@@ -20,7 +21,7 @@ public class SpectatorMode
     private final GameManager gameManager;
 
     private final Player player;
-    private final PlayerData playerData;
+    private final PlayerManager playerManager;
 
 
     /**
@@ -35,7 +36,7 @@ public class SpectatorMode
         this.gameManager = this.main.getGameManager();
 
         this.player = player;
-        this.playerData = this.main.getGameManager().getPlayerData(this.player);
+        this.playerManager = this.main.getGameManager().getPlayerManager(this.player);
     }
 
 
@@ -55,7 +56,7 @@ public class SpectatorMode
                 continue;
             }
 
-            final PlayerData pData = this.gameManager.getPlayerData(p);
+            final PlayerData pData = this.gameManager.getPlayerManager(p).getData();
 
             if (pData.getState() != PlayerState.PLAYING) {
                 continue;
@@ -92,10 +93,10 @@ public class SpectatorMode
     public void go()
     {
         final PlayerInventory inventory = this.player.getInventory();
-        final KitSpectator kitSpectator = new KitSpectator(this.main);
+        final KitSpectator kitSpectator = new KitSpectator();
 
         /* Updates player's data */
-        this.playerData.setState(PlayerState.SPECTATING);
+        this.playerManager.getData().setState(PlayerState.SPECTATING);
         this.player.setGameMode(GameMode.SPECTATOR);
 
         /* Teleport player to the Spectator mode spawn */
@@ -111,7 +112,7 @@ public class SpectatorMode
      */
     public void exit()
     {
-        this.playerData.getPlayerManager().backToLobby();
+        this.playerManager.backToLobby();
     }
 
 }

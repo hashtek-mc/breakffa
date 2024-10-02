@@ -4,6 +4,7 @@ import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import fr.hashtek.spigot.hashgui.listener.HashGuiHitListener;
 import fr.hashtek.tekore.bukkit.Tekore;
 import fr.hashtek.tekore.common.Rank;
@@ -22,11 +23,14 @@ public class Death implements HashLoggable
 
     private final BreakFFA main;
 
+    /* Victim */
     private final Player victim;
+    private final PlayerManager victimManager;
     private final PlayerData victimData;
     private final fr.hashtek.tekore.common.player.PlayerData victimCoreData;
     private final Rank victimRank;
 
+    /* Killer */
     private final Player killer;
     private final PlayerData killerData;
     private final fr.hashtek.tekore.common.player.PlayerData killerCoreData;
@@ -79,14 +83,15 @@ public class Death implements HashLoggable
         final GameManager gameManager = this.main.getGameManager();
 
         this.victim = victim;
-        this.victimData = gameManager.getPlayerData(this.victim);
+        this.victimManager = gameManager.getPlayerManager(this.victim);
+        this.victimData = victimManager.getData();
         this.victimCoreData = core.getPlayerManager(this.victim).getData();
         this.victimRank = this.victimCoreData.getRank();
 
         this.killer = killer;
 
         if (this.killer != null) {
-            this.killerData = gameManager.getPlayerData(this.killer);
+            this.killerData = gameManager.getPlayerManager(this.killer).getData();
             this.killerCoreData = core.getPlayerManager(this.killer).getData();
             this.killerRank = this.killerCoreData.getRank();
         } else {
@@ -199,7 +204,7 @@ public class Death implements HashLoggable
      */
     public void execute()
     {
-        this.victimData.getPlayerManager().backToLobby();
+        this.victimManager.backToLobby();
 
         this.processVictim();
         this.processKiller();

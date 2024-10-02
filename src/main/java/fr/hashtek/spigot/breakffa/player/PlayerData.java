@@ -7,8 +7,6 @@ import org.bukkit.inventory.ItemStack;
 /**
  * Player's BreakFFA data.
  * Not to confuse with Tekore's PlayerData.
- * TODO: Store this class instances in {@link PlayerManager}.
- *       More logic.
  */
 public class PlayerData
 {
@@ -19,8 +17,7 @@ public class PlayerData
     private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private PlayerState state;
 
-    private final PlayerSettings settings;
-    private final PlayerManager playerManager;
+    private final PlayerSettings settings; // TODO: Move in PlayerManager
 
     private int shards;
     private int killRewardShards;
@@ -52,9 +49,8 @@ public class PlayerData
         this.state = PlayerState.AT_LOBBY;
 
         this.settings = new PlayerSettings();
-        this.playerManager = new PlayerManager(this.main, this);
 
-        this.shards = 1000; // TODO: DEBUG, TO REMOVE!!!!
+        this.shards = 1000; // FIXME: TODO: DEBUG, TO REMOVE!!!!
         this.killRewardShards = 1;
 
         this.totalKills = 0;
@@ -89,7 +85,7 @@ public class PlayerData
     /**
      * @return  Tekore's Player data
      */
-    public fr.hashtek.tekore.common.player.PlayerData getCorePlayerData()
+    public fr.hashtek.tekore.common.player.PlayerData getCoreData()
     {
         return this.corePlayerData;
     }
@@ -108,14 +104,6 @@ public class PlayerData
     public PlayerSettings getPlayerSettings()
     {
         return this.settings;
-    }
-
-    /**
-     * @return  Player's manager
-     */
-    public PlayerManager getPlayerManager()
-    {
-        return this.playerManager;
     }
 
     /**

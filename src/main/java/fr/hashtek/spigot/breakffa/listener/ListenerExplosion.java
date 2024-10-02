@@ -57,7 +57,7 @@ public class ListenerExplosion implements Listener
                 continue;
             }
 
-            final PlayerData playerData = this.main.getGameManager().getPlayerData(player);
+            final PlayerData playerData = this.main.getGameManager().getPlayerManager(player).getData();
             final Vector direction = player.getLocation().toVector().subtract(tntLocation.toVector()).normalize();
 
             /* Applying knockback to the player. */

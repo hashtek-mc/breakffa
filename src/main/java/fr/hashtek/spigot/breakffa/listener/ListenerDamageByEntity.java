@@ -4,6 +4,7 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.death.DeathReason;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategorySupport;
@@ -68,8 +69,10 @@ public class ListenerDamageByEntity implements Listener
             return;
         }
 
-        final PlayerData victimData = this.gameManager.getPlayerData(victim);
-        final PlayerData damagerData = this.gameManager.getPlayerData(damager);
+        final PlayerManager victimManager = this.gameManager.getPlayerManager(victim);
+        final PlayerData victimData = victimManager.getData();
+        final PlayerManager damagerManager = this.gameManager.getPlayerManager(damager);
+        final PlayerData damagerData = damagerManager.getData();
         final ItemStack damagerWeapon = damager.getInventory().getItemInMainHand().clone();
 
         /* If one of the two players is not playing, cancel the event. */
@@ -95,7 +98,7 @@ public class ListenerDamageByEntity implements Listener
          */
         if (victim.getHealth() - event.getFinalDamage() <= 0) {
             event.setCancelled(true);
-            victimData.getPlayerManager().kill(DeathReason.MELEE);
+            victimManager.kill(DeathReason.MELEE);
         }
     }
 

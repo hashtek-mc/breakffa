@@ -28,7 +28,7 @@ public class GameManager implements HashLoggable
     private Location spectatorModeSpawnLocation;
 
     private Date lastReset;
-    private final Map<Player, PlayerData> playersData;
+    private final Map<Player, PlayerManager> playerManagers;
     private final List<Block> placedBlocks;
 
     private final GameSettings settings;
@@ -48,7 +48,7 @@ public class GameManager implements HashLoggable
         this.spawnLocations = new ArrayList<Location>();
 
         this.lastReset = new Date();
-        this.playersData = new HashMap<Player, PlayerData>();
+        this.playerManagers = new HashMap<Player, PlayerManager>();
         this.placedBlocks = new ArrayList<Block>();
 
         this.settings = new GameSettings(this.logger);
@@ -274,8 +274,7 @@ public class GameManager implements HashLoggable
     public void reset()
     {
         for (Player player : this.main.getServer().getOnlinePlayers()) {
-            final PlayerData playerData = this.getPlayerData(player);
-            final PlayerManager playerManager = playerData.getPlayerManager();
+            final PlayerManager playerManager = this.getPlayerManager(player);
             playerManager.backToLobby();
         }
 
@@ -329,22 +328,22 @@ public class GameManager implements HashLoggable
     }
 
     /**
-     * @return  Players data
+     * @return  Players managers
      */
-    public Map<Player, PlayerData> getPlayersData()
+    public Map<Player, PlayerManager> getPlayerManagers()
     {
-        return this.playersData;
+        return this.playerManagers;
     }
 
     /**
-     * Adds a player's data to the main map.
+     * Adds a player's manager to the main map.
      *
-     * @param   player      Player
-     * @param   playerData  Player's data
+     * @param   player          Player
+     * @param   playerManagers  Player's data
      */
-    public void addPlayerData(Player player, PlayerData playerData)
+    public void addPlayerManager(Player player, PlayerManager playerManagers)
     {
-        this.playersData.put(player, playerData);
+        this.playerManagers.put(player, playerManagers);
     }
 
     /**
@@ -354,16 +353,16 @@ public class GameManager implements HashLoggable
      */
     public void removePlayerData(Player player)
     {
-        this.playersData.remove(player);
+        this.playerManagers.remove(player);
     }
 
     /**
      * @param   player  Player
-     * @return  Player's data
+     * @return  Player's manager
      */
-    public PlayerData getPlayerData(Player player)
+    public PlayerManager getPlayerManager(Player player)
     {
-        return this.playersData.get(player);
+        return this.playerManagers.get(player);
     }
 
     /**

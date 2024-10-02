@@ -48,8 +48,8 @@ public class ListenerDamage implements Listener
             return;
         }
 
-        final PlayerData playerData = this.gameManager.getPlayerData(player);
-        final PlayerManager playerManager = playerData.getPlayerManager();
+        final PlayerManager playerManager = this.gameManager.getPlayerManager(player);
+        final PlayerData playerData = playerManager.getData();
 
         /* If player is going to die, custom kill. */
         if (player.getHealth() - event.getFinalDamage() <= 0) {

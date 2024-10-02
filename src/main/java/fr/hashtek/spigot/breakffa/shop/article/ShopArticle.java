@@ -201,7 +201,7 @@ public class ShopArticle
                         return;
                     }
 
-                    final PlayerData playerData = main.getGameManager().getPlayerData(player);
+                    final PlayerData playerData = main.getGameManager().getPlayerManager(player).getData();
                     this.buy(playerData, paginatedGui);
                 })
         );

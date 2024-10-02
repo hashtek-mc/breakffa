@@ -22,6 +22,9 @@ import java.util.Arrays;
 public class KitSpectator
 {
 
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
+
+
     /**
      * getSlotIndex() and give() functions are empty because
      * they won't be used. Masks are going to carry this.
@@ -65,9 +68,7 @@ public class KitSpectator
                         new ClickHandler()
                             .addAllClickTypes()
                             .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                                final BreakFFA main = BreakFFA.getInstance();
-                                final PlayerData playerData = main.getGameManager().getPlayerData(player);
-                                final PlayerManager playerManager = playerData.getPlayerManager();
+                                final PlayerManager playerManager = MAIN.getGameManager().getPlayerManager(player);
 
                                 playerManager.getSpectatorMode().teleportToClosestPlayer();
                                 gui.close(player);
@@ -92,9 +93,7 @@ public class KitSpectator
                         new ClickHandler()
                             .addAllClickTypes()
                             .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                                final BreakFFA main = BreakFFA.getInstance();
-                                final PlayerData playerData = main.getGameManager().getPlayerData(player);
-                                final PlayerManager playerManager = playerData.getPlayerManager();
+                                final PlayerManager playerManager = MAIN.getGameManager().getPlayerManager(player);
 
                                 playerManager.getSpectatorMode().exit();
                                 gui.close(player);
@@ -130,19 +129,6 @@ public class KitSpectator
         @Override
         public void give(Player player) {}
 
-    }
-
-    private final BreakFFA main;
-
-
-    /**
-     * Creates a new instance of Lobby kit
-     *
-     * @param   main    BreakFFA instance
-     */
-    public KitSpectator(BreakFFA main)
-    {
-        this.main = main;
     }
 
 

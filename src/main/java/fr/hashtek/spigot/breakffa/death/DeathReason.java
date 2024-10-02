@@ -40,7 +40,8 @@ public enum DeathReason
 
 
     /**
-     * "Converts" a {@link org.bukkit.event.entity.EntityDamageEvent.DamageCause} to a {@link DeathReason}.
+     * "Converts" a {@link org.bukkit.event.entity.EntityDamageEvent.DamageCause}
+     * to a {@link DeathReason}.
      *
      * @param   cause   Damage cause
      * @return  Converted DeathReason.
