@@ -1,5 +1,7 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
+import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
+
 public class Cosmetic<T>
 {
 

@@ -1,9 +1,9 @@
-package fr.hashtek.spigot.breakffa.gui.cosmetics;
+package fr.hashtek.spigot.breakffa.gui.category;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-public class GuiCosmeticCategoryAttributes
+public class GuiCosmeticsCategoryAttributes
 {
 
     private final String name;
@@ -20,7 +20,7 @@ public class GuiCosmeticCategoryAttributes
      * @param   primaryColor    Primary color
      * @param   secondaryColor  Secondary color
      */
-    public GuiCosmeticCategoryAttributes(
+    public GuiCosmeticsCategoryAttributes(
         String name,
         Material primaryColor,
         Material secondaryColor,

@@ -8,10 +8,10 @@ import org.bukkit.Material;
 /**
  * TODO: Documentation is messy >:(
  */
-public class CosmeticTypeCustomHelmet
+public class CosmeticTypeCustomHelmet implements AbstractCosmetic
 {
 
-    public enum CustomHelmet implements CosmeticCategoryArticles
+    public enum CustomHelmet implements CosmeticCategoryArticles<CosmeticTypeCustomHelmet>
     {
 
         ANVIL (new Cosmetic<CosmeticTypeCustomHelmet>(

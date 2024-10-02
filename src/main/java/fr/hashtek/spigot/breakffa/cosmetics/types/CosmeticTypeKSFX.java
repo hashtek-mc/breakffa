@@ -8,10 +8,10 @@ import org.bukkit.Sound;
  * KSFX stands for Kill SFX.
  * TODO: Documentation is messy >:(
  */
-public class CosmeticTypeKSFX
+public class CosmeticTypeKSFX implements AbstractCosmetic
 {
 
-    public enum KillSfx implements CosmeticCategoryArticles
+    public enum KillSfx implements CosmeticCategoryArticles<CosmeticTypeKSFX>
     {
 
         NINE_MM (new Cosmetic<CosmeticTypeKSFX>(
@@ -19,6 +19,13 @@ public class CosmeticTypeKSFX
             "caca",
             100,
             new CosmeticTypeKSFX(Sound.BLOCK_WATER_AMBIENT)
+        )),
+
+        CACA (new Cosmetic<CosmeticTypeKSFX>(
+            "huitre",
+            "nathan j",
+            1060,
+            new CosmeticTypeKSFX(Sound.AMBIENT_UNDERWATER_LOOP_ADDITIONS)
         ));
 
 
