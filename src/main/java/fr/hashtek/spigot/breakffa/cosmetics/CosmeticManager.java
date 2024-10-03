@@ -11,6 +11,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+/**
+ * TODO:
+ *  - Documentation is messy
+ *  - Overall code is messy lol
+ */
 public class CosmeticManager
 {
 
@@ -75,18 +80,7 @@ public class CosmeticManager
     public void loadData()
     {
         // ...
-        this.unlockEverything(); // FIXME: Temporary!
-    }
-
-    /**
-     * @param   cosmetic    Cosmetic
-     * @return  True if player has the cosmetic
-     */
-    public boolean hasCosmetic(Cosmetic<? extends AbstractCosmetic> cosmetic)
-    {
-        return
-            this.ownedKillSfxs.contains(cosmetic) ||
-            this.ownedCustomHelmets.contains(cosmetic);
+//        this.unlockEverything(); // FIXME: Temporary!
     }
 
     /**

@@ -35,6 +35,7 @@ public class GuiCosmeticsKSFX
             cosmeticManager,
             ATTRIBUTES,
             CosmeticTypeKSFX.KillSfx.class,
+            cosmeticManager.getOwnedKillSfxs(),
             cManager -> cManager::getCurrentKillSfx,
             cManager -> cManager::setCurrentKillSfx
         );
