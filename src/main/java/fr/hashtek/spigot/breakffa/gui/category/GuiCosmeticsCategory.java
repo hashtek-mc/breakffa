@@ -31,7 +31,6 @@ public abstract class GuiCosmeticsCategory<
     private static final int SIZE = 6;
 
 
-    private final CosmeticManager playerCosmeticManager;
     private final CosmeticManager.CosmeticGetter<Cosmetic<T>> currentCosmeticGetter;
     private final CosmeticManager.CosmeticSetter<Cosmetic<T>> currentCosmeticSetter;
     private final Class<E> cosmetics;
@@ -63,7 +62,6 @@ public abstract class GuiCosmeticsCategory<
             GUI_MANAGER
         );
 
-        this.playerCosmeticManager = playerCosmeticManager;
         this.currentCosmeticGetter = cosmeticGetter;
         this.currentCosmeticSetter = cosmeticSetter;
 
@@ -121,10 +119,10 @@ public abstract class GuiCosmeticsCategory<
     private void reloadGui(GuiCosmeticsCategory<T, E> gui, CosmeticManager manager)
     {
         gui.clearPages();
-        gui.addCosmetics(gui.getCosmetics());
+        gui.addCosmetics(gui.getCosmeticsClass(), manager);
     }
 
-    private void addCosmetic(Cosmetic<T> cosmetic)
+    private void addCosmetic(Cosmetic<T> cosmetic, CosmeticManager manager)
     {
         final Page lastPage = this.getLastPage();
 
@@ -132,11 +130,11 @@ public abstract class GuiCosmeticsCategory<
             .setName(Component.text(cosmetic.getName()))
             .addLore(Component.text(cosmetic.getDescription()));
 
-        if (this.playerCosmeticManager.hasCosmetic(cosmetic)) {
+        if (manager.hasCosmetic(cosmetic)) {
             cosmeticItem.addLore(Component.text("YOU GOT THIS COSMETIC!!!"));
         }
 
-        if (currentCosmeticGetter.getGetter(this.playerCosmeticManager).get().equals(cosmetic)) {
+        if (currentCosmeticGetter.getGetter(manager).get().equals(cosmetic)) {
             cosmeticItem.addLore(Component.text(ChatColor.GREEN + "Selected!!!"));
             cosmeticItem.addEnchant(Enchantment.DURABILITY, 1);
         }
@@ -146,7 +144,7 @@ public abstract class GuiCosmeticsCategory<
                 new ClickHandler()
                     .addAllClickTypes()
                     .setClickAction((Player player, HashGui hashGui, ItemStack item, int slot) -> {
-                        if (!(hashGui instanceof GuiCosmeticsCategory<T, E> gui)) { // FIXME: haha (:c)
+                        if (!(hashGui instanceof GuiCosmeticsCategory<?, ?> gui)) {
                             return;
                         }
 
@@ -155,28 +153,31 @@ public abstract class GuiCosmeticsCategory<
 
                         currentCosmeticSetter.getSetter(playerCosmeticManager).accept(cosmetic);
 
-                        // reload gui
-                        this.reloadGui(gui, playerCosmeticManager);
+                        /*              ️ This invalid cast is "okay" because there is no way that this fires in another gui, */
+                        /*              ⬇ thanks to the gui whitelist when building an item.                                  */
+                        this.reloadGui((GuiCosmeticsCategory<T, E>) gui, playerCosmeticManager);
+
+                        gui.update(player);
                     })
             )
-            .build(GUI_MANAGER);
+            .build(this, GUI_MANAGER);
 
         try {
             lastPage.addItem(cosmeticItem);
         } catch (IllegalArgumentException unused) {
             this.createNewPage();
-            this.addCosmetic(cosmetic);
+            this.addCosmetic(cosmetic, manager);
         }
     }
 
-    private void addCosmetics(Class<E> enumClass)
+    private void addCosmetics(Class<E> enumClass, CosmeticManager manager)
     {
         for (E enumConstant : enumClass.getEnumConstants()) {
-            this.addCosmetic(enumConstant.getCosmetic());
+            this.addCosmetic(enumConstant.getCosmetic(), manager);
         }
     }
 
-    public Class<E> getCosmetics()
+    public Class<E> getCosmeticsClass()
     {
         return this.cosmetics;
     }
