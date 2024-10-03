@@ -30,22 +30,25 @@ public abstract class GuiCosmeticsCategory<
 
     private static final int SIZE = 6;
 
-
-    private final CosmeticManager.CosmeticGetter<Cosmetic<T>> currentCosmeticGetter;
-    private final CosmeticManager.CosmeticSetter<Cosmetic<T>> currentCosmeticSetter;
-    private final Class<E> cosmetics;
-
     private final Mask mask;
     private final GuiCosmeticsCategoryAttributes attributes;
 
+    private final Class<E> cosmetics;
+    private final CosmeticManager.CosmeticGetter<Cosmetic<T>> currentCosmeticGetter;
+    private final CosmeticManager.CosmeticSetter<Cosmetic<T>> currentCosmeticSetter;
+
 
     /**
-     * Creates a new instance of AbstractGuiCosmeticsCategory.
+     * Creates a new instance of GuiCosmeticsCategory.
      *
-     * @apiNote titleItGuiCosmeticsCategory<T, E>em should not be built. Just create it, we'll build it for ya ;)
-     * @param   titleItem   Item that will serve as title
-     * @param   attributes  Category attributes
-     * @param   cosmetics   Cosmetic class
+     * @param   playerCosmeticManager   Player Cosmetic Manager
+     * @param   titleItem               Item that will serve as the Gui title (at the top)
+     * @param   attributes              Category attributes
+     * @param   cosmetics               Cosmetic class
+     * @param   cosmeticGetter          Cosmetic getter (from a CosmeticManager instance)
+     * @param   cosmeticSetter          Cosmetic setter (from a CosmeticManager instance)
+     *
+     * @apiNote titleItem should not be built. Just create it, we'll build it for ya ;)
      */
     public GuiCosmeticsCategory(
         CosmeticManager playerCosmeticManager,
@@ -62,19 +65,23 @@ public abstract class GuiCosmeticsCategory<
             GUI_MANAGER
         );
 
-        this.currentCosmeticGetter = cosmeticGetter;
-        this.currentCosmeticSetter = cosmeticSetter;
-
-        this.cosmetics = cosmetics;
-
         this.mask = new Mask(this);
         this.attributes = attributes;
+
+        this.currentCosmeticGetter = cosmeticGetter;
+        this.currentCosmeticSetter = cosmeticSetter;
+        this.cosmetics = cosmetics;
 
         this.initializeGui(titleItem);
         this.reloadGui(this, playerCosmeticManager);
     }
 
 
+    /**
+     * Initializes the Gui.
+     *
+     * @param   titleItem   Item that will serve as the Gui title (at the top)
+     */
     private void initializeGui(HashItem titleItem)
     {
         final HashItem primarySep = HashItem.separator(this.attributes.getPrimaryColor(), GUI_MANAGER);
@@ -116,12 +123,26 @@ public abstract class GuiCosmeticsCategory<
         this.mask.apply();
     }
 
+    /**
+     * Reloads the Gui. Used at each current cosmetic change.
+     *
+     * @param   gui         Gui to update
+     * @param   manager     Cosmetic Manager
+     */
     private void reloadGui(GuiCosmeticsCategory<T, E> gui, CosmeticManager manager)
     {
         gui.clearPages();
         gui.addCosmetics(gui.getCosmeticsClass(), manager);
     }
 
+    /**
+     * Adds a cosmetic to the Gui.
+     *
+     * @param   cosmetic    Cosmetic to add
+     * @param   manager     Cosmetic Manager (for current / possession detection)
+     *
+     * @apiNote TODO: Finish this and beautify !
+     */
     private void addCosmetic(Cosmetic<T> cosmetic, CosmeticManager manager)
     {
         final Page lastPage = this.getLastPage();
@@ -170,6 +191,12 @@ public abstract class GuiCosmeticsCategory<
         }
     }
 
+    /**
+     * Adds every cosmetic to the Gui.
+     *
+     * @param   enumClass   Cosmetic enum class
+     * @param   manager     Cosmetic Manager (for current / possession detection)
+     */
     private void addCosmetics(Class<E> enumClass, CosmeticManager manager)
     {
         for (E enumConstant : enumClass.getEnumConstants()) {
@@ -177,6 +204,10 @@ public abstract class GuiCosmeticsCategory<
         }
     }
 
+
+    /**
+     * @return  Cosmetic enum class
+     */
     public Class<E> getCosmeticsClass()
     {
         return this.cosmetics;

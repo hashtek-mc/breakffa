@@ -6,7 +6,6 @@ import org.bukkit.Sound;
 
 /**
  * KSFX stands for Kill SFX.
- * TODO: Documentation is messy >:(
  */
 public class CosmeticTypeKSFX implements AbstractCosmetic
 {
@@ -33,7 +32,7 @@ public class CosmeticTypeKSFX implements AbstractCosmetic
 
 
         /**
-         * Creates a new cosmetic of type Kill SFX
+         * Creates a new Kill SFX (cosmetic).
          *
          * @param   cosmetic    Cosmetic
          */
@@ -58,7 +57,7 @@ public class CosmeticTypeKSFX implements AbstractCosmetic
 
 
     /**
-     * Creates a Kill SFX.
+     * Creates a Kill SFX (object).
      *
      * @param   sfx SFX to play when killing someone
      */

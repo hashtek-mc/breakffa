@@ -14,11 +14,17 @@ public class GuiCosmeticsKSFX
     extends GuiCosmeticsCategory<CosmeticTypeKSFX, CosmeticTypeKSFX.KillSfx>
 {
 
-    private static final String GUI_NAME = "kill sfx!!!";
+    private static final GuiCosmeticsCategoryAttributes attributes =
+        new GuiCosmeticsCategoryAttributes(
+            "kill sfx!!!",
+            Material.WHITE_STAINED_GLASS_PANE,
+            Material.RED_STAINED_GLASS_PANE,
+            ChatColor.RED
+        );
 
 
     /**
-     * Creates a new instance of AbstractGuiCosmeticsCategory.
+     * Creates a new instance of GuiCosmeticsKSFX.
      */
     public GuiCosmeticsKSFX(CosmeticManager cosmeticManager)
     {
@@ -26,12 +32,7 @@ public class GuiCosmeticsKSFX
             cosmeticManager,
             new HashItem(Material.IRON_SWORD)
                 .setName(Component.text("kill sfx xd")),
-            new GuiCosmeticsCategoryAttributes(
-                GUI_NAME,
-                Material.WHITE_STAINED_GLASS_PANE,
-                Material.RED_STAINED_GLASS_PANE,
-                ChatColor.RED
-            ),
+            attributes,
             CosmeticTypeKSFX.KillSfx.class,
             cManager -> cManager::getCurrentKillSfx,
             cManager -> cManager::setCurrentKillSfx

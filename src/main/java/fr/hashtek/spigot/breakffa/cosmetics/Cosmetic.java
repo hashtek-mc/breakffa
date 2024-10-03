@@ -1,7 +1,8 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
-import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
-
+/**
+ * @param   <T>     Cosmetic type
+ */
 public class Cosmetic<T>
 {
 
@@ -11,6 +12,14 @@ public class Cosmetic<T>
     private final T cosmetic;
 
 
+    /**
+     * Creates a new Cosmetic.
+     *
+     * @param   name            Name
+     * @param   description     Description
+     * @param   price           Price
+     * @param   cosmetic        Cosmetic
+     */
     public Cosmetic(
         String name,
         String description,

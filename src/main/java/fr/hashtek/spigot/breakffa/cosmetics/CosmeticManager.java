@@ -14,16 +14,32 @@ import java.util.function.Supplier;
 public class CosmeticManager
 {
 
+    /**
+     * Function used to get the cosmetic setter according to a Player's Cosmetic Manager.
+     *
+     * @param   <T>     Cosmetic
+     */
     public interface CosmeticSetter<T extends Cosmetic<? extends AbstractCosmetic>>
     {
 
+        /**
+         * @param   manager     Cosmetic Manager of the player who clicked
+         */
         Consumer<T> getSetter(CosmeticManager manager);
 
     }
 
+    /**
+     * Function used to get the cosmetic getter according to a Player's Cosmetic Manager.
+     *
+     * @param   <T>     Cosmetic
+     */
     public interface CosmeticGetter<T extends Cosmetic<? extends AbstractCosmetic>>
     {
 
+        /**
+         * @param   manager     Cosmetic Manager of the player who clicked
+         */
         Supplier<T> getGetter(CosmeticManager manager);
 
     }
@@ -40,6 +56,9 @@ public class CosmeticManager
 
     /**
      * Creates a new instance of CosmeticManager.
+     *
+     * @param   main    BreakFFA instance
+     * @param   player  Player linked to this Cosmetic Manager
      */
     public CosmeticManager(BreakFFA main, Player player)
     {
@@ -50,14 +69,19 @@ public class CosmeticManager
     }
 
     /**
-     *
+     * Loads the data from the database.
+     * TODO: Finish this.
      */
     public void loadData()
     {
         // ...
-        this.unlockEverything();
+        this.unlockEverything(); // FIXME: Temporary!
     }
 
+    /**
+     * @param   cosmetic    Cosmetic
+     * @return  True if player has the cosmetic
+     */
     public boolean hasCosmetic(Cosmetic<? extends AbstractCosmetic> cosmetic)
     {
         return

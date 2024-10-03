@@ -13,7 +13,13 @@ public class GuiCosmeticsCustomHelmet
     extends GuiCosmeticsCategory<CosmeticTypeCustomHelmet, CosmeticTypeCustomHelmet.CustomHelmet>
 {
 
-    private static final String GUI_NAME = "custom helmets lol";
+    private static final GuiCosmeticsCategoryAttributes attributes =
+        new GuiCosmeticsCategoryAttributes(
+            "custom helmets lol",
+            Material.WHITE_STAINED_GLASS_PANE,
+            Material.RED_STAINED_GLASS_PANE,
+            ChatColor.RED
+        );
 
 
     /**
@@ -25,12 +31,7 @@ public class GuiCosmeticsCustomHelmet
             cosmeticManager,
             new HashItem(Material.BEACON)
                 .setName(Component.text("Custom helmet")),
-            new GuiCosmeticsCategoryAttributes(
-                GUI_NAME,
-                Material.WHITE_STAINED_GLASS_PANE,
-                Material.RED_STAINED_GLASS_PANE,
-                ChatColor.RED
-            ),
+            attributes,
             CosmeticTypeCustomHelmet.CustomHelmet.class,
             cManager -> cManager::getCurrentCustomHelmet,
             cManager -> cManager::setCurrentCustomHelmet

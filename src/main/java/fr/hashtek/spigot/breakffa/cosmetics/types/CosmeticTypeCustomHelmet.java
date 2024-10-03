@@ -5,9 +5,6 @@ import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.Material;
 
-/**
- * TODO: Documentation is messy >:(
- */
 public class CosmeticTypeCustomHelmet implements AbstractCosmetic
 {
 
@@ -26,7 +23,7 @@ public class CosmeticTypeCustomHelmet implements AbstractCosmetic
 
 
         /**
-         * Creates a new cosmetic of type Custom Helmet
+         * Creates a new Custom Helmet (cosmetic).
          *
          * @param   cosmetic    Cosmetic
          */
@@ -51,7 +48,7 @@ public class CosmeticTypeCustomHelmet implements AbstractCosmetic
 
 
     /**
-     * Creates a Custom Helmet.
+     * Creates a new Custom Helmet (object).
      *
      * @param   helmet  Custom helmet
      */
