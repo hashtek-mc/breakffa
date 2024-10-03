@@ -184,7 +184,15 @@ public abstract class GuiCosmeticsCategory<
                     final CosmeticManager playerCosmeticManager =
                         MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
 
+                    /* If player doesn't own cosmetic, redirect it to the Buy Gui. */
                     if (!isCosmeticOwned) {
+                        new GuiCosmeticBuy<T, E>(
+                            this,
+                            cosmetic,
+                            ownedCosmetics,
+                            manager,
+                            currentCosmeticSetter
+                        ).open(player);
                         return;
                     }
 
