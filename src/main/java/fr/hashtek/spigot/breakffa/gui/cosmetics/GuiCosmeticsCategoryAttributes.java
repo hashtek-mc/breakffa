@@ -1,4 +1,4 @@
-package fr.hashtek.spigot.breakffa.gui.category;
+package fr.hashtek.spigot.breakffa.gui.cosmetics;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

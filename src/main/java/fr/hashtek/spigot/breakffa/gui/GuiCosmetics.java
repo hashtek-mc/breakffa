@@ -2,10 +2,8 @@ package fr.hashtek.spigot.breakffa.gui;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
-import fr.hashtek.spigot.breakffa.game.GameManager;
-import fr.hashtek.spigot.breakffa.gui.category.categories.GuiCosmeticsCustomHelmet;
-import fr.hashtek.spigot.breakffa.gui.category.categories.GuiCosmeticsKSFX;
-import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.gui.cosmetics.categories.GuiCosmeticsCustomHelmet;
+import fr.hashtek.spigot.breakffa.gui.cosmetics.categories.GuiCosmeticsKSFX;
 import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
@@ -22,9 +20,13 @@ public class GuiCosmetics extends HashGui
     private static final BreakFFA MAIN = BreakFFA.getInstance();
     private static final HashGuiManager GUI_MANAGER = MAIN.getGuiManager();
 
+    private static final Component GUI_TITLE = Component.text("cosmetics!!!!");
+    private static final int SIZE = 6;
+
 
     private enum Items
     {
+
         ORANGE_SEP (HashItem.separator(Material.ORANGE_STAINED_GLASS_PANE, BreakFFA.getInstance().getGuiManager())),
 
         TITLE (new HashItem(Material.DARK_OAK_SIGN)
@@ -33,9 +35,7 @@ public class GuiCosmetics extends HashGui
             .build(GUI_MANAGER)
         ),
 
-        // TODO: Maybe put the current kill sfx item.
-        KILL_SFX (new HashItem(Material.IRON_SWORD)
-            .setName(Component.text("kill sfx"))
+        KILL_SFX (GuiCosmeticsKSFX.TITLE_ITEM
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
@@ -46,12 +46,10 @@ public class GuiCosmetics extends HashGui
                         new GuiCosmeticsKSFX(playerCosmeticManager).open(player);
                     })
             )
-            .build(GUI_MANAGER)
+            .build(GUI_TITLE, GUI_MANAGER)
         ),
 
-        // TODO: Maybe put the current custom helmet item.
-        CUSTOM_HELMET (new HashItem(Material.PLAYER_HEAD)
-            .setName(Component.text("Custom helmets"))
+        CUSTOM_HELMET (GuiCosmeticsCustomHelmet.TITLE_ITEM
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
@@ -62,8 +60,9 @@ public class GuiCosmetics extends HashGui
                         new GuiCosmeticsCustomHelmet(playerCosmeticManager).open(player);
                     })
             )
-            .build(GUI_MANAGER)
+            .build(GUI_TITLE, GUI_MANAGER)
         );
+
 
         private final HashItem item;
 
@@ -82,32 +81,23 @@ public class GuiCosmetics extends HashGui
     }
 
 
-    public GuiCosmetics(Player player)
+    public GuiCosmetics()
     {
-        super(
-            Component.text("cosmetics!!!!"),
-            6
-        );
-
-        final BreakFFA main = BreakFFA.getInstance();
-        final GameManager gameManager = main.getGameManager();
-        final PlayerData playerData = gameManager.getPlayerManager(player).getData();
-
-//        CosmeticManager cosmeticManager = playerData.getPlayerManager().getCosmeticManager();
-
+        super(GUI_TITLE, SIZE);
         this.createGui();
     }
 
 
     private void createGui()
     {
-        Mask mask = new Mask(this);
+        final Mask mask = new Mask(this);
 
         mask
             .setItem('T', Items.TITLE.getItem())
+            .setItem('o', Items.ORANGE_SEP.getItem())
+
             .setItem('K', Items.KILL_SFX.getItem())
-            .setItem('H', Items.CUSTOM_HELMET.getItem())
-            .setItem('o', Items.ORANGE_SEP.getItem());
+            .setItem('H', Items.CUSTOM_HELMET.getItem());
 
         mask
             .pattern("ToKH     ");

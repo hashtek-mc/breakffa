@@ -1,9 +1,9 @@
-package fr.hashtek.spigot.breakffa.gui.category.categories;
+package fr.hashtek.spigot.breakffa.gui.cosmetics.categories;
 
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeCustomHelmet;
-import fr.hashtek.spigot.breakffa.gui.category.GuiCosmeticsCategoryAttributes;
-import fr.hashtek.spigot.breakffa.gui.category.GuiCosmeticsCategory;
+import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategoryAttributes;
+import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategory;
 import fr.hashtek.spigot.hashitem.HashItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;

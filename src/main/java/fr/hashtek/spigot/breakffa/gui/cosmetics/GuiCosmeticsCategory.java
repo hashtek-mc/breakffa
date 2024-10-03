@@ -1,4 +1,4 @@
-package fr.hashtek.spigot.breakffa.gui.category;
+package fr.hashtek.spigot.breakffa.gui.cosmetics;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
@@ -168,7 +168,6 @@ public abstract class GuiCosmeticsCategory<
 
                     final CosmeticManager playerCosmeticManager =
                         MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
-                    
 
 
                     currentCosmeticSetter.getSetter(playerCosmeticManager).accept(cosmetic);
