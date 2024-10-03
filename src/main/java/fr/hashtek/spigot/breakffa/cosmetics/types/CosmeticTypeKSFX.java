@@ -2,6 +2,7 @@ package fr.hashtek.spigot.breakffa.cosmetics.types;
 
 import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 
 /**
@@ -14,6 +15,7 @@ public class CosmeticTypeKSFX implements AbstractCosmetic
     {
 
         NINE_MM (new Cosmetic<CosmeticTypeKSFX>(
+            Material.GOLDEN_SWORD,
             "9mm",
             "caca",
             100,
@@ -21,6 +23,7 @@ public class CosmeticTypeKSFX implements AbstractCosmetic
         )),
 
         CACA (new Cosmetic<CosmeticTypeKSFX>(
+            Material.FISHING_ROD,
             "huitre",
             "nathan j",
             1060,

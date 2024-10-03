@@ -42,17 +42,13 @@ public abstract class GuiCosmeticsCategory<
      * Creates a new instance of GuiCosmeticsCategory.
      *
      * @param   playerCosmeticManager   Player Cosmetic Manager
-     * @param   titleItem               Item that will serve as the Gui title (at the top)
      * @param   attributes              Category attributes
      * @param   cosmetics               Cosmetic class
      * @param   cosmeticGetter          Cosmetic getter (from a CosmeticManager instance)
      * @param   cosmeticSetter          Cosmetic setter (from a CosmeticManager instance)
-     *
-     * @apiNote titleItem should not be built. Just create it, we'll build it for ya ;)
      */
     public GuiCosmeticsCategory(
         CosmeticManager playerCosmeticManager,
-        HashItem titleItem,
         GuiCosmeticsCategoryAttributes attributes,
         Class<E> cosmetics,
         CosmeticManager.CosmeticGetter<Cosmetic<T>> cosmeticGetter,
@@ -72,7 +68,7 @@ public abstract class GuiCosmeticsCategory<
         this.currentCosmeticSetter = cosmeticSetter;
         this.cosmetics = cosmetics;
 
-        this.initializeGui(titleItem);
+        this.initializeGui(this.getCategoryTitleItem());
         this.reloadGui(this, playerCosmeticManager);
     }
 
@@ -136,6 +132,61 @@ public abstract class GuiCosmeticsCategory<
     }
 
     /**
+     * Creates an item for a cosmetic, with the click handlers for buy,
+     * select etc...
+     *
+     * @param   cosmetic    Cosmetic to add
+     * @param   manager     Cosmetic Manager (for current / possession detection)
+     * @return  Built item
+     */
+    private HashItem createCosmeticItem(Cosmetic<T> cosmetic, CosmeticManager manager)
+    {
+        final Cosmetic<T> currentCosmetic = currentCosmeticGetter.getGetter(manager).get();
+
+        final HashItem item = new HashItem(cosmetic.getMaterial())
+            .setName(Component.text(cosmetic.getName()))
+            .addLore(Component.text(cosmetic.getDescription()));
+
+        if (manager.hasCosmetic(cosmetic)) {
+            item.addLore(Component.text("YOU GOT THIS COSMETIC!!!"));
+        } else {
+            item.addLore(Component.text("price: " + cosmetic.getPrice()));
+        }
+
+        if (currentCosmetic != null && currentCosmetic.equals(cosmetic)) {
+            item.addLore(Component.text(ChatColor.GREEN + "Selected!!!"));
+            item.addEnchant(Enchantment.DURABILITY, 1);
+        }
+
+        item.addClickHandler(
+            new ClickHandler()
+                .addAllClickTypes()
+                .setClickAction((Player player, HashGui hashGui, ItemStack i, int slot) -> {
+                    if (!(hashGui instanceof GuiCosmeticsCategory<?, ?> gui)) {
+                        return;
+                    }
+
+                    final CosmeticManager playerCosmeticManager =
+                        MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
+                    
+
+
+                    currentCosmeticSetter.getSetter(playerCosmeticManager).accept(cosmetic);
+
+                    /*                This invalid cast is "okay" because there is no way that this fires in another gui, */
+                    /*              ⬇ thanks to the Gui whitelist when building an item.                                  */
+                    this.reloadGui((GuiCosmeticsCategory<T, E>) gui, playerCosmeticManager);
+
+                    gui.update(player);
+                })
+        )
+        .build(this, GUI_MANAGER);
+
+
+        return item;
+    }
+
+    /**
      * Adds a cosmetic to the Gui.
      *
      * @param   cosmetic    Cosmetic to add
@@ -147,44 +198,8 @@ public abstract class GuiCosmeticsCategory<
     {
         final Page lastPage = this.getLastPage();
 
-        final HashItem cosmeticItem = new HashItem(Material.STONE)
-            .setName(Component.text(cosmetic.getName()))
-            .addLore(Component.text(cosmetic.getDescription()));
-
-        if (manager.hasCosmetic(cosmetic)) {
-            cosmeticItem.addLore(Component.text("YOU GOT THIS COSMETIC!!!"));
-        }
-
-        if (currentCosmeticGetter.getGetter(manager).get().equals(cosmetic)) {
-            cosmeticItem.addLore(Component.text(ChatColor.GREEN + "Selected!!!"));
-            cosmeticItem.addEnchant(Enchantment.DURABILITY, 1);
-        }
-
-        cosmeticItem
-            .addClickHandler(
-                new ClickHandler()
-                    .addAllClickTypes()
-                    .setClickAction((Player player, HashGui hashGui, ItemStack item, int slot) -> {
-                        if (!(hashGui instanceof GuiCosmeticsCategory<?, ?> gui)) {
-                            return;
-                        }
-
-                        final CosmeticManager playerCosmeticManager =
-                            MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
-
-                        currentCosmeticSetter.getSetter(playerCosmeticManager).accept(cosmetic);
-
-                        /*              ️ This invalid cast is "okay" because there is no way that this fires in another gui, */
-                        /*              ⬇ thanks to the gui whitelist when building an item.                                  */
-                        this.reloadGui((GuiCosmeticsCategory<T, E>) gui, playerCosmeticManager);
-
-                        gui.update(player);
-                    })
-            )
-            .build(this, GUI_MANAGER);
-
         try {
-            lastPage.addItem(cosmeticItem);
+            lastPage.addItem(this.createCosmeticItem(cosmetic, manager));
         } catch (IllegalArgumentException unused) {
             this.createNewPage();
             this.addCosmetic(cosmetic, manager);
@@ -204,6 +219,13 @@ public abstract class GuiCosmeticsCategory<
         }
     }
 
+
+    /**
+     * @apiNote Item should not be built. Just create it, we'll build it for ya ;)
+     * @apiNote Tip: Create a static variable that stores the item, and make this function return the variable.
+     * @return  Item that will serve as the Gui title (at the top)
+     */
+    public abstract HashItem getCategoryTitleItem();
 
     /**
      * @return  Cosmetic enum class

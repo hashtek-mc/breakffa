@@ -1,11 +1,14 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
+import org.bukkit.Material;
+
 /**
  * @param   <T>     Cosmetic type
  */
 public class Cosmetic<T>
 {
 
+    private final Material material;
     private final String name;
     private final String description;
     private final int price;
@@ -21,18 +24,28 @@ public class Cosmetic<T>
      * @param   cosmetic        Cosmetic
      */
     public Cosmetic(
+        Material material,
         String name,
         String description,
         int price,
         T cosmetic
     )
     {
+        this.material = material;
         this.name = name;
         this.description = description;
         this.price = price;
         this.cosmetic = cosmetic;
     }
 
+
+    /**
+     * @return  Material
+     */
+    public Material getMaterial()
+    {
+        return this.material;
+    }
 
     /**
      * @return  Cosmetic name

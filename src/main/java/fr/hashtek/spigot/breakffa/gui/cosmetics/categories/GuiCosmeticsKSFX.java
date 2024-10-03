@@ -1,6 +1,5 @@
 package fr.hashtek.spigot.breakffa.gui.category.categories;
 
-import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKSFX;
 import fr.hashtek.spigot.breakffa.gui.category.GuiCosmeticsCategoryAttributes;
@@ -14,13 +13,17 @@ public class GuiCosmeticsKSFX
     extends GuiCosmeticsCategory<CosmeticTypeKSFX, CosmeticTypeKSFX.KillSfx>
 {
 
-    private static final GuiCosmeticsCategoryAttributes attributes =
+    private static final GuiCosmeticsCategoryAttributes ATTRIBUTES =
         new GuiCosmeticsCategoryAttributes(
             "kill sfx!!!",
             Material.WHITE_STAINED_GLASS_PANE,
             Material.RED_STAINED_GLASS_PANE,
             ChatColor.RED
         );
+
+    public static final HashItem TITLE_ITEM =
+        new HashItem(Material.IRON_SWORD)
+            .setName(Component.text("KSFX"));
 
 
     /**
@@ -30,13 +33,18 @@ public class GuiCosmeticsKSFX
     {
         super(
             cosmeticManager,
-            new HashItem(Material.IRON_SWORD)
-                .setName(Component.text("kill sfx xd")),
-            attributes,
+            ATTRIBUTES,
             CosmeticTypeKSFX.KillSfx.class,
             cManager -> cManager::getCurrentKillSfx,
             cManager -> cManager::setCurrentKillSfx
         );
+    }
+
+
+    @Override
+    public HashItem getCategoryTitleItem()
+    {
+        return TITLE_ITEM;
     }
 
 }

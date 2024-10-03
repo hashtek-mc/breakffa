@@ -12,6 +12,7 @@ public class CosmeticTypeCustomHelmet implements AbstractCosmetic
     {
 
         ANVIL (new Cosmetic<CosmeticTypeCustomHelmet>(
+            Material.ANVIL,
             "anvil lol",
             "miau",
             447,
