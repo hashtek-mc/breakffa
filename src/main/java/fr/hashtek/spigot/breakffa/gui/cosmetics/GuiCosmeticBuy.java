@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class GuiCosmeticBuy<
     T extends AbstractCosmetic,
@@ -57,19 +58,23 @@ public class GuiCosmeticBuy<
 
 
     private final GuiCosmeticsCategory<T, E> parentGui;
+    private final Supplier<List<Cosmetic<T>>> ownedCosmeticsGetter;
+    private final CosmeticManager cosmeticManager;
 
 
     public GuiCosmeticBuy(
         GuiCosmeticsCategory<T, E> parentGui,
         Cosmetic<T> cosmetic,
-        List<Cosmetic<T>> ownedCosmetics,
-        CosmeticManager manager,
+        Supplier<List<Cosmetic<T>>> ownedCosmeticsGetter,
+        CosmeticManager cosmeticManager,
         CosmeticManager.CosmeticSetter<Cosmetic<T>> currentCosmeticSetter
     )
     {
         super(TITLE, SIZE);
 
         this.parentGui = parentGui;
+        this.ownedCosmeticsGetter = ownedCosmeticsGetter;
+        this.cosmeticManager = cosmeticManager;
 
         this.createGui(cosmetic);
     }
@@ -90,7 +95,12 @@ public class GuiCosmeticBuy<
                 new ClickHandler()
                     .addAllClickTypes()
                     .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                        // TODO: buy!!!!!
+                        this.ownedCosmeticsGetter.get().add(cosmetic);
+
+                        // set current cosmetic
+
+                        parentGui.reloadGui(parentGui, cosmeticManager);
+                        parentGui.open(player);
                     })
             )
             .build(this, GUI_MANAGER);

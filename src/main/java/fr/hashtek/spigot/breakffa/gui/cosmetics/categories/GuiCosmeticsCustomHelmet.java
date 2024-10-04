@@ -35,7 +35,7 @@ public class GuiCosmeticsCustomHelmet
             cosmeticManager,
             ATTRIBUTES,
             CosmeticTypeCustomHelmet.CustomHelmet.class,
-            cosmeticManager.getOwnedCustomHelmets(),
+            cosmeticManager::getOwnedCustomHelmets,
             cManager -> cManager::getCurrentCustomHelmet,
             cManager -> cManager::setCurrentCustomHelmet
         );

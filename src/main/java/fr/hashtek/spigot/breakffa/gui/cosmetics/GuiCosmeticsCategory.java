@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class GuiCosmeticsCategory<
     T extends AbstractCosmetic,
@@ -36,6 +37,7 @@ public abstract class GuiCosmeticsCategory<
     private final GuiCosmeticsCategoryAttributes attributes;
 
     private final Class<E> cosmetics;
+    private final Supplier<List<Cosmetic<T>>> ownedCosmeticsGetter;
     private final CosmeticManager.CosmeticGetter<Cosmetic<T>> currentCosmeticGetter;
     private final CosmeticManager.CosmeticSetter<Cosmetic<T>> currentCosmeticSetter;
 
@@ -46,6 +48,7 @@ public abstract class GuiCosmeticsCategory<
      * @param   playerCosmeticManager   Player Cosmetic Manager
      * @param   attributes              Category attributes
      * @param   cosmetics               Cosmetic class
+     * @param   ownedCosmeticsGetter    Cosmetics that player currently owns Getter
      * @param   cosmeticGetter          Cosmetic getter (from a CosmeticManager instance)
      * @param   cosmeticSetter          Cosmetic setter (from a CosmeticManager instance)
      */
@@ -53,7 +56,7 @@ public abstract class GuiCosmeticsCategory<
         CosmeticManager playerCosmeticManager,
         GuiCosmeticsCategoryAttributes attributes,
         Class<E> cosmetics,
-        List<Cosmetic<T>> ownedCosmetics,
+        Supplier<List<Cosmetic<T>>> ownedCosmeticsGetter,
         CosmeticManager.CosmeticGetter<Cosmetic<T>> cosmeticGetter,
         CosmeticManager.CosmeticSetter<Cosmetic<T>> cosmeticSetter
     )
@@ -67,12 +70,13 @@ public abstract class GuiCosmeticsCategory<
         this.mask = new Mask(this);
         this.attributes = attributes;
 
+        this.cosmetics = cosmetics;
+        this.ownedCosmeticsGetter = ownedCosmeticsGetter;
         this.currentCosmeticGetter = cosmeticGetter;
         this.currentCosmeticSetter = cosmeticSetter;
-        this.cosmetics = cosmetics;
 
         this.initializeGui(this.getCategoryTitleItem());
-        this.reloadGui(this, ownedCosmetics, playerCosmeticManager);
+        this.reloadGui(this, playerCosmeticManager);
     }
 
 
@@ -125,32 +129,28 @@ public abstract class GuiCosmeticsCategory<
     /**
      * Reloads the Gui. Used at each current cosmetic change.
      *
-     * @param   gui             Gui to update
-     * @param   ownedCosmetics  Cosmetics that player currently owns
-     * @param   manager         Cosmetic Manager
+     * @param   gui                     Gui to update
+     * @param   manager                 Cosmetic Manager
      */
-    private void reloadGui(
+    public void reloadGui(
         GuiCosmeticsCategory<T, E> gui,
-        List<Cosmetic<T>> ownedCosmetics,
         CosmeticManager manager
     )
     {
         gui.clearPages();
-        gui.addCosmeticsItems(gui.getCosmeticsClass(), ownedCosmetics, manager);
+        gui.addCosmeticsItems(gui.getCosmeticsClass(), manager);
     }
 
     /**
      * Creates an item for a cosmetic, with the click handlers for buy,
      * select etc...
      *
-     * @param   cosmetic    Cosmetic to add
-     * @param   ownedCosmetics  Cosmetics that player currently owns
-     * @param   manager     Cosmetic Manager (for current / possession detection)
+     * @param   cosmetic                Cosmetic to add
+     * @param   manager                 Cosmetic Manager (for current / possession detection)
      * @return  Built item
      */
     private HashItem createCosmeticItem(
         Cosmetic<T> cosmetic,
-        List<Cosmetic<T>> ownedCosmetics,
         CosmeticManager manager
     )
     {
@@ -160,9 +160,7 @@ public abstract class GuiCosmeticsCategory<
             .setName(Component.text(cosmetic.getName()))
             .addLore(Component.text(cosmetic.getDescription()));
 
-        final boolean isCosmeticOwned = ownedCosmetics.contains(cosmetic);
-
-        if (isCosmeticOwned) {
+        if (this.ownedCosmeticsGetter.get().contains(cosmetic)) {
             item.addLore(Component.text("YOU GOT THIS COSMETIC!!!"));
         } else {
             item.addLore(Component.text("price: " + cosmetic.getPrice()));
@@ -185,12 +183,12 @@ public abstract class GuiCosmeticsCategory<
                         MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
 
                     /* If player doesn't own cosmetic, redirect it to the Buy Gui. */
-                    if (!isCosmeticOwned) {
+                    if (!this.ownedCosmeticsGetter.get().contains(cosmetic)) {
                         new GuiCosmeticBuy<T, E>(
                             this,
                             cosmetic,
-                            ownedCosmetics,
-                            manager,
+                            ownedCosmeticsGetter,
+                            playerCosmeticManager,
                             currentCosmeticSetter
                         ).open(player);
                         return;
@@ -202,7 +200,6 @@ public abstract class GuiCosmeticsCategory<
                         /*   This invalid cast is "okay" because there is no way that this fires in another gui, */
                         /* ⬇ thanks to the Gui whitelist when building an item.                                  */
                         (GuiCosmeticsCategory<T, E>) gui,
-                        ownedCosmetics,
                         playerCosmeticManager
                     );
 
@@ -218,39 +215,39 @@ public abstract class GuiCosmeticsCategory<
     /**
      * Adds a cosmetic to the Gui.
      *
-     * @param   cosmetic        Cosmetic to add
-     * @param   ownedCosmetics  Cosmetics that player currently owns
-     * @param   manager         Cosmetic Manager (for current / possession detection)
+     * @param   cosmetic                Cosmetic to add
+     * @param   manager                 Cosmetic Manager (for current / possession detection)
      *
      * @apiNote TODO: Finish this and beautify !
      */
-    private void addCosmeticItem(Cosmetic<T> cosmetic, List<Cosmetic<T>> ownedCosmetics, CosmeticManager manager)
+    private void addCosmeticItem(
+        Cosmetic<T> cosmetic,
+        CosmeticManager manager
+    )
     {
         final Page lastPage = this.getLastPage();
 
         try {
-            lastPage.addItem(this.createCosmeticItem(cosmetic, ownedCosmetics, manager));
+            lastPage.addItem(this.createCosmeticItem(cosmetic, manager));
         } catch (IllegalArgumentException unused) {
             this.createNewPage();
-            this.addCosmeticItem(cosmetic, ownedCosmetics, manager);
+            this.addCosmeticItem(cosmetic, manager);
         }
     }
 
     /**
      * Adds every cosmetic to the Gui.
      *
-     * @param   enumClass       Cosmetic enum class
-     * @param   ownedCosmetics  Cosmetics that player currently owns
-     * @param   manager         Cosmetic Manager (for current / possession detection)
+     * @param   enumClass               Cosmetic enum class
+     * @param   manager                 Cosmetic Manager (for current / possession detection)
      */
     private void addCosmeticsItems(
         Class<E> enumClass,
-        List<Cosmetic<T>> ownedCosmetics,
         CosmeticManager manager
     )
     {
         for (E enumConstant : enumClass.getEnumConstants()) {
-            this.addCosmeticItem(enumConstant.getCosmetic(), ownedCosmetics, manager);
+            this.addCosmeticItem(enumConstant.getCosmetic(), manager);
         }
     }
 
