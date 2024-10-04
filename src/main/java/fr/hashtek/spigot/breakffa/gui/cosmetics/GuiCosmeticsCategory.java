@@ -186,7 +186,7 @@ public abstract class GuiCosmeticsCategory<
                     if (!this.ownedCosmeticsGetter.get().contains(cosmetic)) {
                         new GuiCosmeticBuy<T, E>(
                             this,
-                            cosmetic,
+                            cosmetic, // <- FIXME: bug here
                             ownedCosmeticsGetter,
                             playerCosmeticManager,
                             currentCosmeticSetter
