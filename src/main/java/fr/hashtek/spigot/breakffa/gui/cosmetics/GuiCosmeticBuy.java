@@ -61,9 +61,16 @@ public class GuiCosmeticBuy<
     private final CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter;
 
 
+    /**
+     * Creates a new instance of GuiCosmeticBuy.
+     *
+     * @param   parentGui               Parent Gui (instance of {@link GuiCosmeticsCategory})
+     * @param   cosmetic                Cosmetic to buy
+     * @param   ownedCosmeticsGetter    Owned cosmetics getter (from a {@link CosmeticManager} instance)
+     * @param   currentCosmeticSetter   Current cosmetic setter (from a {@link CosmeticManager} instance)
+     */
     public GuiCosmeticBuy(
         GuiCosmeticsCategory<T, E> parentGui,
-        CosmeticManager cosmeticManager,
         Cosmetic<T> cosmetic,
         CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter,
         CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter
@@ -80,6 +87,11 @@ public class GuiCosmeticBuy<
     }
 
 
+    /**
+     * Creates the Gui.
+     *
+     * @param   cosmetic    Cosmetic to buy
+     */
     private void createGui(Cosmetic<T> cosmetic)
     {
         final HashItem cosmeticItem = new HashItem(cosmetic.getMaterial())
@@ -105,6 +117,7 @@ public class GuiCosmeticBuy<
                             final CosmeticManager playerCosmeticManager =
                                 MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
 
+                            /* Unlocks the cosmetic for the player. */
                             gui.getOwnedCosmeticsGetter().getOwnedGetter(playerCosmeticManager).get().add(cosmeticToBuy);
                         }
                     ))
@@ -136,6 +149,10 @@ public class GuiCosmeticBuy<
         mask.apply();
     }
 
+    /**
+     * @param   action  Action to execute before returning to the Parent Gui
+     * @return  Action that returns to the Parent Gui.
+     */
     private ClickAction returnToParentGui(ClickAction action)
     {
         return (Player player, HashGui hashGui, ItemStack item, int slot) -> {
@@ -160,22 +177,34 @@ public class GuiCosmeticBuy<
         };
     }
 
+    /**
+     * @return  Action that returns to the Parent Gui, without custom action before.
+     */
     private ClickAction returnToParentGui()
     {
         return this.returnToParentGui(null);
     }
 
 
+    /**
+     * @return  Parent Gui (instance of {@link GuiCosmeticsCategory})
+     */
     public GuiCosmeticsCategory<T, E> getParentGui()
     {
         return this.parentGui;
     }
 
+    /**
+     * @return  Cosmetic to buy
+     */
     public Cosmetic<T> getCosmetic()
     {
         return this.cosmetic;
     }
 
+    /**
+     * @return  Owned cosmetics getter (from a {@link CosmeticManager} instance)
+     */
     public CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> getOwnedCosmeticsGetter()
     {
         return this.ownedCosmeticsGetter;

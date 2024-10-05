@@ -45,17 +45,17 @@ public abstract class GuiCosmeticsCategory<
      * @param   playerCosmeticManager   Player Cosmetic Manager
      * @param   attributes              Category attributes
      * @param   cosmetics               Cosmetic class
-     * @param   ownedCosmeticsGetter    Cosmetics that player currently owns Getter
-     * @param   cosmeticGetter          Cosmetic getter (from a CosmeticManager instance)
-     * @param   cosmeticSetter          Cosmetic setter (from a CosmeticManager instance)
+     * @param   ownedCosmeticsGetter    Owned cosmetics getter (from a {@link CosmeticManager} instance)
+     * @param   currentCosmeticGetter   Current cosmetic getter (from a {@link CosmeticManager} instance)
+     * @param   currentCosmeticSetter   Current cosmetic setter (from a {@link CosmeticManager} instance)
      */
     public GuiCosmeticsCategory(
         CosmeticManager playerCosmeticManager,
         GuiCosmeticsCategoryAttributes attributes,
         Class<E> cosmetics,
         CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter,
-        CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> cosmeticGetter,
-        CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> cosmeticSetter
+        CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> currentCosmeticGetter,
+        CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter
     )
     {
         super(
@@ -69,8 +69,8 @@ public abstract class GuiCosmeticsCategory<
 
         this.cosmetics = cosmetics;
         this.ownedCosmeticsGetter = ownedCosmeticsGetter;
-        this.currentCosmeticGetter = cosmeticGetter;
-        this.currentCosmeticSetter = cosmeticSetter;
+        this.currentCosmeticGetter = currentCosmeticGetter;
+        this.currentCosmeticSetter = currentCosmeticSetter;
 
         this.initializeGui(this.getCategoryTitleItem());
         this.reloadGui(
@@ -129,8 +129,8 @@ public abstract class GuiCosmeticsCategory<
     /**
      * Reloads the Gui. Used at each current cosmetic change.
      *
-     * @param   gui                     Gui to update
-     * @param   manager                 Cosmetic Manager
+     * @param   gui         Gui to update
+     * @param   manager     Cosmetic Manager
      */
     public void reloadGui(
         GuiCosmeticsCategory<T, E> gui,
@@ -145,8 +145,8 @@ public abstract class GuiCosmeticsCategory<
      * Creates an item for a cosmetic, with the click handlers for buy,
      * select etc...
      *
-     * @param   cosmetic                Cosmetic to add
-     * @param   manager                 Cosmetic Manager (for current / possession detection)
+     * @param   cosmetic    Cosmetic to add
+     * @param   manager     Cosmetic Manager (for current / possession detection)
      * @return  Built item
      */
     private HashItem createCosmeticItem(
@@ -190,7 +190,6 @@ public abstract class GuiCosmeticsCategory<
                     if (!gui.getOwnedCosmeticsGetter().getOwnedGetter(playerCosmeticManager).get().contains(cosmetic)) {
                         new GuiCosmeticBuy<T, E>(
                             gui,
-                            playerCosmeticManager,
                             cosmetic,
                             gui.getOwnedCosmeticsGetter(),
                             gui.getCurrentCosmeticSetter()
@@ -213,8 +212,8 @@ public abstract class GuiCosmeticsCategory<
     /**
      * Adds a cosmetic to the Gui.
      *
-     * @param   cosmetic                Cosmetic to add
-     * @param   manager                 Cosmetic Manager (for current / possession detection)
+     * @param   cosmetic    Cosmetic to add
+     * @param   manager     Cosmetic Manager (for current / possession detection)
      *
      * @apiNote TODO: Finish this and beautify !
      */
@@ -245,10 +244,7 @@ public abstract class GuiCosmeticsCategory<
     )
     {
         for (E enumConstant : enumClass.getEnumConstants()) {
-            this.addCosmeticItem(
-                enumConstant.getCosmetic(),
-                manager
-            );
+            this.addCosmeticItem(enumConstant.getCosmetic(), manager);
         }
     }
 
@@ -260,6 +256,9 @@ public abstract class GuiCosmeticsCategory<
      */
     public abstract HashItem getCategoryTitleItem();
 
+    /**
+     * @return  Gui's attributes
+     */
     public GuiCosmeticsCategoryAttributes getAttributes()
     {
         return this.attributes;
@@ -273,16 +272,25 @@ public abstract class GuiCosmeticsCategory<
         return this.cosmetics;
     }
 
+    /**
+     * @return  Owned cosmetics getter (from a {@link CosmeticManager} instance)
+     */
     public CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> getOwnedCosmeticsGetter()
     {
         return this.ownedCosmeticsGetter;
     }
 
+    /**
+     * @return  Current cosmetic getter (from a {@link CosmeticManager} instance)
+     */
     public CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> getCurrentCosmeticGetter()
     {
         return this.currentCosmeticGetter;
     }
 
+    /**
+     * @return  Current cosmetic setter (from a {@link CosmeticManager} instance)
+     */
     public CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> getCurrentCosmeticSetter()
     {
         return this.currentCosmeticSetter;
