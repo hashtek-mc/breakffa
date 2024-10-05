@@ -39,7 +39,7 @@ public class PlayerManager implements HashLoggable
         this.player = player;
         this.playerData = new PlayerData(this.main, this.player);
 
-        this.cosmeticManager = new CosmeticManager(this.main, this.player);
+        this.cosmeticManager = new CosmeticManager();
     }
 
 

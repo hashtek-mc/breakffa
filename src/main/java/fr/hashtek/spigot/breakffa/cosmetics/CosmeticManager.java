@@ -1,10 +1,8 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
-import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeCustomHelmet;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKSFX;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +63,6 @@ public class CosmeticManager
     }
 
 
-    private final Player player;
-
     /* Kill SFXs */
     private final List<Cosmetic<CosmeticTypeKSFX>> ownedKillSfxs;
     private Cosmetic<CosmeticTypeKSFX> currentKillSfx;
@@ -78,14 +74,9 @@ public class CosmeticManager
 
     /**
      * Creates a new instance of CosmeticManager.
-     *
-     * @param   main    BreakFFA instance
-     * @param   player  Player linked to this Cosmetic Manager
      */
-    public CosmeticManager(BreakFFA main, Player player)
+    public CosmeticManager()
     {
-        this.player = player;
-
         this.ownedKillSfxs = new ArrayList<Cosmetic<CosmeticTypeKSFX>>();
         this.ownedCustomHelmets = new ArrayList<Cosmetic<CosmeticTypeCustomHelmet>>();
 
@@ -120,11 +111,6 @@ public class CosmeticManager
             this.ownedCustomHelmets.add(helmet.getCosmetic());
         }
         this.currentCustomHelmet = this.ownedCustomHelmets.get(0);
-    }
-
-    public Player getPlayer()
-    {
-        return this.player;
     }
 
 

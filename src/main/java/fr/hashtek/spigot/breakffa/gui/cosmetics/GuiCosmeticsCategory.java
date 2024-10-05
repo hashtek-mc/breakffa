@@ -13,7 +13,6 @@ import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashgui.page.Page;
 import fr.hashtek.spigot.hashitem.HashItem;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -138,12 +137,8 @@ public abstract class GuiCosmeticsCategory<
         CosmeticManager manager
     )
     {
-        Bukkit.broadcast(Component.text("Reloading GUI..."));
         gui.clearPages();
-        gui.addCosmeticsItems(
-            gui.getCosmeticsClass(),
-            manager
-        );
+        gui.addCosmeticsItems(gui.getCosmeticsClass(), manager);
     }
 
     /**
@@ -159,8 +154,6 @@ public abstract class GuiCosmeticsCategory<
         CosmeticManager manager
     )
     {
-        Bukkit.broadcast(Component.text("name: " + manager.getPlayer().getName()));
-
         final Cosmetic<T> currentCosmetic = currentCosmeticGetter.getGetter(manager).get();
 
         final HashItem item = new HashItem(cosmetic.getMaterial())
@@ -168,20 +161,14 @@ public abstract class GuiCosmeticsCategory<
             .addLore(Component.text(cosmetic.getDescription()));
 
         if (ownedCosmeticsGetter.getOwnedGetter(manager).get().contains(cosmetic)) {
-            Bukkit.broadcast(Component.text("owned"));
             item.addLore(Component.text("YOU GOT THIS COSMETIC!!!"));
         } else {
-            Bukkit.broadcast(Component.text("not owned :("));
             item.addLore(Component.text("price: " + cosmetic.getPrice()));
         }
 
         if (currentCosmetic != null && currentCosmetic.equals(cosmetic)) {
-            Bukkit.broadcast(Component.text("selected"));
             item.addLore(Component.text(ChatColor.GREEN + "Selected!!!"));
             item.addEnchant(Enchantment.DURABILITY, 1);
-
-        } else {
-            Bukkit.broadcast(Component.text("not selected :c"));
         }
 
         item.addClickHandler(
@@ -199,8 +186,6 @@ public abstract class GuiCosmeticsCategory<
                     final CosmeticManager playerCosmeticManager =
                         MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
 
-                    System.out.println("Targeted cosmetic is : \"" + cosmetic.getName() + "\"");
-
                     /* If player doesn't own cosmetic, redirect it to the Buy Gui. */
                     if (!gui.getOwnedCosmeticsGetter().getOwnedGetter(playerCosmeticManager).get().contains(cosmetic)) {
                         new GuiCosmeticBuy<T, E>(
@@ -208,7 +193,6 @@ public abstract class GuiCosmeticsCategory<
                             playerCosmeticManager,
                             cosmetic,
                             gui.getOwnedCosmeticsGetter(),
-                            gui.getCurrentCosmeticGetter(),
                             gui.getCurrentCosmeticSetter()
                         ).open(player);
                         return;
@@ -216,10 +200,7 @@ public abstract class GuiCosmeticsCategory<
 
                     gui.getCurrentCosmeticSetter().getSetter(playerCosmeticManager).accept(cosmetic);
 
-                    gui.reloadGui(
-                        gui,
-                        playerCosmeticManager
-                    );
+                    gui.reloadGui(gui, playerCosmeticManager);
 
                     gui.update(player);
                 })
@@ -244,21 +225,11 @@ public abstract class GuiCosmeticsCategory<
     {
         final Page lastPage = this.getLastPage();
 
-        Bukkit.broadcast(Component.text("Adding cosmetic item " + cosmetic.getName()));
-
         try {
-            lastPage.addItem(
-                this.createCosmeticItem(
-                    cosmetic,
-                    manager
-                )
-            );
+            lastPage.addItem(this.createCosmeticItem(cosmetic, manager));
         } catch (IllegalArgumentException unused) {
             this.createNewPage();
-            this.addCosmeticItem(
-                cosmetic,
-                manager
-            );
+            this.addCosmeticItem(cosmetic, manager);
         }
     }
 
@@ -273,23 +244,12 @@ public abstract class GuiCosmeticsCategory<
         CosmeticManager manager
     )
     {
-        Bukkit.broadcast(Component.text("Adding cosmetics..."));
-
         for (E enumConstant : enumClass.getEnumConstants()) {
             this.addCosmeticItem(
                 enumConstant.getCosmetic(),
                 manager
             );
         }
-    }
-
-
-    /* TEMP */
-    @Override
-    public void open(Player player)
-    {
-        player.chat("/cosmeticdump");
-        super.open(player);
     }
 
 

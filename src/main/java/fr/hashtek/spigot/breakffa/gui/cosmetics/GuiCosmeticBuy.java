@@ -58,9 +58,7 @@ public class GuiCosmeticBuy<
     private final GuiCosmeticsCategory<T, E> parentGui;
     private final Cosmetic<T> cosmetic;
     private final CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter;
-    private final CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> currentCosmeticGetter;
     private final CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter;
-    private final CosmeticManager cosmeticManager;
 
 
     public GuiCosmeticBuy(
@@ -68,17 +66,14 @@ public class GuiCosmeticBuy<
         CosmeticManager cosmeticManager,
         Cosmetic<T> cosmetic,
         CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter,
-        CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> currentCosmeticGetter,
         CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter
     )
     {
         super(TITLE, SIZE);
 
         this.parentGui = parentGui;
-        this.cosmeticManager = cosmeticManager;
         this.cosmetic = cosmetic;
         this.ownedCosmeticsGetter = ownedCosmeticsGetter;
-        this.currentCosmeticGetter = currentCosmeticGetter;
         this.currentCosmeticSetter = currentCosmeticSetter;
 
         this.createGui(cosmetic);
@@ -125,6 +120,7 @@ public class GuiCosmeticBuy<
             )
             .build(this, GUI_MANAGER);
 
+
         final Mask mask = new Mask(this);
 
         mask.setItem('o', Items.ORANGE_SEP.getItem())
@@ -169,24 +165,20 @@ public class GuiCosmeticBuy<
         return this.returnToParentGui(null);
     }
 
-    public Cosmetic<T> getCosmetic()
-    {
-        return this.cosmetic;
-    }
 
     public GuiCosmeticsCategory<T, E> getParentGui()
     {
         return this.parentGui;
     }
 
+    public Cosmetic<T> getCosmetic()
+    {
+        return this.cosmetic;
+    }
+
     public CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> getOwnedCosmeticsGetter()
     {
         return this.ownedCosmeticsGetter;
-    }
-
-    public CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> getCurrentCosmeticGetter()
-    {
-        return this.currentCosmeticGetter;
     }
 
 }

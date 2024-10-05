@@ -15,6 +15,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Debug command
+ */
 public class CommandCosmeticDump implements CommandExecutor
 {
 
@@ -36,7 +39,6 @@ public class CommandCosmeticDump implements CommandExecutor
 
         player.sendMessage(Component.text("" + ChatColor.GOLD + ChatColor.BOLD + "COSMETIC DUMP"));
 
-        player.sendMessage(Component.text("Player: " + cosmeticManager.getPlayer().getName()));
         player.sendMessage(Component.text("KSFX:"));
         if (cosmeticManager.getCurrentKillSfx() == null) {
             player.sendMessage(Component.text("Current: null"));

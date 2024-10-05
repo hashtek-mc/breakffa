@@ -21,6 +21,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Debug command
+ */
 public class CommandGuiDump implements CommandExecutor
 {
 
