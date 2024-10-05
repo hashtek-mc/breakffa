@@ -65,14 +65,14 @@ public class KitLobby
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            new GuiCosmetics(player).open(player);
+                            new GuiCosmetics().open(player);
                         })
                 )
                 .addClickHandler(
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            new GuiCosmetics(player).open(player);
+                            new GuiCosmetics().open(player);
                         })
                 )
                 .build(GUI_MANAGER),

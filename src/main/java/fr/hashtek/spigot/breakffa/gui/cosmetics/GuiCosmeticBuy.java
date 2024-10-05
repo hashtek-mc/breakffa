@@ -6,6 +6,7 @@ import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
 import fr.hashtek.spigot.hashgui.HashGui;
+import fr.hashtek.spigot.hashgui.handler.click.ClickAction;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.spigot.hashgui.mask.Mask;
@@ -14,9 +15,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
-import java.util.function.Supplier;
 
 public class GuiCosmeticBuy<
     T extends AbstractCosmetic,
@@ -58,23 +56,30 @@ public class GuiCosmeticBuy<
 
 
     private final GuiCosmeticsCategory<T, E> parentGui;
-    private final Supplier<List<Cosmetic<T>>> ownedCosmeticsGetter;
+    private final Cosmetic<T> cosmetic;
+    private final CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter;
+    private final CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> currentCosmeticGetter;
+    private final CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter;
     private final CosmeticManager cosmeticManager;
 
 
     public GuiCosmeticBuy(
         GuiCosmeticsCategory<T, E> parentGui,
-        Cosmetic<T> cosmetic,
-        Supplier<List<Cosmetic<T>>> ownedCosmeticsGetter,
         CosmeticManager cosmeticManager,
-        CosmeticManager.CosmeticSetter<Cosmetic<T>> currentCosmeticSetter
+        Cosmetic<T> cosmetic,
+        CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter,
+        CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> currentCosmeticGetter,
+        CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter
     )
     {
         super(TITLE, SIZE);
 
         this.parentGui = parentGui;
-        this.ownedCosmeticsGetter = ownedCosmeticsGetter;
         this.cosmeticManager = cosmeticManager;
+        this.cosmetic = cosmetic;
+        this.ownedCosmeticsGetter = ownedCosmeticsGetter;
+        this.currentCosmeticGetter = currentCosmeticGetter;
+        this.currentCosmeticSetter = currentCosmeticSetter;
 
         this.createGui(cosmetic);
     }
@@ -94,14 +99,20 @@ public class GuiCosmeticBuy<
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
-                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                        this.ownedCosmeticsGetter.get().add(cosmetic);
+                    .setClickAction(this.returnToParentGui(
+                        (Player player, HashGui hashGui, ItemStack item, int slot) -> {
+                            if (!(hashGui instanceof GuiCosmeticBuy<?,?> gui)) {
+                                return;
+                            }
 
-                        // set current cosmetic
+                            final Cosmetic cosmeticToBuy = gui.getCosmetic();
 
-                        parentGui.reloadGui(parentGui, cosmeticManager);
-                        parentGui.open(player);
-                    })
+                            final CosmeticManager playerCosmeticManager =
+                                MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
+
+                            gui.getOwnedCosmeticsGetter().getOwnedGetter(playerCosmeticManager).get().add(cosmeticToBuy);
+                        }
+                    ))
             )
             .build(this, GUI_MANAGER);
 
@@ -110,9 +121,7 @@ public class GuiCosmeticBuy<
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
-                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                        parentGui.open(player);
-                    })
+                    .setClickAction(this.returnToParentGui())
             )
             .build(this, GUI_MANAGER);
 
@@ -130,4 +139,54 @@ public class GuiCosmeticBuy<
 
         mask.apply();
     }
+
+    private ClickAction returnToParentGui(ClickAction action)
+    {
+        return (Player player, HashGui hashGui, ItemStack item, int slot) -> {
+            if (!(hashGui instanceof GuiCosmeticBuy<?,?> gui)) {
+                return;
+            }
+
+            final GuiCosmeticsCategory parentGui = gui.getParentGui();
+
+            final CosmeticManager playerCosmeticManager =
+                MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
+
+            if (action != null) {
+                action.execute(player, hashGui, item, slot);
+            }
+
+            parentGui.reloadGui(
+                parentGui,
+                playerCosmeticManager
+            );
+            parentGui.open(player);
+        };
+    }
+
+    private ClickAction returnToParentGui()
+    {
+        return this.returnToParentGui(null);
+    }
+
+    public Cosmetic<T> getCosmetic()
+    {
+        return this.cosmetic;
+    }
+
+    public GuiCosmeticsCategory<T, E> getParentGui()
+    {
+        return this.parentGui;
+    }
+
+    public CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> getOwnedCosmeticsGetter()
+    {
+        return this.ownedCosmeticsGetter;
+    }
+
+    public CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> getCurrentCosmeticGetter()
+    {
+        return this.currentCosmeticGetter;
+    }
+
 }

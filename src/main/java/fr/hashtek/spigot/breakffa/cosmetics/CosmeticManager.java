@@ -24,7 +24,7 @@ public class CosmeticManager
      *
      * @param   <T>     Cosmetic
      */
-    public interface CosmeticSetter<T extends Cosmetic<? extends AbstractCosmetic>>
+    public interface CurrentCosmeticSetter<T extends Cosmetic<? extends AbstractCosmetic>>
     {
 
         /**
@@ -39,7 +39,7 @@ public class CosmeticManager
      *
      * @param   <T>     Cosmetic
      */
-    public interface CosmeticGetter<T extends Cosmetic<? extends AbstractCosmetic>>
+    public interface CurrentCosmeticGetter<T extends Cosmetic<? extends AbstractCosmetic>>
     {
 
         /**
@@ -49,6 +49,23 @@ public class CosmeticManager
 
     }
 
+    /**
+     * Function used to get the cosmetic getter according to a Player's Cosmetic Manager.
+     *
+     * @param   <T>     Cosmetic
+     */
+    public interface OwnedCosmeticsGetter<T extends Cosmetic<? extends AbstractCosmetic>>
+    {
+
+        /**
+         * @param   manager     Cosmetic Manager of the player who clicked
+         */
+        Supplier<List<T>> getOwnedGetter(CosmeticManager manager);
+
+    }
+
+
+    private final Player player;
 
     /* Kill SFXs */
     private final List<Cosmetic<CosmeticTypeKSFX>> ownedKillSfxs;
@@ -67,6 +84,8 @@ public class CosmeticManager
      */
     public CosmeticManager(BreakFFA main, Player player)
     {
+        this.player = player;
+
         this.ownedKillSfxs = new ArrayList<Cosmetic<CosmeticTypeKSFX>>();
         this.ownedCustomHelmets = new ArrayList<Cosmetic<CosmeticTypeCustomHelmet>>();
 
@@ -101,6 +120,11 @@ public class CosmeticManager
             this.ownedCustomHelmets.add(helmet.getCosmetic());
         }
         this.currentCustomHelmet = this.ownedCustomHelmets.get(0);
+    }
+
+    public Player getPlayer()
+    {
+        return this.player;
     }
 
 
