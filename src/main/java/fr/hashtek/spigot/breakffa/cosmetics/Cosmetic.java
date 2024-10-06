@@ -1,11 +1,12 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
+import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
 import org.bukkit.Material;
 
 /**
  * @param   <T>     Cosmetic type
  */
-public class Cosmetic<T>
+public class Cosmetic<T extends AbstractCosmetic>
 {
 
     private final Material material;

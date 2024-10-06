@@ -17,6 +17,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class GuiCosmeticsCategory<
@@ -154,6 +155,7 @@ public abstract class GuiCosmeticsCategory<
         CosmeticManager manager
     )
     {
+        final T cosmeticCosmetic = cosmetic.getCosmetic();
         final Cosmetic<T> currentCosmetic = currentCosmeticGetter.getGetter(manager).get();
 
         final HashItem item = new HashItem(cosmetic.getMaterial())
@@ -171,9 +173,20 @@ public abstract class GuiCosmeticsCategory<
             item.addEnchant(Enchantment.DURABILITY, 1);
         }
 
+        if (cosmeticCosmetic.canBePreviewed()) {
+            item.addLore(Component.text("right click 4 preview!!"));
+            item.addClickHandler(
+                new ClickHandler()
+                    .addClickTypes(ClickType.RIGHT, ClickType.SHIFT_RIGHT)
+                    .setClickAction((Player player, HashGui hashGui, ItemStack i, int slot) ->
+                        cosmeticCosmetic.preview(player)
+                    )
+            );
+        }
+
         item.addClickHandler(
             new ClickHandler()
-                .addAllClickTypes()
+                .addClickTypes(ClickType.LEFT, ClickType.SHIFT_LEFT)
                 .setClickAction((Player player, HashGui hashGui, ItemStack i, int slot) -> {
                     if (!(hashGui instanceof GuiCosmeticsCategory<?, ?> guiCosmeticsCategory)) {
                         return;

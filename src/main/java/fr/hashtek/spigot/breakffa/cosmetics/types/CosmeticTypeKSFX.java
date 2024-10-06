@@ -2,13 +2,15 @@ package fr.hashtek.spigot.breakffa.cosmetics.types;
 
 import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
+import net.kyori.adventure.sound.SoundStop;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 /**
  * KSFX stands for Kill SFX.
  */
-public class CosmeticTypeKSFX implements AbstractCosmetic
+public class CosmeticTypeKSFX extends AbstractCosmetic
 {
 
     public enum KillSfx implements CosmeticCategoryArticles<CosmeticTypeKSFX>
@@ -67,6 +69,20 @@ public class CosmeticTypeKSFX implements AbstractCosmetic
     public CosmeticTypeKSFX(Sound sfx)
     {
         this.sfx = sfx;
+    }
+
+
+    @Override
+    public void preview(Player player)
+    {
+        player.stopSound(SoundStop.all());
+        player.playSound(player.getLocation(), this.getSfx(), 1, 1);
+    }
+
+    @Override
+    public boolean canBePreviewed()
+    {
+        return true;
     }
 
 

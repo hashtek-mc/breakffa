@@ -5,7 +5,7 @@ import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.Material;
 
-public class CosmeticTypeCustomHelmet implements AbstractCosmetic
+public class CosmeticTypeCustomHelmet extends AbstractCosmetic
 {
 
     public enum CustomHelmet implements CosmeticCategoryArticles<CosmeticTypeCustomHelmet>
