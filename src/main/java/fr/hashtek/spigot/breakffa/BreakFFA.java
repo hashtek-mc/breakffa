@@ -13,8 +13,7 @@ import fr.hashtek.spigot.breakffa.listener.*;
 import fr.hashtek.spigot.breakffa.shop.ShopManager;
 import fr.hashtek.spigot.breakffa.tablist.TablistManager;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
-import fr.hashtek.tekore.bukkit.Tekore;
-import fr.hashtek.tekore.common.Rank;
+import fr.hashtek.tekore.spigot.Tekore;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -87,7 +86,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     {
         this.logger.info(this, "Disabling BreakFFA...");
 
-        this.gameManager.reset();
+        this.gameManager.resetMap();
 
         this.logger.info(this, "BreakFFA disabled.");
     }
@@ -141,7 +140,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
         this.guiManager.setup();
 
         this.setupGameManager();
-        this.shopManager = new ShopManager(this);
+        this.shopManager = new ShopManager();
 
         this.logger.info(this, "Managers set up!");
     }
@@ -153,7 +152,7 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     {
         this.logger.info(this, "Setting up Game manager...");
 
-        this.gameManager = new GameManager(this);
+        this.gameManager = new GameManager();
 
         try {
             this.gameManager.setup(this.hashConfig);
@@ -192,29 +191,29 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
      */
     private void setupBoard()
     {
-        this.scoreboardManager = new ScoreboardManager(this);
-        this.tablistManager = new TablistManager(this);
-        this.rankTeams = new HashMap<String, HashTeam>();
-
-        try {
-            this.tablistManager.setup(this.hashConfig.getYaml());
-        } catch (NoSuchFieldException exception) {
-            HashError.UNKNOWN
-                .log(this.logger, this, exception);
-        }
-
-        int i = 0;
-        for (Rank rank : this.core.getRanks()) {
-            HashTeam team = new HashTeam(
-                i,
-                rank.getShortName() + " ",
-                "",
-                10,
-                this.scoreboardManager.getBoard()
-            ); // TODO: Set team size to 0 when HashBoard is updated.
-            rankTeams.put(rank.getUuid(), team);
-            i++;
-        }
+//        this.scoreboardManager = new ScoreboardManager(this);
+//        this.tablistManager = new TablistManager(this);
+//        this.rankTeams = new HashMap<String, HashTeam>();
+//
+//        try {
+//            this.tablistManager.setup(this.hashConfig.getYaml());
+//        } catch (NoSuchFieldException exception) {
+//            HashError.UNKNOWN
+//                .log(this.logger, this, exception);
+//        }
+//
+//        int i = 0;
+//        for (Rank rank : this.core.getRanks()) {
+//            HashTeam team = new HashTeam(
+//                i,
+//                rank.getShortName() + " ",
+//                "",
+//                10,
+//                this.scoreboardManager.getBoard()
+//            ); // TODO: Set team size to 0 when HashBoard is updated.
+//            rankTeams.put(rank.getUuid(), team);
+//            i++;
+//        }
     }
 
     /**
@@ -224,20 +223,20 @@ public class BreakFFA extends JavaPlugin implements HashLoggable
     {
         this.logger.info(this, "Registering listeners...");
 
-        this.pluginManager.registerEvents(new ListenerJoin(this), this);
-        this.pluginManager.registerEvents(new ListenerQuit(this), this);
-        this.pluginManager.registerEvents(new ListenerDamage(this), this);
+        this.pluginManager.registerEvents(new ListenerJoin(), this);
+        this.pluginManager.registerEvents(new ListenerQuit(), this);
+        this.pluginManager.registerEvents(new ListenerDamage(), this);
         this.pluginManager.registerEvents(new ListenerFoodLose(), this);
         this.pluginManager.registerEvents(new ListenerMove(this), this);
-        this.pluginManager.registerEvents(new ListenerBreak(this), this);
-        this.pluginManager.registerEvents(new ListenerPlace(this), this);
-        this.pluginManager.registerEvents(new ListenerDrop(this), this);
-        this.pluginManager.registerEvents(new ListenerDamageByEntity(this), this);
+        this.pluginManager.registerEvents(new ListenerBreak(), this);
+        this.pluginManager.registerEvents(new ListenerPlace(), this);
+        this.pluginManager.registerEvents(new ListenerDrop(), this);
+        this.pluginManager.registerEvents(new ListenerDamageByEntity(), this);
         this.pluginManager.registerEvents(new ListenerDeath(), this);
-        this.pluginManager.registerEvents(new ListenerRespawn(this), this);
-        this.pluginManager.registerEvents(new ListenerExplosion(this), this);
-        this.pluginManager.registerEvents(new ListenerInteract(this), this);
-        this.pluginManager.registerEvents(new ListenerChat(this), this);
+        this.pluginManager.registerEvents(new ListenerRespawn(), this);
+        this.pluginManager.registerEvents(new ListenerExplosion(), this);
+        this.pluginManager.registerEvents(new ListenerInteract(), this);
+        this.pluginManager.registerEvents(new ListenerChat(), this);
         this.pluginManager.registerEvents(new ListenerWeatherChange(), this);
 
         this.logger.info(this, "Listeners loaded!");

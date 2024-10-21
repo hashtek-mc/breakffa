@@ -2,7 +2,6 @@ package fr.hashtek.spigot.breakffa.shop.category.categories;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.shop.article.ShopArticle;
-import fr.hashtek.spigot.breakffa.shop.article.ShopArticleBuyAction;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategory;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryArticles;
 import fr.hashtek.spigot.breakffa.shop.category.ShopCategoryAttributes;
@@ -20,10 +19,12 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 
-public class ShopCategoryDefensive extends ShopCategory
+public class ShopCategoryDefensive
+    extends ShopCategory
 {
 
-    public enum Articles implements ShopCategoryArticles
+    public enum Articles
+        implements ShopCategoryArticles
     {
 
         CHAINMAIL (
@@ -159,12 +160,11 @@ public class ShopCategoryDefensive extends ShopCategory
     /**
      * Creates a new instance of ShopCategoryDefensive.
      *
-     * @param   main    BreakFFA main
      * @param   player  Player
      */
-    public ShopCategoryDefensive(BreakFFA main, Player player)
+    public ShopCategoryDefensive(Player player)
     {
-        super(main, player, attributes);
+        super(player, attributes);
         this.loadArticles();
     }
 

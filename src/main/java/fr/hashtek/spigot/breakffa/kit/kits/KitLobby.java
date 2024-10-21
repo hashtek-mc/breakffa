@@ -13,7 +13,7 @@ import fr.hashtek.spigot.hashgui.handler.interact.InteractHandler;
 import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
 import fr.hashtek.spigot.hashgui.mask.Mask;
 import fr.hashtek.spigot.hashitem.HashItem;
-import fr.hashtek.tekore.bukkit.Tekore;
+import fr.hashtek.tekore.spigot.Tekore;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -29,6 +29,7 @@ public class KitLobby
 
     private static final BreakFFA MAIN = BreakFFA.getInstance();
     private static final HashGuiManager GUI_MANAGER = MAIN.getGuiManager();
+    private static final Tekore CORE = MAIN.getCore();
 
 
     public enum Items implements KitItems
@@ -47,7 +48,7 @@ public class KitLobby
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
                             final Tekore core = BreakFFA.getInstance().getCore();
 
-                            core.getPlayerManager(player).sendToServer("lobby01");
+                            CORE.getPlayerManagersManager().getPlayerManager(player).sendToServer("lobby01");
                         })
                 )
                 .build(GUI_MANAGER),
@@ -233,19 +234,6 @@ public class KitLobby
 
     }
 
-    private final BreakFFA main;
-
-
-    /**
-     * Creates a new instance of Lobby kit
-     *
-     * @param   main    BreakFFA instance
-     */
-    public KitLobby(BreakFFA main)
-    {
-        this.main = main;
-    }
-
 
     /**
      * Gives the kit to a player.
@@ -254,12 +242,10 @@ public class KitLobby
      */
     public void giveItems(Player player)
     {
-        final BreakFFA main = this.main;
-        final HashGuiManager guiManager = main.getGuiManager();
         final Inventory inventory = player.getInventory();
 
-        final HashItem blackGlass = HashItem.separator(Material.BLACK_STAINED_GLASS_PANE, guiManager);
-        final HashItem redGlass = HashItem.separator(Material.RED_STAINED_GLASS_PANE, guiManager);
+        final HashItem blackGlass = HashItem.separator(Material.BLACK_STAINED_GLASS_PANE, GUI_MANAGER);
+        final HashItem redGlass = HashItem.separator(Material.RED_STAINED_GLASS_PANE, GUI_MANAGER);
 
         final Mask mask = new Mask(inventory);
 

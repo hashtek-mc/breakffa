@@ -20,8 +20,9 @@ import java.util.List;
 public class ShopCategory
 {
 
-    private final BreakFFA main;
-    private final HashGuiManager guiManager;
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
+    private static final HashGuiManager GUI_MANAGER = MAIN.getGuiManager();
+
     private final ShopManager shopManager;
 
     private final Player player;
@@ -36,22 +37,18 @@ public class ShopCategory
     /**
      * Creates a new Shop category
      *
-     * @param   main            BreakFFA instance
      * @param   player          Player
      * @param   attributes      Category attributes
      */
     public ShopCategory(
-        BreakFFA main,
         Player player,
         ShopCategoryAttributes attributes
     )
     {
-        this.main = main;
-        this.guiManager = this.main.getGuiManager();
-        this.shopManager = this.main.getShopManager();
+        this.shopManager = MAIN.getShopManager();
 
         this.player = player;
-        this.playerData = this.main.getGameManager().getPlayerManager(player).getData();
+        this.playerData = MAIN.getGameManager().getPlayerManager(player).getData();
 
         this.attributes = attributes;
         this.articles = new ArrayList<ShopArticle>();
@@ -70,11 +67,11 @@ public class ShopCategory
         this.gui = new PaginatedHashGui(
             Component.text("" + attributes.getColor() + ChatColor.BOLD + "Marché " + ChatColor.WHITE + ChatColor.BOLD + "●" + attributes.getColor() + ChatColor.BOLD + " " + attributes.getName()),
             6,
-            this.guiManager
+            GUI_MANAGER
         );
 
-        final HashItem primaryGlass = HashItem.separator(attributes.getPrimaryColor(), this.guiManager);
-        final HashItem secondaryGlass = HashItem.separator(attributes.getSecondaryColor(), this.guiManager);
+        final HashItem primaryGlass = HashItem.separator(attributes.getPrimaryColor(), GUI_MANAGER);
+        final HashItem secondaryGlass = HashItem.separator(attributes.getSecondaryColor(), GUI_MANAGER);
 
         final HashItem previousPage = new HashItem(Material.ARROW)
             .setName(Component.text(attributes.getColor() + "Page précédente"))
@@ -164,22 +161,6 @@ public class ShopCategory
         }
     }
 
-
-    /**
-     * @return  BreakFFA instance
-     */
-    public BreakFFA getMain()
-    {
-        return this.main;
-    }
-
-    /**
-     * @return  Gui manager
-     */
-    public HashGuiManager getGuiManager()
-    {
-        return this.guiManager;
-    }
 
     /**
      * @return  Shop manager

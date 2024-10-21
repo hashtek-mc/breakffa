@@ -11,20 +11,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 public class ListenerDrop implements Listener
 {
 
-    private final GameManager gameManager;
-
-
-    /**
-     * Creates a new instance of ListenerDrop.
-     *
-     * @param   main    BreakFFA instance
-     */
-    public ListenerDrop(BreakFFA main)
-    {
-        this.gameManager = main.getGameManager();
-    }
-
-
     /**
      * Called when a player drops an item.
      */
@@ -32,8 +18,8 @@ public class ListenerDrop implements Listener
     public void onDrop(PlayerDropItemEvent event)
     {
         final Player player = event.getPlayer();
-        final PlayerState playerState =
-            this.gameManager.getPlayerManager(player).getData().getState();
+        final PlayerState playerState = BreakFFA.getInstance().getGameManager()
+            .getPlayerManager(player).getData().getState();
 
         /* If player is in the lobby, cancel the event. */
         if (playerState == PlayerState.AT_LOBBY) {

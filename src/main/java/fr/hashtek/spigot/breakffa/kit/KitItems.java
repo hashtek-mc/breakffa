@@ -12,18 +12,18 @@ public interface KitItems
     /**
      * @return  Item
      */
-    public abstract HashItem getItem();
+    HashItem getItem();
 
     /**
      * @return  Item's slot index
      */
-    public abstract int getSlotIndex();
+    int getSlotIndex();
 
     /**
      * Gives the item to a player.
      *
      * @param   player    Player
      */
-    public abstract void give(Player player);
+    void give(Player player);
 
 }

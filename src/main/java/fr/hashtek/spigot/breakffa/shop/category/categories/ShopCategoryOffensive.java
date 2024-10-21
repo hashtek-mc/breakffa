@@ -17,10 +17,12 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 
-public class ShopCategoryOffensive extends ShopCategory
+public class ShopCategoryOffensive
+    extends ShopCategory
 {
 
-    public enum Articles implements ShopCategoryArticles
+    public enum Articles
+        implements ShopCategoryArticles
     {
 
         CHARMED_SWORD (
@@ -197,12 +199,11 @@ public class ShopCategoryOffensive extends ShopCategory
     /**
      * Creates a new instance of ShopCategoryOffensive.
      *
-     * @param   main    BreakFFA main
      * @param   player  Player
      */
-    public ShopCategoryOffensive(BreakFFA main, Player player)
+    public ShopCategoryOffensive(Player player)
     {
-        super(main, player, attributes);
+        super(player, attributes);
         this.loadArticles();
     }
 

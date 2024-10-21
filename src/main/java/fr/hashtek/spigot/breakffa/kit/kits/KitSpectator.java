@@ -35,21 +35,21 @@ public class KitSpectator
         TELEPORT (
             new Object() {
                 HashItem evaluate() {
-                return new HashSkull()
-                    .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTllNzk4MDM4YjU2MTA0M2U5YmNlZGQ1MmU0YTM2ZDVlZWJkOTkxNzA5NzM0ZWNjMzAxZDkyMmRhNjI1OWM0In19fQ==")
-                    .setName(Component.text(ChatColor.BLUE + "Téléportation"))
-                    .setLore(Arrays.asList(
-                        Component.text(ChatColor.GRAY + "Cliquez pour vous " + ChatColor.BLUE + "téléporter" + ChatColor.GRAY + " au"),
-                        Component.text(ChatColor.GRAY + "joueur de votre choix.")
-                    ))
-                    .addClickHandler(
-                        new ClickHandler()
-                            .addAllClickTypes()
-                            .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                                // TODO: Open teleportation GUI.
-                            })
-                    )
-                    .build(BreakFFA.getInstance().getGuiManager());
+                    return new HashSkull()
+                        .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTllNzk4MDM4YjU2MTA0M2U5YmNlZGQ1MmU0YTM2ZDVlZWJkOTkxNzA5NzM0ZWNjMzAxZDkyMmRhNjI1OWM0In19fQ==")
+                        .setName(Component.text(ChatColor.BLUE + "Téléportation"))
+                        .setLore(Arrays.asList(
+                            Component.text(ChatColor.GRAY + "Cliquez pour vous " + ChatColor.BLUE + "téléporter" + ChatColor.GRAY + " au"),
+                            Component.text(ChatColor.GRAY + "joueur de votre choix.")
+                        ))
+                        .addClickHandler(
+                            new ClickHandler()
+                                .addAllClickTypes()
+                                .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                                    // TODO: Open teleportation GUI.
+                                })
+                        )
+                        .build(BreakFFA.getInstance().getGuiManager());
                 }
             }.evaluate()
         ),
@@ -57,24 +57,24 @@ public class KitSpectator
         CLOSEST_PLAYER (
             new Object() {
                 HashItem evaluate() {
-                return new HashSkull()
-                    .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjI5YjE5YWQzYzUxZWRhZDY0M2U0NGRkNWRhNmI5ZDczMTc1NGMxNWE5ZmZiZjgxYzMyYzI4ODZjOTI5MDU3NyJ9fX0=")
-                    .setName(Component.text(ChatColor.DARK_GREEN + "Proximité"))
-                    .setLore(Arrays.asList(
-                        Component.text(ChatColor.GRAY + "Cliquez pour vous " + ChatColor.BLUE + "téléporter" + ChatColor.GRAY + " au"),
-                        Component.text(ChatColor.GRAY + "joueur le plus proche.")
-                    ))
-                    .addClickHandler(
-                        new ClickHandler()
-                            .addAllClickTypes()
-                            .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                                final PlayerManager playerManager = MAIN.getGameManager().getPlayerManager(player);
+                    return new HashSkull()
+                        .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjI5YjE5YWQzYzUxZWRhZDY0M2U0NGRkNWRhNmI5ZDczMTc1NGMxNWE5ZmZiZjgxYzMyYzI4ODZjOTI5MDU3NyJ9fX0=")
+                        .setName(Component.text(ChatColor.DARK_GREEN + "Proximité"))
+                        .setLore(Arrays.asList(
+                            Component.text(ChatColor.GRAY + "Cliquez pour vous " + ChatColor.BLUE + "téléporter" + ChatColor.GRAY + " au"),
+                            Component.text(ChatColor.GRAY + "joueur le plus proche.")
+                        ))
+                        .addClickHandler(
+                            new ClickHandler()
+                                .addAllClickTypes()
+                                .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                                    final PlayerManager playerManager = MAIN.getGameManager().getPlayerManager(player);
 
-                                playerManager.getSpectatorMode().teleportToClosestPlayer();
-                                gui.close(player);
-                            })
-                    )
-                    .build(BreakFFA.getInstance().getGuiManager());
+                                    playerManager.getSpectatorMode().teleportToClosestPlayer();
+                                    gui.close(player);
+                                })
+                        )
+                        .build(BreakFFA.getInstance().getGuiManager());
                 }
             }.evaluate()
         ),
@@ -82,24 +82,24 @@ public class KitSpectator
         QUIT (
             new Object() {
                 HashItem evaluate() {
-                return new HashSkull()
-                    .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ5NWVlNThkNzg4MmNkZTEyZmM4NzE1Y2EwZjIxN2IzNWFlZThkMjgzYTIwZjc0YmVhZTk2OTJmOWI4MGVlMyJ9fX0=")
-                    .setName(Component.text(ChatColor.DARK_GRAY + "Quitter"))
-                    .setLore(Arrays.asList(
-                        Component.text(ChatColor.GRAY + "Cliquez pour quitter le mode " + ChatColor.DARK_AQUA + "fantôme"),
-                        Component.text(ChatColor.DARK_AQUA + "spectateur" + ChatColor.GRAY + " et redevenir mortel.")
-                    ))
-                    .addClickHandler(
-                        new ClickHandler()
-                            .addAllClickTypes()
-                            .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                                final PlayerManager playerManager = MAIN.getGameManager().getPlayerManager(player);
+                    return new HashSkull()
+                        .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ5NWVlNThkNzg4MmNkZTEyZmM4NzE1Y2EwZjIxN2IzNWFlZThkMjgzYTIwZjc0YmVhZTk2OTJmOWI4MGVlMyJ9fX0=")
+                        .setName(Component.text(ChatColor.DARK_GRAY + "Quitter"))
+                        .setLore(Arrays.asList(
+                            Component.text(ChatColor.GRAY + "Cliquez pour quitter le mode " + ChatColor.DARK_AQUA + "fantôme"),
+                            Component.text(ChatColor.DARK_AQUA + "spectateur" + ChatColor.GRAY + " et redevenir mortel.")
+                        ))
+                        .addClickHandler(
+                            new ClickHandler()
+                                .addAllClickTypes()
+                                .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                                    final PlayerManager playerManager = MAIN.getGameManager().getPlayerManager(player);
 
-                                playerManager.getSpectatorMode().exit();
-                                gui.close(player);
-                            })
-                    )
-                    .build(BreakFFA.getInstance().getGuiManager());
+                                    playerManager.getSpectatorMode().exit();
+                                    gui.close(player);
+                                })
+                        )
+                        .build(BreakFFA.getInstance().getGuiManager());
                 }
             }.evaluate()
         );

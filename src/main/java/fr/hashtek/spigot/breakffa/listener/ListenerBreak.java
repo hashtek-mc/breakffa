@@ -12,20 +12,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 public class ListenerBreak implements Listener
 {
 
-    private final GameManager gameManager;
-
-
-    /**
-     * Creates a new instance of ListenerBreak
-     *
-     * @param   main    BreakFFA instance
-     */
-    public ListenerBreak(BreakFFA main)
-    {
-        this.gameManager = main.getGameManager();
-    }
-
-
     /**
      * Called when a player breaks a block.
      */
@@ -34,7 +20,8 @@ public class ListenerBreak implements Listener
     {
         final Player player = event.getPlayer();
         final Block block = event.getBlock();
-        final Nexus nexus = this.gameManager.getNexus();
+        final GameManager gameManager = BreakFFA.getInstance().getGameManager();
+        final Nexus nexus = gameManager.getNexus();
 
         /* Nexus break handling */
         if (block.equals(nexus.getBlock())) {
@@ -44,7 +31,7 @@ public class ListenerBreak implements Listener
         }
 
         /* If block was not placed by a player, cancel the event. */
-        if (!this.gameManager.getPlacedBlocks().contains(block)) {
+        if (!gameManager.getPlacedBlocks().contains(block)) {
             event.setCancelled(true);
         }
     }

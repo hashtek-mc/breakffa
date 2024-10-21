@@ -12,20 +12,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 public class ListenerRespawn implements Listener
 {
 
-    private final GameManager gameManager;
-
-
-    /**
-     * Creates a new instance of ListenerRespawn.
-     *
-     * @param   main    BreakFFA instance
-     */
-    public ListenerRespawn(BreakFFA main)
-    {
-        this.gameManager = main.getGameManager();
-    }
-
-
     /**
      * Called when a player respawns.
      * Should never fire, but we're preventive ;)
@@ -34,9 +20,10 @@ public class ListenerRespawn implements Listener
     public void onRespawn(PlayerRespawnEvent event)
     {
         final Player player = event.getPlayer();
-        final PlayerManager playerManager = this.gameManager.getPlayerManager(player);
+        final GameManager gameManager = BreakFFA.getInstance().getGameManager();
+        final PlayerManager playerManager = gameManager.getPlayerManager(player);
 
-        event.setRespawnLocation(this.gameManager.getLobbySpawnLocation());
+        event.setRespawnLocation(gameManager.getLobbySpawnLocation());
 
         playerManager.backToLobby();
     }

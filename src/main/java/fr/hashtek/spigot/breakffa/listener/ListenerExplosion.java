@@ -3,6 +3,7 @@ package fr.hashtek.spigot.breakffa.listener;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.kit.kits.KitStarter;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
+import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -18,20 +19,6 @@ import java.util.Objects;
 public class ListenerExplosion implements Listener
 {
 
-    private final BreakFFA main;
-
-
-    /**
-     * Creates a new instance of ListenerExplosion.
-     *
-     * @param   main    BreakFFA instance
-     */
-    public ListenerExplosion(BreakFFA main)
-    {
-        this.main = main;
-    }
-
-
     /**
      * Called when an entity explodes.
      * In this case, we only process TNT (for Instant TNTs).
@@ -41,10 +28,12 @@ public class ListenerExplosion implements Listener
     {
         if (event.getEntityType() != EntityType.PRIMED_TNT) {
             return;
-            }
+        }
+
+        final BreakFFA main = BreakFFA.getInstance();
 
         final TNTPrimed tnt = (TNTPrimed) event.getEntity();
-        final Player author = this.main.getServer().getPlayer(Objects.requireNonNull(tnt.getCustomName()));
+        final Player author = main.getServer().getPlayer(Objects.requireNonNull(tnt.getCustomName()));
         final Location tntLocation = tnt.getLocation();
         final double radius = 4.0;
 
@@ -57,7 +46,7 @@ public class ListenerExplosion implements Listener
                 continue;
             }
 
-            final PlayerData playerData = this.main.getGameManager().getPlayerManager(player).getData();
+            final PlayerManager playerManager = main.getGameManager().getPlayerManager(player);
             final Vector direction = player.getLocation().toVector().subtract(tntLocation.toVector()).normalize();
 
             /* Applying knockback to the player. */
@@ -66,8 +55,8 @@ public class ListenerExplosion implements Listener
 
             /* Setting player's last damager to explosion author. */
             if (!Objects.requireNonNull(author).equals(player)) {
-                playerData.setLastDamager(author);
-                playerData.setLastDamagerWeapon(KitStarter.Items.INSTANT_TNT.getItem().getItemStack());
+                playerManager.setLastDamager(author);
+                playerManager.setLastDamagerWeapon(KitStarter.Items.INSTANT_TNT.getItem().getItemStack());
             }
         }
     }

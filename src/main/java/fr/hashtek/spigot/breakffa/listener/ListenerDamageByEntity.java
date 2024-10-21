@@ -19,20 +19,7 @@ import org.bukkit.inventory.ItemStack;
 public class ListenerDamageByEntity implements Listener
 {
 
-    private final BreakFFA main;
-    private final GameManager gameManager;
-
-
-    /**
-     * Creates a new instance of ListenerDamageByEntity
-     *
-     * @param   main    BreakFFA instance
-     */
-    public ListenerDamageByEntity(BreakFFA main)
-    {
-        this.main = main;
-        this.gameManager = this.main.getGameManager();
-    }
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
 
 
     /**
@@ -49,7 +36,7 @@ public class ListenerDamageByEntity implements Listener
         final ShopCategoryArticles baseballBat = ShopCategorySupport.Articles.BASEBALL_BAT;
 
         if (baseballBat.equals(weapon)) {
-            for (Player player : this.main.getServer().getOnlinePlayers()) {
+            for (Player player : MAIN.getServer().getOnlinePlayers()) {
                 player.playSound(damager.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
                 player.playSound(damager.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 100, 1);
             }
@@ -69,23 +56,23 @@ public class ListenerDamageByEntity implements Listener
             return;
         }
 
-        final PlayerManager victimManager = this.gameManager.getPlayerManager(victim);
-        final PlayerData victimData = victimManager.getData();
-        final PlayerManager damagerManager = this.gameManager.getPlayerManager(damager);
-        final PlayerData damagerData = damagerManager.getData();
+        final GameManager gameManager = MAIN.getGameManager();
+        final PlayerManager victimManager = gameManager.getPlayerManager(victim);
+        final PlayerManager damagerManager = gameManager.getPlayerManager(damager);
         final ItemStack damagerWeapon = damager.getInventory().getItemInMainHand().clone();
 
         /* If one of the two players is not playing, cancel the event. */
-        if (victimData.getState() != PlayerState.PLAYING || damagerData.getState() != PlayerState.PLAYING) {
+        if (victimManager.getData().getState() != PlayerState.PLAYING ||
+            damagerManager.getData().getState() != PlayerState.PLAYING) {
             event.setCancelled(true);
             return;
         }
 
         /* For kill author detection. */
-        victimData.setLastDamager(damager);
-        victimData.setLastDamagerWeapon(damagerWeapon);
-        damagerData.setLastDamagedPlayer(victim);
-        damagerData.setLastDamagedWith(damagerWeapon);
+        victimManager.setLastDamager(damager);
+        victimManager.setLastDamagerWeapon(damagerWeapon);
+        damagerManager.setLastDamagedPlayer(victim);
+        damagerManager.setLastDamagedWith(damagerWeapon);
 
         /* Shop weapons abilities handling. */
         if (damagerWeapon.getType() != Material.AIR) {

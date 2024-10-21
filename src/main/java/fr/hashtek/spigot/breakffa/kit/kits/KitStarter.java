@@ -20,6 +20,9 @@ import java.util.Arrays;
 public class KitStarter
 {
 
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
+
+
     /**
      * getSlotIndex() and give() functions are empty because
      * they won't be used. Masks are going to carry this.
@@ -121,18 +124,6 @@ public class KitStarter
 
     }
 
-    private final BreakFFA main;
-
-
-    /**
-     * Creates a new instance of KitStarter.
-     *
-     * @param   main    BreakFFA main
-     */
-    public KitStarter(BreakFFA main)
-    {
-        this.main = main;
-    }
 
     /**
      * Sets player's armor.
@@ -149,14 +140,14 @@ public class KitStarter
     /**
      * Gives the kit to a player.
      *
-     * @param   playerData  Player's data
+     * @param   player  Player
      */
-    public void giveItems(PlayerData playerData)
+    public void giveItems(Player player)
     {
-        final Player player = playerData.getPlayer();
+        final PlayerData playerData = MAIN.getGameManager().getPlayerManager(player).getData();
         final PlayerSettings settings = playerData.getPlayerSettings();
         final PlayerInventory inventory = player.getInventory();
-        final ShopManager shopManager = this.main.getShopManager();
+        final ShopManager shopManager = MAIN.getShopManager();
 
         final Mask mask = new Mask(inventory);
 
@@ -171,7 +162,7 @@ public class KitStarter
         mask.apply();
 
         this.setArmor(inventory);
-        shopManager.giveShop(playerData);
+        shopManager.giveShop(player);
     }
 
 }

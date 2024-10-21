@@ -22,20 +22,6 @@ import org.bukkit.inventory.PlayerInventory;
 public class ListenerPlace implements Listener
 {
 
-    private final GameManager gameManager;
-
-
-    /**
-     * Creates a new instance of ListenerPlace.
-     *
-     * @param   main    BreakFFA instance
-     */
-    public ListenerPlace(BreakFFA main)
-    {
-        this.gameManager = main.getGameManager();
-    }
-
-
     /**
      * Called when a player places a block.
      * TODO: Split this function's content into multiple other functions.
@@ -43,12 +29,13 @@ public class ListenerPlace implements Listener
     @EventHandler
     public void onPlace(BlockPlaceEvent event)
     {
+        final GameManager gameManager = BreakFFA.getInstance().getGameManager();
         final Player player = event.getPlayer();
         final Block block = event.getBlockPlaced();
         final Location blockLocation = block.getLocation();
         final Material blockReplacedType = event.getBlockReplacedState().getType();
         final World world = block.getWorld();
-        final Nexus nexus = this.gameManager.getNexus();
+        final Nexus nexus = gameManager.getNexus();
         final Location nexusLocation = nexus.getBlock().getLocation();
 
         /* If block is being placed where there's already a block, cancel the event. */
@@ -61,7 +48,7 @@ public class ListenerPlace implements Listener
         Location nearestSpawn = null;
         double nearestDistanceSquared = Double.MAX_VALUE;
 
-        for (Location location : this.gameManager.getSpawnLocations()) {
+        for (Location location : gameManager.getSpawnLocations()) {
             final double distanceSquared = location.distanceSquared(blockLocation);
 
             if (distanceSquared < nearestDistanceSquared) {
@@ -95,7 +82,7 @@ public class ListenerPlace implements Listener
         }
 
         /* If block is above the max height limit, cancel the event. */
-        if (blockLocation.getBlockY() >= this.gameManager.getGameSettings().getMaxHeight()) {
+        if (blockLocation.getBlockY() >= gameManager.getGameSettings().getMaxHeight()) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Vous ne pouvez pas construire plus haut.");
         }
@@ -110,7 +97,7 @@ public class ListenerPlace implements Listener
             inv.setItem(player.getInventory().getHeldItemSlot(), item);
         }
 
-        this.gameManager.getPlacedBlocks().add(block);
+        gameManager.getPlacedBlocks().add(block);
     }
 
 }

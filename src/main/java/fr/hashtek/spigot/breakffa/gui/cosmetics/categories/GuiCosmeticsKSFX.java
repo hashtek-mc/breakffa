@@ -2,6 +2,7 @@ package fr.hashtek.spigot.breakffa.gui.cosmetics.categories;
 
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKSFX;
+import fr.hashtek.spigot.breakffa.gui.GuiCosmetics;
 import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategoryAttributes;
 import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategory;
 import fr.hashtek.spigot.hashitem.HashItem;
@@ -29,9 +30,13 @@ public class GuiCosmeticsKSFX
     /**
      * Creates a new instance of GuiCosmeticsKSFX.
      */
-    public GuiCosmeticsKSFX(CosmeticManager cosmeticManager)
+    public GuiCosmeticsKSFX(
+        GuiCosmetics parentGui,
+        CosmeticManager cosmeticManager
+    )
     {
         super(
+            parentGui,
             cosmeticManager,
             ATTRIBUTES,
             CosmeticTypeKSFX.KillSfx.class,

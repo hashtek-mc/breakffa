@@ -39,11 +39,15 @@ public class GuiCosmetics extends HashGui
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
-                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                    .setClickAction((Player player, HashGui hashGui, ItemStack item, int slot) -> {
+                        if (!(hashGui instanceof GuiCosmetics gui)) {
+                            return;
+                        }
+
                         final CosmeticManager playerCosmeticManager =
                             MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
 
-                        new GuiCosmeticsKSFX(playerCosmeticManager).open(player);
+                        new GuiCosmeticsKSFX(gui, playerCosmeticManager).open(player);
                     })
             )
             .build(GUI_TITLE, GUI_MANAGER)
@@ -53,11 +57,15 @@ public class GuiCosmetics extends HashGui
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
-                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                    .setClickAction((Player player, HashGui hashGui, ItemStack item, int slot) -> {
+                        if (!(hashGui instanceof GuiCosmetics gui)) {
+                            return;
+                        }
+
                         final CosmeticManager playerCosmeticManager =
                             MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
 
-                        new GuiCosmeticsCustomHelmet(playerCosmeticManager).open(player);
+                        new GuiCosmeticsCustomHelmet(gui, playerCosmeticManager).open(player);
                     })
             )
             .build(GUI_TITLE, GUI_MANAGER)

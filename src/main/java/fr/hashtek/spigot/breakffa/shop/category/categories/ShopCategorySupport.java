@@ -22,10 +22,16 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class ShopCategorySupport extends ShopCategory implements HashLoggable
+public class ShopCategorySupport
+    extends ShopCategory
+    implements HashLoggable
 {
 
-    public enum Articles implements ShopCategoryArticles
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
+
+
+    public enum Articles
+        implements ShopCategoryArticles
     {
 
         GOLD_PACKAGE (
@@ -77,11 +83,9 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
                         new InteractHandler()
                             .addInteractTypes(Action.LEFT_CLICK_AIR, Action.RIGHT_CLICK_AIR)
                             .setInteractAction((Player player, ItemStack item, int slot) -> {
-                                final BreakFFA main = BreakFFA.getInstance();
-
                                 final Location playerLocation = player.getEyeLocation();
                                 final World world = playerLocation.getWorld();
-                                Collection<? extends Player> onlinePlayers = main.getCore().getOnlinePlayers();
+                                Collection<? extends Player> onlinePlayers = MAIN.getServer().getOnlinePlayers();
 
                                 /* Updates the item's durability. */
                                 final int shots = 3;
@@ -222,12 +226,11 @@ public class ShopCategorySupport extends ShopCategory implements HashLoggable
     /**
      * Creates a new instance of ShopCategorySupport.
      *
-     * @param   main    BreakFFA main
      * @param   player  Player
      */
-    public ShopCategorySupport(BreakFFA main, Player player)
+    public ShopCategorySupport(Player player)
     {
-        super(main, player, attributes);
+        super(player, attributes);
         this.loadArticles();
     }
 

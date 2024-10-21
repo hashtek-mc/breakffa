@@ -13,20 +13,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class ListenerDamage implements Listener
 {
 
-    private final GameManager gameManager;
-
-
-    /**
-     * Creates a new instance of ListenerDamager.
-     *
-     * @param   main    BreakFFA instance
-     */
-    public ListenerDamage(BreakFFA main)
-    {
-        this.gameManager = main.getGameManager();
-    }
-
-
     /**
      * Called when an entity takes damage.
      * In this case, we only process players.
@@ -48,8 +34,7 @@ public class ListenerDamage implements Listener
             return;
         }
 
-        final PlayerManager playerManager = this.gameManager.getPlayerManager(player);
-        final PlayerData playerData = playerManager.getData();
+        final PlayerManager playerManager = BreakFFA.getInstance().getGameManager().getPlayerManager(player);
 
         /* If player is going to die, custom kill. */
         if (player.getHealth() - event.getFinalDamage() <= 0) {
@@ -58,7 +43,7 @@ public class ListenerDamage implements Listener
             }
 
             if (event.getCause() == EntityDamageEvent.DamageCause.THORNS) {
-                playerData.setLastDamagerWeapon(playerData.getLastDamager().getInventory().getChestplate());
+                playerManager.setLastDamagerWeapon(playerManager.getLastDamager().getInventory().getChestplate());
             }
 
             event.setCancelled(true);

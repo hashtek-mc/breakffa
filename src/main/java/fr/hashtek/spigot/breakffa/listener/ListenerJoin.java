@@ -1,15 +1,9 @@
 package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
-import fr.hashtek.spigot.breakffa.scoreboard.ScoreboardManager;
-import fr.hashtek.spigot.hashboard.exceptions.AlreadyInTeamException;
-import fr.hashtek.spigot.hashboard.exceptions.StrangeException;
-import fr.hashtek.spigot.hashboard.exceptions.TeamSizeException;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.game.GameManager;
-import fr.hashtek.spigot.breakffa.player.PlayerData;
-import fr.hashtek.spigot.breakffa.tablist.TablistManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,18 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class ListenerJoin implements Listener, HashLoggable
 {
 
-    private final BreakFFA main;
-
-
-    /**
-     * Creates a new instance of ListenerJoin.
-     *
-     * @param   main    BreakFFA instance
-     */
-    public ListenerJoin(BreakFFA main)
-    {
-        this.main = main;
-    }
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
 
 
     /**
@@ -39,31 +22,34 @@ public class ListenerJoin implements Listener, HashLoggable
     public void onJoin(PlayerJoinEvent event)
     {
         final Player player = event.getPlayer();
-        final PlayerManager playerManager = new PlayerManager(this.main, player);
-        final GameManager gameManager = this.main.getGameManager();
-        final ScoreboardManager scoreboardManager = this.main.getBoardManager();
-        final TablistManager tablistManager = this.main.getTablistManager();
+        final GameManager gameManager = MAIN.getGameManager();
+        final PlayerManager playerManager = gameManager.createPlayerManager(player);
+//        final ScoreboardManager scoreboardManager = this.main.getBoardManager();
+//        final TablistManager tablistManager = this.main.getTablistManager();
 
         event.joinMessage(null);
 
-        gameManager.addPlayerManager(player, playerManager);
-
         playerManager.backToLobby();
 
-        this.main.getBoardManager().getBoard().setToPlayers(player);
-
-        try {
-            final fr.hashtek.tekore.common.player.PlayerData pData =
-                this.main.getCore().getPlayerManager(player).getData();
-
-            this.main.getRankTeams().get(pData.getRank().getUuid()).add(player);
-            tablistManager.refresh();
-            tablistManager.update();
-        } catch (AlreadyInTeamException | TeamSizeException | StrangeException exception) {
-            // TODO: Write error handling (even if none of them should happen).
-        }
-
-        scoreboardManager.addPlayerSidebar(player).refreshSidebar();
+//        this.main.getBoardManager().getBoard().setToPlayers(player);
+//
+//        try {
+//            final fr.hashtek.tekore.common.player.PlayerData pData =
+//                this.main.getCore().getPlayerManager(player).getData();
+//
+//            this.main.getRankTeams().get(pData.getRank().getUuid()).add(player);
+//            tablistManager.refresh();
+//            tablistManager.update();
+//        } catch (AlreadyInTeamException | TeamFullException | StrangeException exception) {
+//            // TODO: Write error handling (even if none of them should happen).
+//        }
+//
+//        try {
+//            scoreboardManager.addPlayerSidebar(player).refreshSidebar();
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//            // TODO: Write proper error handling
+//        }
     }
 
 }

@@ -5,6 +5,7 @@ import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
+import fr.hashtek.spigot.breakffa.gui.GuiCosmetics;
 import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.PaginatedHashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
@@ -34,6 +35,7 @@ public abstract class GuiCosmeticsCategory<
     private final Mask mask;
     private final GuiCosmeticsCategoryAttributes attributes;
 
+    private final GuiCosmetics parentGui;
     private final Class<E> cosmetics;
     private final CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter;
     private final CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> currentCosmeticGetter;
@@ -51,6 +53,7 @@ public abstract class GuiCosmeticsCategory<
      * @param   currentCosmeticSetter   Current cosmetic setter (from a {@link CosmeticManager} instance)
      */
     public GuiCosmeticsCategory(
+        GuiCosmetics parentGui,
         CosmeticManager playerCosmeticManager,
         GuiCosmeticsCategoryAttributes attributes,
         Class<E> cosmetics,
@@ -68,6 +71,7 @@ public abstract class GuiCosmeticsCategory<
         this.mask = new Mask(this);
         this.attributes = attributes;
 
+        this.parentGui = parentGui;
         this.cosmetics = cosmetics;
         this.ownedCosmeticsGetter = ownedCosmeticsGetter;
         this.currentCosmeticGetter = currentCosmeticGetter;
@@ -99,7 +103,20 @@ public abstract class GuiCosmeticsCategory<
             .setName(Component.text(attributes.getColor() + "Page suivante"))
             .addLore(Component.text(ChatColor.GRAY + "Cliquez pour afficher la page suivante."));
 
-        final HashItem backItem = new HashItem(Material.DARK_OAK_DOOR); // TODO: Finish this lol
+        final HashItem backItem = new HashItem(Material.DARK_OAK_DOOR)
+            .setName(Component.text(ChatColor.RED + "BACK!!!!"))
+            .addClickHandler(
+                new ClickHandler()
+                    .addAllClickTypes()
+                    .setClickAction((Player player, HashGui hashGui, ItemStack item, int slot) -> {
+                        if (!(hashGui instanceof GuiCosmeticsCategory<?,?> gui)) {
+                            return;
+                        }
+
+                        gui.getParentGui().open(player);
+                    })
+            )
+            .build(GUI_MANAGER);
 
         super.setPreviousPageItem(previousPageItem);
         super.setNextPageItem(nextPageItem);
@@ -275,6 +292,14 @@ public abstract class GuiCosmeticsCategory<
     public GuiCosmeticsCategoryAttributes getAttributes()
     {
         return this.attributes;
+    }
+
+    /**
+     * @return  Parent Gui
+     */
+    public GuiCosmetics getParentGui()
+    {
+        return this.parentGui;
     }
 
     /**

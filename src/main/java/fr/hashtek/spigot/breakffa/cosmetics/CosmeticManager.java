@@ -90,7 +90,7 @@ public class CosmeticManager
     public void loadData()
     {
         // ...
-//        this.unlockEverything(); // FIXME: Temporary!
+        this.unlockEverything(); // FIXME: Temporary!
     }
 
     /**

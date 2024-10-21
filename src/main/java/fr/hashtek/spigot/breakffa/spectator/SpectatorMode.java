@@ -6,7 +6,8 @@ import fr.hashtek.spigot.breakffa.kit.kits.KitSpectator;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
-import fr.hashtek.tekore.common.Rank;
+import fr.hashtek.tekore.common.account.Account;
+import fr.hashtek.tekore.common.rank.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -75,8 +76,8 @@ public class SpectatorMode
             return;
         }
 
-        final fr.hashtek.tekore.common.player.PlayerData closestPlayerCoreData =
-            this.main.getCore().getPlayerManager(closestPlayer).getData();
+        final Account closestPlayerCoreData = this.main.getCore().getPlayerManagersManager()
+            .getPlayerManager(closestPlayer).getAccount();
         final Rank closestPlayerRank = closestPlayerCoreData.getRank();
 
         /* Teleport player to the closest player */
@@ -84,7 +85,7 @@ public class SpectatorMode
         this.player.playSound(closestPlayer.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 100, 1);
 
         /* Notifying player */
-        this.player.sendMessage(ChatColor.AQUA + "Téléportation à " + closestPlayerRank.getColor() + closestPlayerRank.getFullName() + " " + closestPlayerCoreData.getUsername());
+        this.player.sendMessage(ChatColor.AQUA + "Téléportation à " + closestPlayerRank.getUsernameColor() + closestPlayerRank.getFullName() + " " + closestPlayerCoreData.getUsername());
     }
 
     /**

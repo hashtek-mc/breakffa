@@ -24,22 +24,17 @@ import java.util.Arrays;
 public class ShopManager
 {
 
-    private final BreakFFA main;
-    private final HashGuiManager guiManager;
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
+    private static final HashGuiManager GUI_MANAGER = MAIN.getGuiManager();
 
     private HashGui gui;
 
 
     /**
      * Creates a new instance of ShopManager
-     *
-     * @param   main    BreakFFA instance
      */
-    public ShopManager(BreakFFA main)
+    public ShopManager()
     {
-        this.main = main;
-        this.guiManager = this.main.getGuiManager();
-
         this.createGui();
     }
 
@@ -52,12 +47,12 @@ public class ShopManager
     {
         this.gui = new HashGui(Component.text("" + ChatColor.AQUA + ChatColor.BOLD + "Marché ● CATÉGORIES"), 3);
 
-        final HashItem darkBlueGlass = HashItem.separator(Material.BLUE_STAINED_GLASS_PANE, this.guiManager);
-        final HashItem blueGlass = HashItem.separator(Material.LIGHT_BLUE_STAINED_GLASS_PANE, this.guiManager);
-        final HashItem orangeGlass = HashItem.separator(Material.ORANGE_STAINED_GLASS_PANE, this.guiManager);
-        final HashItem redGlass = HashItem.separator(Material.RED_STAINED_GLASS_PANE, this.guiManager);
-        final HashItem greenGlass = HashItem.separator(Material.LIME_STAINED_GLASS_PANE, this.guiManager);
-        final HashItem darkGreenGlass = HashItem.separator(Material.GREEN_STAINED_GLASS_PANE, this.guiManager);
+        final HashItem darkBlueGlass = HashItem.separator(Material.BLUE_STAINED_GLASS_PANE, GUI_MANAGER);
+        final HashItem blueGlass = HashItem.separator(Material.LIGHT_BLUE_STAINED_GLASS_PANE, GUI_MANAGER);
+        final HashItem orangeGlass = HashItem.separator(Material.ORANGE_STAINED_GLASS_PANE, GUI_MANAGER);
+        final HashItem redGlass = HashItem.separator(Material.RED_STAINED_GLASS_PANE, GUI_MANAGER);
+        final HashItem greenGlass = HashItem.separator(Material.LIME_STAINED_GLASS_PANE, GUI_MANAGER);
+        final HashItem darkGreenGlass = HashItem.separator(Material.GREEN_STAINED_GLASS_PANE, GUI_MANAGER);
 
         final HashItem defensiveCategory = new ShopCategoryItem(
             Material.CHAINMAIL_CHESTPLATE,
@@ -71,8 +66,8 @@ public class ShopManager
                 Component.text("" + ChatColor.BLUE + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR")
             ),
             (Player p, HashGui gui, ItemStack item, int slot) ->
-                new ShopCategoryDefensive(this.main, p).open()
-        ).build(this.guiManager);
+                new ShopCategoryDefensive(p).open()
+        ).build(GUI_MANAGER);
 
         final HashItem offensiveCategory = new ShopCategoryItem(
             Material.IRON_SWORD,
@@ -86,8 +81,8 @@ public class ShopManager
                 Component.text("" + ChatColor.RED + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR")
             ),
             (Player p, HashGui gui, ItemStack item, int slot) ->
-                new ShopCategoryOffensive(this.main, p).open()
-        ).build(this.guiManager);
+                new ShopCategoryOffensive(p).open()
+        ).build(GUI_MANAGER);
 
         final HashItem supportCategory = new ShopCategoryItem(
             Material.GOLDEN_APPLE,
@@ -104,8 +99,8 @@ public class ShopManager
                 Component.text("" + ChatColor.GREEN + ChatColor.BOLD + "CLIC GAUCHE POUR OUVRIR")
             ),
             (Player p, HashGui gui, ItemStack item, int slot) ->
-                new ShopCategorySupport(this.main, p).open()
-        ).build(this.guiManager);
+                new ShopCategorySupport(p).open()
+        ).build(GUI_MANAGER);
 
         final Mask mask = new Mask(this.gui);
 
@@ -160,24 +155,21 @@ public class ShopManager
                         this.gui.open(p);
                     })
             )
-            .build(this.guiManager);
+            .build(GUI_MANAGER);
     }
 
     /**
      * Gives the shop to a player in its inventory.
-     *
-     * @param   playerData  Player's data
      */
-    public void giveShop(PlayerData playerData)
+    public void giveShop(Player player)
     {
-        final Player player = playerData.getPlayer();
+        final PlayerData playerData = MAIN.getGameManager().getPlayerManager(player).getData();
         final PlayerInventory inventory = player.getInventory();
-        final HashGuiManager guiManager = this.main.getGuiManager();
 
-        final HashItem darkBlueGlass = HashItem.separator(Material.BLUE_STAINED_GLASS_PANE, guiManager);
-        final HashItem blueGlass = HashItem.separator(Material.LIGHT_BLUE_STAINED_GLASS_PANE, guiManager);
-        final HashItem magentaGlass = HashItem.separator(Material.MAGENTA_STAINED_GLASS_PANE, guiManager);
-        final HashItem whiteGlass = HashItem.separator(Material.WHITE_STAINED_GLASS_PANE, guiManager);
+        final HashItem darkBlueGlass = HashItem.separator(Material.BLUE_STAINED_GLASS_PANE, GUI_MANAGER);
+        final HashItem blueGlass = HashItem.separator(Material.LIGHT_BLUE_STAINED_GLASS_PANE, GUI_MANAGER);
+        final HashItem magentaGlass = HashItem.separator(Material.MAGENTA_STAINED_GLASS_PANE, GUI_MANAGER);
+        final HashItem whiteGlass = HashItem.separator(Material.WHITE_STAINED_GLASS_PANE, GUI_MANAGER);
 
         final HashItem shopItem = this.createShopItem(playerData, false);
 

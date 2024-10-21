@@ -27,6 +27,9 @@ import java.util.Objects;
 public class ShopArticle
 {
 
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
+
+
     private final HashItem shopArticle;
     private final HashItem article;
     private final int price;
@@ -126,11 +129,12 @@ public class ShopArticle
     /**
      * Buys the article for a player.
      *
-     * @param   playerData  Player's data
+     * @param   player  Transaction author
+     * @param   gui     Active transaction Gui
      */
-    public void buy(PlayerData playerData, PaginatedHashGui gui)
+    public void buy(Player player, PaginatedHashGui gui)
     {
-        final Player player = playerData.getPlayer();
+        final PlayerData playerData = MAIN.getGameManager().getPlayerManager(player).getData();
         final int playerShards = playerData.getShards();
         final int articlePrice = this.getPrice();
 
@@ -168,11 +172,16 @@ public class ShopArticle
         }
 
         /* Updates the shop items (for shards in lore). */
-        final HashItem shopItem = playerData.getMain().getShopManager().createShopItem(playerData, true);
-        playerData.getMain().getShopManager().giveShop(playerData);
+        final HashItem shopItem = MAIN.getShopManager().createShopItem(playerData, true);
+        MAIN.getShopManager().giveShop(player);
         gui.replaceAll(shopItem.getItemMeta().displayName(), shopItem);
-        BreakFFA.getInstance().getBoardManager().getPlayerSidebar(player).refreshSidebar();
 
+//        try {
+//            BreakFFA.getInstance().getBoardManager().getPlayerSidebar(player).refreshSidebar();
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//            // TODO: Write proper error handling
+//        }
 
         /* Plays buy sound to the player. */
         player.playSound(player.getLocation(), Sound.ENTITY_HORSE_AMBIENT, 100, 1); // FIXME: Sound was "mob.horse.leather", verify the new enum value
@@ -201,8 +210,7 @@ public class ShopArticle
                         return;
                     }
 
-                    final PlayerData playerData = main.getGameManager().getPlayerManager(player).getData();
-                    this.buy(playerData, paginatedGui);
+                    this.buy(player, paginatedGui);
                 })
         );
 
@@ -281,7 +289,7 @@ public class ShopArticle
         this.getArticle().addDestroyHandler(
             new DestroyHandler()
                 .setDestroyAction((Player player, ItemStack item, Block block) -> {
-                    final Block nexus = BreakFFA.getInstance().getGameManager().getNexus().getBlock();
+                    final Block nexus = MAIN.getGameManager().getNexus().getBlock();
 
                     if (!block.equals(nexus)) {
                         return;

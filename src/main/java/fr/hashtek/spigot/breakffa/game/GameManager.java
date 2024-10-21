@@ -5,7 +5,6 @@ import fr.hashtek.hashconfig.HashConfig;
 import fr.hashtek.hasherror.HashError;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.hashlogger.HashLogger;
-import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,11 +15,12 @@ import org.simpleyaml.configuration.file.YamlFile;
 
 import java.util.*;
 
-public class GameManager implements HashLoggable
+public class GameManager
+    implements HashLoggable
 {
 
-    private final BreakFFA main;
-    private final HashLogger logger;
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
+    private static final HashLogger LOGGER = MAIN.getHashLogger();
 
     private final Nexus nexus;
     private Location lobbySpawnLocation;
@@ -36,22 +36,17 @@ public class GameManager implements HashLoggable
 
     /**
      * Creates a new instance of GameManager
-     *
-     * @param    main   BreakFFA instance
      */
-    public GameManager(BreakFFA main)
+    public GameManager()
     {
-        this.main = main;
-        this.logger = this.main.getHashLogger();
-
-        this.nexus = new Nexus(this.main, this);
+        this.nexus = new Nexus();
         this.spawnLocations = new ArrayList<Location>();
 
         this.lastReset = new Date();
         this.playerManagers = new HashMap<Player, PlayerManager>();
         this.placedBlocks = new ArrayList<Block>();
 
-        this.settings = new GameSettings(this.logger);
+        this.settings = new GameSettings();
     }
 
 
@@ -82,7 +77,7 @@ public class GameManager implements HashLoggable
     public void setupNexusLocation(YamlFile yaml, World world)
         throws NoSuchFieldException
     {
-        this.logger.info(this, "Loading Nexus...");
+        LOGGER.info(this, "Loading Nexus...");
 
         final String prefix = "nexusLocation";
 
@@ -100,7 +95,7 @@ public class GameManager implements HashLoggable
 
         this.nexus.setBlock(world.getBlockAt(new Location(world, x, y, z)));
 
-        this.logger.info(this, String.format(
+        LOGGER.info(this, String.format(
             "Successfully loaded Nexus.\n" +
             "(X: %.2f, Y: %.2f, Z: %.2f, Type: %s)",
             x, y, z, this.nexus.getBlock().getType()
@@ -117,7 +112,7 @@ public class GameManager implements HashLoggable
     public void setupLobbySpawnLocation(YamlFile yaml, World world)
         throws NoSuchFieldException
     {
-        this.logger.info(this, "Loading Lobby spawn...");
+        LOGGER.info(this, "Loading Lobby spawn...");
 
         final String prefix = "lobbySpawn";
         
@@ -137,7 +132,7 @@ public class GameManager implements HashLoggable
 
         this.lobbySpawnLocation = new Location(world, x, y, z, pitch, yaw);
 
-        this.logger.info(this, String.format(
+        LOGGER.info(this, String.format(
             "Successfully loaded Lobby spawn.\n" +
             "(X: %.2f, Y: %.2f, Z: %.2f, Pitch: %.2f, Yaw: %.2f)",
             x, y, z, pitch, yaw
@@ -154,14 +149,14 @@ public class GameManager implements HashLoggable
     public void setupSpawns(YamlFile yaml, World world)
         throws NoSuchFieldException
     {
-        this.logger.info(this, "Loading spawns...");
+        LOGGER.info(this, "Loading spawns...");
 
         final List<String> requiredKeys = Arrays.asList("x", "y", "z");
 
         final List<Map<String, Object>> spawns = (List<Map<String, Object>>) yaml.getList("spawns");
 
         if (spawns == null || spawns.isEmpty()) {
-            this.logger.fatal(this, "No spawns set.");
+            LOGGER.fatal(this, "No spawns set.");
             throw new NoSuchFieldException("No spawns set.");
         }
 
@@ -180,7 +175,7 @@ public class GameManager implements HashLoggable
             }
 
             if (!hasAllFields) {
-                this.logger.critical(this, "Spawn " + index + " has missing keys. Ignoring.");
+                LOGGER.critical(this, "Spawn " + index + " has missing keys. Ignoring.");
                 continue;
             }
 
@@ -192,7 +187,7 @@ public class GameManager implements HashLoggable
 
             this.spawnLocations.add(new Location(world, x, y, z, pitch, yaw));
 
-            this.logger.info(this, String.format(
+            LOGGER.info(this, String.format(
                 "Successfully loaded spawn %d\n" +
                 "(X: %.2f, Y: %.2f, Z: %.2f, Pitch: %.2f, Yaw: %.2f)",
                 this.spawnLocations.size(),
@@ -200,7 +195,7 @@ public class GameManager implements HashLoggable
             ));
         }
 
-        this.logger.info(this, "Successfully loaded " + this.spawnLocations.size() + " spawns!");
+        LOGGER.info(this, "Successfully loaded " + this.spawnLocations.size() + " spawns!");
     }
 
     /**
@@ -213,7 +208,7 @@ public class GameManager implements HashLoggable
     public void setupSpectatorModeSpawnLocation(YamlFile yaml, World world)
         throws NoSuchFieldException
     {
-        this.logger.info(this, "Loading Spectator mode spawn...");
+        LOGGER.info(this, "Loading Spectator mode spawn...");
 
         final String prefix = "spectatorModeSpawn";
 
@@ -231,7 +226,7 @@ public class GameManager implements HashLoggable
 
         this.spectatorModeSpawnLocation = new Location(world, x, y, z);
 
-        this.logger.info(this, String.format(
+        LOGGER.info(this, String.format(
             "Successfully loaded Spectator mode spawn.\n" +
             "(X: %.2f, Y: %.2f, Z: %.2f)",
             x, y, z
@@ -247,10 +242,10 @@ public class GameManager implements HashLoggable
     public void setup(HashConfig config)
         throws Exception
     {
-        this.logger.info(this, "Setting up BreakFFA game...");
+        LOGGER.info(this, "Setting up BreakFFA game...");
 
         final YamlFile yaml = config.getYaml();
-        final World world = this.main.getServer().getWorld("breakffa");
+        final World world = MAIN.getServer().getWorld("breakffa");
 
         try {
             this.setupNexusLocation(yaml, world);
@@ -260,20 +255,20 @@ public class GameManager implements HashLoggable
             this.settings.setup(yaml);
         } catch (NoSuchFieldException exception) {
             HashError.UNKNOWN
-                .log(this.logger, this, exception);
+                .log(LOGGER, this, exception);
             throw new Exception("Could not properly setup game.");
         }
 
-        this.logger.info(this, "Successfully set up BreakFFA game!");
+        LOGGER.info(this, "Successfully set up BreakFFA game!");
     }
 
     /**
      * Resets the map.
-     * Used when Nexus is broken.
+     * Used when {@link Nexus} is broken.
      */
-    public void reset()
+    public void resetMap()
     {
-        for (Player player : this.main.getServer().getOnlinePlayers()) {
+        for (Player player : MAIN.getServer().getOnlinePlayers()) {
             final PlayerManager playerManager = this.getPlayerManager(player);
             playerManager.backToLobby();
         }
@@ -286,6 +281,46 @@ public class GameManager implements HashLoggable
         this.lastReset = new Date();
     }
 
+
+    /**
+     * Adds a player's manager to the main map.
+     *
+     * @param   player          Player
+     */
+    public PlayerManager createPlayerManager(Player player)
+    {
+        final PlayerManager playerManager = new PlayerManager(player);
+
+        this.playerManagers.put(player, playerManager);
+        return playerManager;
+    }
+
+    /**
+     * Removes a player's manager from the main map.
+     *
+     * @param   player  Player
+     */
+    public PlayerManager removePlayerManager(Player player)
+    {
+        return this.playerManagers.remove(player);
+    }
+
+    /**
+     * @param   player  Player
+     * @return  Player's manager
+     */
+    public PlayerManager getPlayerManager(Player player)
+    {
+        return this.playerManagers.get(player);
+    }
+
+    /**
+     * @return  Players managers
+     */
+    public Map<Player, PlayerManager> getPlayerManagers()
+    {
+        return this.playerManagers;
+    }
 
     /**
      * @return  Game's Nexus
@@ -325,44 +360,6 @@ public class GameManager implements HashLoggable
     public Date getLastReset()
     {
         return this.lastReset;
-    }
-
-    /**
-     * @return  Players managers
-     */
-    public Map<Player, PlayerManager> getPlayerManagers()
-    {
-        return this.playerManagers;
-    }
-
-    /**
-     * Adds a player's manager to the main map.
-     *
-     * @param   player          Player
-     * @param   playerManagers  Player's data
-     */
-    public void addPlayerManager(Player player, PlayerManager playerManagers)
-    {
-        this.playerManagers.put(player, playerManagers);
-    }
-
-    /**
-     * Removes a player's data from the main map.
-     *
-     * @param   player  Player
-     */
-    public void removePlayerData(Player player)
-    {
-        this.playerManagers.remove(player);
-    }
-
-    /**
-     * @param   player  Player
-     * @return  Player's manager
-     */
-    public PlayerManager getPlayerManager(Player player)
-    {
-        return this.playerManagers.get(player);
     }
 
     /**

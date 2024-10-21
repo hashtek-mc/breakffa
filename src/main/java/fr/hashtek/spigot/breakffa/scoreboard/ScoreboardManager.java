@@ -52,8 +52,9 @@ public class ScoreboardManager
      * @param   player  Player
      */
     public ScoreboardPersonal addPlayerSidebar(Player player)
+        throws Exception
     {
-        final ScoreboardPersonal sidebar = new ScoreboardPersonal(this.main, player, this.board);
+        final ScoreboardPersonal sidebar = new ScoreboardPersonal(this.main, player);
 
         this.sidebars.put(player, sidebar);
         return sidebar;
