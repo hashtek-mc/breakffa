@@ -1,23 +1,21 @@
 package fr.hashtek.spigot.breakffa.player;
 
-import fr.hashtek.spigot.breakffa.BreakFFA;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * Player's BreakFFA data.
- * Not to confuse with Tekore's PlayerData.
+ * <p>
+ * Unless you want beef with Redis, NEVER move
+ * this file and NEVER rename its parent package.
+ * </p>
  */
 public class PlayerData
 {
 
-    private final BreakFFA main;
-
-    private final Player player;
-    private final fr.hashtek.tekore.common.player.PlayerData corePlayerData;
     private PlayerState state;
 
-    private final PlayerSettings settings; // TODO: Move in PlayerManager
+    private PlayerSettings settings;
 
     private int shards;
     private int killRewardShards;
@@ -27,72 +25,32 @@ public class PlayerData
     private int nexusBreaks;
     private int nexusBreaksStreak;
 
-    private Player lastDamagedPlayer;
-    private ItemStack lastDamagedWith;
-
-    private Player lastDamager;
-    private ItemStack lastDamagerWeapon;
-
 
     /**
      * Creates a new instance of PlayerData.
      *
-     * @param   main        BreakFFA instance
      * @param   player      Player
      */
-    public PlayerData(BreakFFA main, Player player)
+    public PlayerData()
     {
-        this.main = main;
-
-        this.player = player;
-        this.corePlayerData = this.main.getCore().getPlayerManager(this.player).getData();
         this.state = PlayerState.AT_LOBBY;
 
         this.settings = new PlayerSettings();
 
-        this.shards = 1000; // FIXME: TODO: DEBUG, TO REMOVE!!!!
+        this.shards = 0;
         this.killRewardShards = 1;
 
         this.totalKills = 0;
         this.killStreak = 0;
         this.nexusBreaks = 0;
         this.nexusBreaksStreak = 0;
-
-        this.lastDamagedPlayer = null;
-        this.lastDamagedWith = null;
-
-        this.lastDamager = null;
-        this.lastDamagerWeapon = null;
     }
 
-
-    /**
-     * @return  BreakFFA instance
-     */
-    public BreakFFA getMain()
-    {
-        return this.main;
-    }
-
-    /**
-     * @return  Player
-     */
-    public Player getPlayer()
-    {
-        return this.player;
-    }
-
-    /**
-     * @return  Tekore's Player data
-     */
-    public fr.hashtek.tekore.common.player.PlayerData getCoreData()
-    {
-        return this.corePlayerData;
-    }
 
     /**
      * @return  Player's state
      */
+    @JsonIgnore
     public PlayerState getState()
     {
         return this.state;
@@ -117,6 +75,7 @@ public class PlayerData
     /**
      * @return  Shards obtained when killing someone
      */
+    @JsonIgnore
     public int getKillRewardShards()
     {
         return this.killRewardShards;
@@ -149,41 +108,10 @@ public class PlayerData
     /**
      * @return  Player's nexus break streak
      */
+
     public int getNexusBreaksStreak()
     {
         return this.nexusBreaksStreak;
-    }
-
-    /**
-     * @return  Player's last damaged player
-     */
-    public Player getLastDamagedPlayer()
-    {
-        return this.lastDamagedPlayer;
-    }
-
-    /**
-     * @return  Player's last damaged player weapon
-     */
-    public ItemStack getLastDamagedWith()
-    {
-        return this.lastDamagedWith;
-    }
-
-    /**
-     * @return  Player's last damager
-     */
-    public Player getLastDamager()
-    {
-        return this.lastDamager;
-    }
-
-    /**
-     * @return  Player's last damager weapon
-     */
-    public ItemStack getLastDamagerWeapon()
-    {
-        return this.lastDamagerWeapon;
     }
 
     /**
@@ -192,38 +120,6 @@ public class PlayerData
     public void setState(PlayerState state)
     {
         this.state = state;
-    }
-
-    /**
-     * @param   damager     Player's last damager
-     */
-    public void setLastDamager(Player damager)
-    {
-        this.lastDamager = damager;
-    }
-
-    /**
-     * @param   weapon  Player's last damager's weapon
-     */
-    public void setLastDamagerWeapon(ItemStack weapon)
-    {
-        this.lastDamagerWeapon = weapon;
-    }
-
-    /**
-     * @param   damagedPlayer   Player's last damager
-     */
-    public void setLastDamagedPlayer(Player damagedPlayer)
-    {
-        this.lastDamagedPlayer = damagedPlayer;
-    }
-
-    /**
-     * @param   weapon  Player's last damager's weapon
-     */
-    public void setLastDamagedWith(ItemStack weapon)
-    {
-        this.lastDamagedWith = weapon;
     }
 
     /**
@@ -280,14 +176,6 @@ public class PlayerData
     public void addShards(int amount)
     {
         this.shards += amount;
-    }
-
-    /**
-     * @param   amount  Amount to multiply with.
-     */
-    public void multiplyKillRewardShards(int amount)
-    {
-        this.killRewardShards *= amount;
     }
 
     /**
