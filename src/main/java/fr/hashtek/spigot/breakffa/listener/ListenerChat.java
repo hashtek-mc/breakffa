@@ -1,9 +1,8 @@
 package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
-import fr.hashtek.tekore.bukkit.Tekore;
-import fr.hashtek.tekore.common.Rank;
-import fr.hashtek.tekore.common.player.PlayerData;
+import fr.hashtek.tekore.common.rank.Rank;
+import fr.hashtek.tekore.common.account.Account;
 import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.audience.Audience;
@@ -18,20 +17,6 @@ import org.jetbrains.annotations.NotNull;
 public class ListenerChat implements Listener
 {
 
-    private final Tekore core;
-
-
-    /**
-     * Creates a new instance of ListenerChat.
-     *
-     * @param   main    BreakFFA instance
-     */
-    public ListenerChat(BreakFFA main)
-    {
-        this.core = main.getCore();
-    }
-
-
     /**
      * Called when a player sends a message in the chat.
      */
@@ -39,7 +24,8 @@ public class ListenerChat implements Listener
     public void onChat(AsyncChatEvent event)
     {
         final Player player = event.getPlayer();
-        final PlayerData playerData = this.core.getPlayerManager(player).getData();
+        final Account playerData = BreakFFA.getInstance().getCore()
+            .getPlayerManagersManager().getPlayerManager(player).getAccount();
         final Rank playerRank = playerData.getRank();
 
         event.renderer(new ChatRenderer() {
@@ -52,9 +38,9 @@ public class ListenerChat implements Listener
                 @NotNull Audience viewer
             ) {
                 return Component.text(
-                    playerRank.getColor() + player.getName() + "@" + playerRank.getName()
-                        + ChatColor.DARK_GRAY + " $ "
-                        + ChatColor.WHITE + ((TextComponent) message).content()
+                    playerRank.getUsernameColor() + player.getName() + "@" + playerRank.getName()
+                    + ChatColor.DARK_GRAY + " $ "
+                    + ChatColor.WHITE + ((TextComponent) message).content()
                 );
             }
         });

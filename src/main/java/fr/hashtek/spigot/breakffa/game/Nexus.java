@@ -6,7 +6,10 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerState;
 import fr.hashtek.spigot.breakffa.shop.category.categories.ShopCategoryDefensive;
-import fr.hashtek.tekore.common.Rank;
+import fr.hashtek.spigot.hashgui.manager.HashGuiManager;
+import fr.hashtek.tekore.common.rank.Rank;
+import fr.hashtek.tekore.common.account.Account;
+import fr.hashtek.tekore.spigot.Tekore;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -19,22 +22,11 @@ import org.bukkit.potion.PotionEffectType;
 public class Nexus implements HashLoggable
 {
 
-    private final BreakFFA main;
-    private final GameManager gameManager;
+    private static final BreakFFA MAIN = BreakFFA.getInstance();
+    private static final HashGuiManager GUI_MANAGER = MAIN.getGuiManager();
+    private static final Tekore CORE = MAIN.getCore();
+
     private Block block;
-
-
-    /**
-     * Creates a new Nexus.
-     *
-     * @param   main            BreakFFA instance
-     * @param   gameManager     Game manager
-     */
-    public Nexus(BreakFFA main, GameManager gameManager)
-    {
-        this.main = main;
-        this.gameManager = gameManager;
-    }
 
 
     /**
@@ -63,15 +55,15 @@ public class Nexus implements HashLoggable
      */
     public void destroy(Player player)
     {
-        final PlayerData playerData = this.gameManager.getPlayerManager(player).getData();
-        final fr.hashtek.tekore.common.player.PlayerData corePlayerData = playerData.getCoreData();
+        final PlayerData playerData = MAIN.getGameManager().getPlayerManager(player).getData();
+        final Account corePlayerData = CORE.getPlayerManagersManager().getPlayerManager(player).getAccount();
         final Rank playerRank = corePlayerData.getRank();
 
         /* Clears all drops. */
-        new HashUtils.World(this.main.getWorld()).clearItems();
+        new HashUtils.World(MAIN.getWorld()).clearItems();
 
-        for (Player p : this.main.getServer().getOnlinePlayers()) {
-            final PlayerData pData = this.gameManager.getPlayerManager(p).getData();
+        for (Player p : MAIN.getServer().getOnlinePlayers()) {
+            final PlayerData pData = MAIN.getGameManager().getPlayerManager(p).getData();
 
             if (pData.getState() != PlayerState.PLAYING) {
                 continue;
@@ -87,34 +79,39 @@ public class Nexus implements HashLoggable
             /* Nexus breaking messages */
             p.sendMessage(
                 "" + ChatColor.DARK_RED + ChatColor.UNDERLINE + "⚕" + ChatColor.RESET + " " +
-                playerRank.getColor() + playerRank.getShortName() + " " + corePlayerData.getUsername() + " " +
+                playerRank.getUsernameColor() + playerRank.getShortName() + " " + corePlayerData.getUsername() + " " +
                 ChatColor.RED + "a brisé le " + ChatColor.DARK_RED + ChatColor.BOLD + "Nexus" + ChatColor.RESET + ChatColor.RED + " !"
             );
 
             p.sendTitle(
                 ChatColor.RED + "⚕ " + ChatColor.DARK_RED + ChatColor.BOLD + "NEXUS" + ChatColor.RED + " ⚕",
-                ChatColor.RED + "Brisé par " + playerRank.getColor() + corePlayerData.getUsername(),
+                ChatColor.RED + "Brisé par " + playerRank.getUsernameColor() + corePlayerData.getUsername(),
                 0,
                 20,
                 40
             );
 
             /* Resetting player's nexus break streak */
-            if (!pData.getPlayer().equals(player)) {
+            if (!p.equals(player)) {
                 pData.setNexusBreaksStreak(0);
             }
         }
 
         this.executeShopWeaponsAbilities(player, playerData);
 
-        this.gameManager.reset();
+        MAIN.getGameManager().resetMap();
 
         /* Updates player's data */
         playerData.addNexusBreaks(1);
         playerData.addNexusBreaksStreak(1);
         playerData.addShards(5);
 
-        this.main.getBoardManager().getPlayerSidebar(player).refreshSidebar();
+//        try {
+//            this.main.getBoardManager().getPlayerSidebar(player).refreshSidebar();
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//            // TODO: Write proper error handling
+//        }
     }
 
 
