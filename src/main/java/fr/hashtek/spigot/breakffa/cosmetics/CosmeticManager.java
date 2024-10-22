@@ -1,7 +1,7 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
 import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
-import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeCustomHelmet;
+import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeHat;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKSFX;
 
 import java.util.ArrayList;
@@ -68,8 +68,8 @@ public class CosmeticManager
     private Cosmetic<CosmeticTypeKSFX> currentKillSfx;
 
     /* Custom helmet */
-    private final List<Cosmetic<CosmeticTypeCustomHelmet>> ownedCustomHelmets;
-    private Cosmetic<CosmeticTypeCustomHelmet> currentCustomHelmet;
+    private final List<Cosmetic<CosmeticTypeHat>> ownedCustomHelmets;
+    private Cosmetic<CosmeticTypeHat> currentCustomHelmet;
 
 
     /**
@@ -78,7 +78,7 @@ public class CosmeticManager
     public CosmeticManager()
     {
         this.ownedKillSfxs = new ArrayList<Cosmetic<CosmeticTypeKSFX>>();
-        this.ownedCustomHelmets = new ArrayList<Cosmetic<CosmeticTypeCustomHelmet>>();
+        this.ownedCustomHelmets = new ArrayList<Cosmetic<CosmeticTypeHat>>();
 
         this.loadData();
     }
@@ -107,7 +107,7 @@ public class CosmeticManager
         this.currentKillSfx = this.ownedKillSfxs.get(0);
 
         /* Custom helmets */
-        for (CosmeticTypeCustomHelmet.CustomHelmet helmet : CosmeticTypeCustomHelmet.CustomHelmet.values()) {
+        for (CosmeticTypeHat.CustomHelmet helmet : CosmeticTypeHat.CustomHelmet.values()) {
             this.ownedCustomHelmets.add(helmet.getCosmetic());
         }
         this.currentCustomHelmet = this.ownedCustomHelmets.get(0);
@@ -143,7 +143,7 @@ public class CosmeticManager
     /**
      * @return  Custom helmet that players owns
      */
-    public List<Cosmetic<CosmeticTypeCustomHelmet>> getOwnedCustomHelmets()
+    public List<Cosmetic<CosmeticTypeHat>> getOwnedCustomHelmets()
     {
         return this.ownedCustomHelmets;
     }
@@ -151,12 +151,12 @@ public class CosmeticManager
     /**
      * @return  Current custom helmet
      */
-    public Cosmetic<CosmeticTypeCustomHelmet> getCurrentCustomHelmet()
+    public Cosmetic<CosmeticTypeHat> getCurrentCustomHelmet()
     {
         return this.currentCustomHelmet;
     }
 
-    public void setCurrentCustomHelmet(Cosmetic<CosmeticTypeCustomHelmet> helmet)
+    public void setCurrentCustomHelmet(Cosmetic<CosmeticTypeHat> helmet)
     {
         this.currentCustomHelmet = helmet;
     }

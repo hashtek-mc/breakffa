@@ -1,7 +1,7 @@
 package fr.hashtek.spigot.breakffa.gui.cosmetics.categories;
 
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
-import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeCustomHelmet;
+import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeHat;
 import fr.hashtek.spigot.breakffa.gui.GuiCosmetics;
 import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategoryAttributes;
 import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategory;
@@ -10,27 +10,23 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-public class GuiCosmeticsCustomHelmet
-    extends GuiCosmeticsCategory<CosmeticTypeCustomHelmet, CosmeticTypeCustomHelmet.CustomHelmet>
+public class GuiCosmeticsHat
+    extends GuiCosmeticsCategory<CosmeticTypeHat, CosmeticTypeHat.CustomHelmet>
 {
 
     private static final GuiCosmeticsCategoryAttributes ATTRIBUTES =
         new GuiCosmeticsCategoryAttributes(
-            "custom helmets lol",
+            "hats lol",
             Material.WHITE_STAINED_GLASS_PANE,
             Material.RED_STAINED_GLASS_PANE,
             ChatColor.RED
         );
 
-    public static final HashItem TITLE_ITEM =
-        new HashItem(Material.BEACON)
-            .setName(Component.text("Custom helmet"));
-
 
     /**
-     * Creates a new instance of AbstractGuiCosmeticsCategory.
+     * Creates a new instance of GuiCosmeticsHat.
      */
-    public GuiCosmeticsCustomHelmet(
+    public GuiCosmeticsHat(
         GuiCosmetics parentGui,
         CosmeticManager cosmeticManager
     )
@@ -39,7 +35,8 @@ public class GuiCosmeticsCustomHelmet
             parentGui,
             cosmeticManager,
             ATTRIBUTES,
-            CosmeticTypeCustomHelmet.CustomHelmet.class,
+            getCategoryItem(cosmeticManager),
+            CosmeticTypeHat.CustomHelmet.class,
             cManager -> cManager::getOwnedCustomHelmets,
             cManager -> cManager::getCurrentCustomHelmet,
             cManager -> cManager::setCurrentCustomHelmet
@@ -47,10 +44,14 @@ public class GuiCosmeticsCustomHelmet
     }
 
 
-    @Override
-    public HashItem getCategoryTitleItem()
+    /**
+     * @apiNote Item should not be built. Just create it, we'll build it for ya ;)
+     * @return  Item that will serve as the Gui title (at the top)
+     */
+    public static HashItem getCategoryItem(CosmeticManager playerCosmeticManager)
     {
-        return TITLE_ITEM;
+        return new HashItem(Material.STONE)
+            .setName(Component.text("hax!!!!1")); // say gex
     }
 
 }

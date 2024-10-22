@@ -4,7 +4,7 @@ import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
-import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeCustomHelmet;
+import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeHat;
 import fr.hashtek.spigot.breakffa.death.Death;
 import fr.hashtek.spigot.breakffa.death.DeathReason;
 import fr.hashtek.spigot.breakffa.game.GameManager;
@@ -128,11 +128,11 @@ public class PlayerManager implements HashLoggable
         starterKit.giveItems(this.player);
 
         /* Sets player's custom helmet. */
-        final Cosmetic<CosmeticTypeCustomHelmet> currentPlayerCustomHelmetCosmetic =
+        final Cosmetic<CosmeticTypeHat> currentPlayerCustomHelmetCosmetic =
             this.cosmeticManager.getCurrentCustomHelmet();
 
         if (currentPlayerCustomHelmetCosmetic != null) {
-            inventory.setHelmet(currentPlayerCustomHelmetCosmetic.getCosmetic().getHelmet().getItemStack());
+            inventory.setHelmet(currentPlayerCustomHelmetCosmetic.getCosmetic().getHat().getItemStack());
         }
     }
 
