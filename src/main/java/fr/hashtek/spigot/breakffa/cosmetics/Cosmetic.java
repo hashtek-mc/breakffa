@@ -1,6 +1,7 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
 import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -13,9 +14,63 @@ public class Cosmetic<T extends AbstractCosmetic>
     public enum CosmeticAvailability
     {
 
-        OBTAINABLE, // Can be obtainable at any time.
-        LIMITED,    // Can't be obtainable at any time but can be re-obtainable in the future.
-        EXCLUSIVE   // Can be obtainable once (e.g. during a certain period or something) and then can't be ever obtainable.
+        OBTAINABLE  (ChatColor.AQUA),           // Can be obtainable at any time.
+        LIMITED     (ChatColor.YELLOW),         // Can't be obtainable at any time but can be re-obtainable in the future.
+        EXCLUSIVE   (ChatColor.LIGHT_PURPLE);   // Can be obtainable once (e.g. during a certain period or something) and then can't be ever obtainable.
+
+
+        private final ChatColor color;
+
+
+        CosmeticAvailability(ChatColor color)
+        {
+            this.color = color;
+        }
+
+
+        /**
+         * @return  Color
+         */
+        public ChatColor getColor()
+        {
+            return this.color;
+        }
+
+    }
+
+    public enum CosmeticRarity
+    {
+
+        COMMON          ("Common", "#FFFFFF"),
+        RARE            ("Rare", "#FFFFFF"),
+        EPIC            ("Epic", "#FFFFFF"),
+        LEGENDARY       ("Legendary", "#FFFFFF"),
+        MYSTIC          ("Mystic", "#FFFFFF"),
+        DIVINE          ("Divine", "#FFFFFF"),
+        TRANSCENDANT    ("Transcendant", "#FFFFFF"),
+        SPECIAL         ("Special", "#FFFFFF");
+
+
+        private final String name;
+        private final String hex;
+
+
+        CosmeticRarity(String name, String hex)
+        {
+            this.name = name;
+            this.hex = hex;
+        }
+
+
+        public String getName()
+        {
+            return this.name;
+        }
+
+        public String getHexColor()
+        {
+            return this.hex;
+        }
 
     }
 
@@ -26,6 +81,7 @@ public class Cosmetic<T extends AbstractCosmetic>
     private final int price;
     private final T cosmetic;
     private final CosmeticAvailability availability;
+    private final CosmeticRarity rarity;
 
 
     /**
@@ -50,7 +106,8 @@ public class Cosmetic<T extends AbstractCosmetic>
             description,
             price,
             cosmetic,
-            CosmeticAvailability.OBTAINABLE
+            CosmeticAvailability.OBTAINABLE,
+            CosmeticRarity.COMMON
         );
     }
 
@@ -72,12 +129,73 @@ public class Cosmetic<T extends AbstractCosmetic>
         CosmeticAvailability availability
     )
     {
+        this(
+            material,
+            name,
+            description,
+            price,
+            cosmetic,
+            availability,
+            CosmeticRarity.COMMON
+        );
+    }
+
+    /**
+     * Creates a new Cosmetic.
+     *
+     * @param   name            Name
+     * @param   description     Description
+     * @param   price           Price
+     * @param   cosmetic        Cosmetic
+     * @param   rarity          Cosmetic's rarity
+     */
+    public Cosmetic(
+        Material material,
+        String name,
+        String description,
+        int price,
+        T cosmetic,
+        CosmeticRarity rarity
+    )
+    {
+        this(
+            material,
+            name,
+            description,
+            price,
+            cosmetic,
+            CosmeticAvailability.OBTAINABLE,
+            rarity
+        );
+    }
+
+    /**
+     * Creates a new Cosmetic.
+     *
+     * @param   name            Name
+     * @param   description     Description
+     * @param   price           Price
+     * @param   cosmetic        Cosmetic
+     * @param   availability    Cosmetic's availability
+     * @param   rarity          Cosmetic's rarity
+     */
+    public Cosmetic(
+        Material material,
+        String name,
+        String description,
+        int price,
+        T cosmetic,
+        CosmeticAvailability availability,
+        CosmeticRarity rarity
+    )
+    {
         this.material = material;
         this.name = name;
         this.description = description;
         this.price = price;
         this.cosmetic = cosmetic;
         this.availability = availability;
+        this.rarity = rarity;
     }
 
 
@@ -159,6 +277,14 @@ public class Cosmetic<T extends AbstractCosmetic>
     public CosmeticAvailability getAvailability()
     {
         return this.availability;
+    }
+
+    /**
+     * @return  Cosmetic's rarity
+     */
+    public CosmeticRarity getRarity()
+    {
+        return this.rarity;
     }
 
 }
