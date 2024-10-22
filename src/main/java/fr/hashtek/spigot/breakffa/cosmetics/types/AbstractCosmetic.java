@@ -10,9 +10,9 @@ public abstract class AbstractCosmetic
      * <br>
      * Some cosmetic can't be previewed (like custom helmets) so,
      * by default, this function is empty.
+     * <br>
      * For example, see {@link CosmeticTypeKSFX#preview(Player)}.
      * <br>
-     * But it can be overriden by children!
      *
      * @param   player  Player
      */

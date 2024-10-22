@@ -4,6 +4,7 @@ import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 public class CosmeticTypeHat extends AbstractCosmetic
 {
@@ -11,13 +12,24 @@ public class CosmeticTypeHat extends AbstractCosmetic
     public enum CustomHelmet implements CosmeticCategoryArticles<CosmeticTypeHat>
     {
 
-        ANVIL (new Cosmetic<CosmeticTypeHat>(
-            Material.ANVIL,
-            "anvil lol",
-            "miau",
-            447,
-            new CosmeticTypeHat(new HashItem(Material.ANVIL))
-        ));
+        ANVIL (
+            new Cosmetic<CosmeticTypeHat>(
+                Material.ANVIL,
+                "anvil lol",
+                "miau",
+                447,
+                new CosmeticTypeHat(new HashItem(Material.ANVIL)),
+                Cosmetic.CosmeticAvailability.EXCLUSIVE
+            ) {
+                @Override
+                protected boolean buyConditions(Player player) {
+                    if (player.getName().endsWith("y")) {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        );
 
 
         private final Cosmetic<CosmeticTypeHat> cosmetic;
@@ -57,7 +69,6 @@ public class CosmeticTypeHat extends AbstractCosmetic
     {
         this.hat = hat;
     }
-
 
     /**
      * @return  Hat

@@ -64,7 +64,7 @@ public class CosmeticTypeKSFX extends AbstractCosmetic
     /**
      * Creates a Kill SFX (object).
      *
-     * @param   sfx SFX to play when killing someone
+     * @param   sfx         SFX to play when killing someone
      */
     public CosmeticTypeKSFX(Sound sfx)
     {
