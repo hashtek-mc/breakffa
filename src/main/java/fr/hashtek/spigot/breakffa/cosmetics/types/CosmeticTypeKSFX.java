@@ -7,6 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * KSFX stands for Kill SFX.
  */
@@ -27,7 +31,7 @@ public class CosmeticTypeKSFX extends AbstractCosmetic
         CACA (new Cosmetic<CosmeticTypeKSFX>(
             Material.FISHING_ROD,
             "huitre",
-            "nathan j",
+            "omori",
             1060,
             new CosmeticTypeKSFX(Sound.AMBIENT_UNDERWATER_LOOP_ADDITIONS)
         ));
@@ -58,17 +62,18 @@ public class CosmeticTypeKSFX extends AbstractCosmetic
     }
 
 
-    private final Sound sfx;
+    private final List<Sound> sfxs;
 
 
     /**
      * Creates a Kill SFX (object).
      *
-     * @param   sfx         SFX to play when killing someone
+     * @param   sfxs    SFX to play when killing someone
      */
-    public CosmeticTypeKSFX(Sound sfx)
+    public CosmeticTypeKSFX(Sound... sfxs)
     {
-        this.sfx = sfx;
+        this.sfxs = new ArrayList<Sound>();
+        this.sfxs.addAll(Arrays.asList(sfxs));
     }
 
 
@@ -76,7 +81,10 @@ public class CosmeticTypeKSFX extends AbstractCosmetic
     public void preview(Player player)
     {
         player.stopSound(SoundStop.all());
-        player.playSound(player.getLocation(), this.getSfx(), 1, 1);
+
+        this.sfxs.forEach((Sound sound) ->
+            player.playSound(player.getLocation(), sound, 1, 1)
+        );
     }
 
     @Override
@@ -87,11 +95,11 @@ public class CosmeticTypeKSFX extends AbstractCosmetic
 
 
     /**
-     * @return  SFX
+     * @return  SFXs
      */
-    public Sound getSfx()
+    public List<Sound> getSfxs()
     {
-        return this.sfx;
+        return this.sfxs;
     }
 
 }

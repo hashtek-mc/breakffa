@@ -201,7 +201,8 @@ public class Death implements HashLoggable
         final Cosmetic<CosmeticTypeKSFX> currentKillerKSFXCosmetic = this.killerManager.getCosmeticManager().getCurrentKillSfx();
 
         if (currentKillerKSFXCosmetic != null) {
-            this.killer.playSound(this.killer.getLocation(), currentKillerKSFXCosmetic.getCosmetic().getSfx(), 1, 1);
+            // FIXME: Rework on this
+//            this.killer.playSound(this.killer.getLocation(), currentKillerKSFXCosmetic.getCosmetic().getSfx(), 1, 1);
         }
 
         this.killerData.addTotalKills(1);
