@@ -129,7 +129,7 @@ public class PlayerManager implements HashLoggable
 
         /* Sets player's custom helmet. */
         final Cosmetic<CosmeticTypeHat> currentPlayerCustomHelmetCosmetic =
-            this.cosmeticManager.getCurrentCustomHelmet();
+            this.cosmeticManager.getCurrentHat();
 
         if (currentPlayerCustomHelmetCosmetic != null) {
             inventory.setHelmet(currentPlayerCustomHelmetCosmetic.getCosmetic().getHat().getItemStack());

@@ -1,17 +1,21 @@
 package fr.hashtek.spigot.breakffa.gui.cosmetics.categories;
 
+import fr.hashtek.spigot.breakffa.constants.Skulls;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeHat;
 import fr.hashtek.spigot.breakffa.gui.GuiCosmetics;
 import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategoryAttributes;
 import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategory;
 import fr.hashtek.spigot.hashitem.HashItem;
+import fr.hashtek.spigot.hashitem.HashSkull;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
+import java.util.Arrays;
+
 public class GuiCosmeticsHat
-    extends GuiCosmeticsCategory<CosmeticTypeHat, CosmeticTypeHat.CustomHelmet>
+    extends GuiCosmeticsCategory<CosmeticTypeHat, CosmeticTypeHat.Hat>
 {
 
     private static final GuiCosmeticsCategoryAttributes ATTRIBUTES =
@@ -36,10 +40,10 @@ public class GuiCosmeticsHat
             cosmeticManager,
             ATTRIBUTES,
             getCategoryItem(cosmeticManager),
-            CosmeticTypeHat.CustomHelmet.class,
-            cManager -> cManager::getOwnedCustomHelmets,
-            cManager -> cManager::getCurrentCustomHelmet,
-            cManager -> cManager::setCurrentCustomHelmet
+            CosmeticTypeHat.Hat.class,
+            cManager -> cManager::getOwnedHat,
+            cManager -> cManager::getCurrentHat,
+            cManager -> cManager::setCurrentHat
         );
     }
 
@@ -50,8 +54,13 @@ public class GuiCosmeticsHat
      */
     public static HashItem getCategoryItem(CosmeticManager playerCosmeticManager)
     {
-        return new HashItem(Material.STONE)
-            .setName(Component.text("hax!!!!1")); // say gex
+        return new HashSkull()
+            .setTexture(Skulls.COSMETIC_HATS_CATEGORY)
+            .setName(Component.text("" + ChatColor.AQUA + ChatColor.BOLD + "Chapeaux"))
+            .setLore(Arrays.asList(
+                Component.text(ChatColor.GRAY + "Sélectionnez un " + ChatColor.BLUE + "bloc" + ChatColor.GRAY + " ou un " + ChatColor.BLUE + "objet" + ChatColor.GRAY + " à mettre"),
+                Component.text(ChatColor.GRAY + "sur votre tête. Visible par " + ChatColor.BLUE + "tous les joueurs" + ChatColor.GRAY + ".")
+            ));
     }
 
 }

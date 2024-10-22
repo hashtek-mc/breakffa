@@ -5,6 +5,7 @@ import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeHat;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKSFX;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -68,8 +69,8 @@ public class CosmeticManager
     private Cosmetic<CosmeticTypeKSFX> currentKillSfx;
 
     /* Custom helmet */
-    private final List<Cosmetic<CosmeticTypeHat>> ownedCustomHelmets;
-    private Cosmetic<CosmeticTypeHat> currentCustomHelmet;
+    private final List<Cosmetic<CosmeticTypeHat>> ownedHat;
+    private Cosmetic<CosmeticTypeHat> currentHat;
 
 
     /**
@@ -78,7 +79,7 @@ public class CosmeticManager
     public CosmeticManager()
     {
         this.ownedKillSfxs = new ArrayList<Cosmetic<CosmeticTypeKSFX>>();
-        this.ownedCustomHelmets = new ArrayList<Cosmetic<CosmeticTypeHat>>();
+        this.ownedHat = new ArrayList<Cosmetic<CosmeticTypeHat>>();
 
         this.loadData();
     }
@@ -90,7 +91,7 @@ public class CosmeticManager
     public void loadData()
     {
         // ...
-        this.unlockEverything(); // FIXME: Temporary!
+//        this.unlockEverything(); // FIXME: Temporary!
     }
 
     /**
@@ -107,10 +108,27 @@ public class CosmeticManager
         this.currentKillSfx = this.ownedKillSfxs.get(0);
 
         /* Custom helmets */
-        for (CosmeticTypeHat.CustomHelmet helmet : CosmeticTypeHat.CustomHelmet.values()) {
-            this.ownedCustomHelmets.add(helmet.getCosmetic());
+        for (CosmeticTypeHat.Hat helmet : CosmeticTypeHat.Hat.values()) {
+            this.ownedHat.add(helmet.getCosmetic());
         }
-        this.currentCustomHelmet = this.ownedCustomHelmets.get(0);
+        this.currentHat = this.ownedHat.get(0);
+    }
+
+
+    public int getAmountOfCosmeticsByAvailability(Cosmetic.CosmeticAvailability availability)
+    {
+        return (int) (
+            Arrays.stream(CosmeticTypeKSFX.KillSfx.values()).filter(c -> c.getCosmetic().getAvailability() == availability).count() +
+            Arrays.stream(CosmeticTypeHat.Hat.values()).filter(c -> c.getCosmetic().getAvailability() == availability).count()
+        );
+    }
+
+    public int getAmountOfOwnedCosmeticsByAvailability(Cosmetic.CosmeticAvailability availability)
+    {
+        return (int) (
+            this.ownedKillSfxs.stream().filter(c -> c.getAvailability() == availability).count() +
+            this.ownedHat.stream().filter(c -> c.getAvailability() == availability).count()
+        );
     }
 
 
@@ -138,26 +156,26 @@ public class CosmeticManager
     }
 
 
-    /* Custom helmets */
+    /* Hats */
 
     /**
-     * @return  Custom helmet that players owns
+     * @return  Hat that players owns
      */
-    public List<Cosmetic<CosmeticTypeHat>> getOwnedCustomHelmets()
+    public List<Cosmetic<CosmeticTypeHat>> getOwnedHat()
     {
-        return this.ownedCustomHelmets;
+        return this.ownedHat;
     }
 
     /**
-     * @return  Current custom helmet
+     * @return  Current hat
      */
-    public Cosmetic<CosmeticTypeHat> getCurrentCustomHelmet()
+    public Cosmetic<CosmeticTypeHat> getCurrentHat()
     {
-        return this.currentCustomHelmet;
+        return this.currentHat;
     }
 
-    public void setCurrentCustomHelmet(Cosmetic<CosmeticTypeHat> helmet)
+    public void setCurrentHat(Cosmetic<CosmeticTypeHat> helmet)
     {
-        this.currentCustomHelmet = helmet;
+        this.currentHat = helmet;
     }
 }

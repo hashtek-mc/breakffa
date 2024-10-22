@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 public class CosmeticTypeHat extends AbstractCosmetic
 {
 
-    public enum CustomHelmet implements CosmeticCategoryArticles<CosmeticTypeHat>
+    public enum Hat implements CosmeticCategoryArticles<CosmeticTypeHat>
     {
 
         ANVIL (
@@ -40,7 +40,7 @@ public class CosmeticTypeHat extends AbstractCosmetic
          *
          * @param   cosmetic    Cosmetic
          */
-        CustomHelmet(Cosmetic<CosmeticTypeHat> cosmetic)
+        Hat(Cosmetic<CosmeticTypeHat> cosmetic)
         {
             this.cosmetic = cosmetic;
         }
