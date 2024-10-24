@@ -2,7 +2,7 @@ package fr.hashtek.spigot.breakffa.gui.cosmetics.categories;
 
 import fr.hashtek.spigot.breakffa.constants.Skulls;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
-import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKSFX;
+import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKillSFX;
 import fr.hashtek.spigot.breakffa.gui.GuiCosmetics;
 import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategoryAttributes;
 import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategory;
@@ -12,8 +12,8 @@ import org.bukkit.Material;
 
 import java.util.Arrays;
 
-public class GuiCosmeticsKSFX
-    extends GuiCosmeticsCategory<CosmeticTypeKSFX, CosmeticTypeKSFX.KillSfx>
+public class GuiCosmeticsKillSFX
+    extends GuiCosmeticsCategory<CosmeticTypeKillSFX, CosmeticTypeKillSFX.KillSfx>
 {
 
     private static final Component CATEGORY_NAME = Component.text(
@@ -36,7 +36,7 @@ public class GuiCosmeticsKSFX
     /**
      * Creates a new instance of GuiCosmeticsKSFX.
      */
-    public GuiCosmeticsKSFX(
+    public GuiCosmeticsKillSFX(
         GuiCosmetics parentGui,
         CosmeticManager cosmeticManager
     )
@@ -45,8 +45,8 @@ public class GuiCosmeticsKSFX
             parentGui,
             cosmeticManager,
             CATEGORY_ATTRIBUTES,
-            CosmeticTypeKSFX.class,
-            CosmeticTypeKSFX.KillSfx.class,
+            CosmeticTypeKillSFX.class,
+            CosmeticTypeKillSFX.KillSfx.class,
             cManager -> cManager::getCurrentKillSfx,
             cManager -> cManager::setCurrentKillSfx
         );

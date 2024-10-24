@@ -12,33 +12,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * KSFX stands for Kill SFX.
- */
-public class CosmeticTypeKSFX extends AbstractCosmetic
+public class CosmeticTypeKillSFX extends AbstractCosmetic
 {
 
-    public enum KillSfx implements CosmeticCategoryArticles<CosmeticTypeKSFX>
+    public enum KillSfx implements CosmeticCategoryArticles<CosmeticTypeKillSFX>
     {
 
-        NINE_MM (new Cosmetic<CosmeticTypeKSFX>(
+        NINE_MM (new Cosmetic<CosmeticTypeKillSFX>(
             Material.GOLDEN_SWORD,
             "9mm",
             "caca",
             100,
-            new CosmeticTypeKSFX(Sound.BLOCK_WATER_AMBIENT)
+            new CosmeticTypeKillSFX(Sound.BLOCK_WATER_AMBIENT)
         )),
 
-        CACA (new Cosmetic<CosmeticTypeKSFX>(
+        CACA (new Cosmetic<CosmeticTypeKillSFX>(
             Material.FISHING_ROD,
             "huitre",
             "omori",
             1060,
-            new CosmeticTypeKSFX(Sound.AMBIENT_UNDERWATER_LOOP_ADDITIONS)
+            new CosmeticTypeKillSFX(Sound.AMBIENT_UNDERWATER_LOOP_ADDITIONS)
         ));
 
 
-        private final Cosmetic<CosmeticTypeKSFX> cosmetic;
+        private final Cosmetic<CosmeticTypeKillSFX> cosmetic;
 
 
         /**
@@ -46,7 +43,7 @@ public class CosmeticTypeKSFX extends AbstractCosmetic
          *
          * @param   cosmetic    Cosmetic
          */
-        KillSfx(Cosmetic<CosmeticTypeKSFX> cosmetic)
+        KillSfx(Cosmetic<CosmeticTypeKillSFX> cosmetic)
         {
             this.cosmetic = cosmetic;
         }
@@ -55,7 +52,7 @@ public class CosmeticTypeKSFX extends AbstractCosmetic
         /**
          * @return  Cosmetic
          */
-        public Cosmetic<CosmeticTypeKSFX> getCosmetic()
+        public Cosmetic<CosmeticTypeKillSFX> getCosmetic()
         {
             return cosmetic;
         }
@@ -71,7 +68,7 @@ public class CosmeticTypeKSFX extends AbstractCosmetic
      *
      * @param   sfxs    SFX to play when killing someone
      */
-    public CosmeticTypeKSFX(Sound... sfxs)
+    public CosmeticTypeKillSFX(Sound... sfxs)
     {
         this.sfxs = new ArrayList<Sound>();
         this.sfxs.addAll(Arrays.asList(sfxs));
