@@ -3,7 +3,7 @@ package fr.hashtek.spigot.breakffa.death;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
-import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKillSFX;
+import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKillSfx;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerData;
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
@@ -198,7 +198,7 @@ public class Death implements HashLoggable
             MAIN.getGuiManager().getHitManager()
         );
 
-        final Cosmetic<CosmeticTypeKillSFX> currentKillerKSFXCosmetic = this.killerManager.getCosmeticManager().getCurrentKillSfx();
+        final Cosmetic<CosmeticTypeKillSfx> currentKillerKSFXCosmetic = this.killerManager.getCosmeticManager().getCurrentKillSfx();
 
         if (currentKillerKSFXCosmetic != null) {
             // FIXME: Rework on this

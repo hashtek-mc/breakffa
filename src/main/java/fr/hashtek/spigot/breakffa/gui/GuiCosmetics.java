@@ -4,10 +4,10 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticAvailability;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeHat;
-import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKillSFX;
+import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKillSfx;
 import fr.hashtek.spigot.breakffa.gui.cosmetics.GuiCosmeticsCategoryAttributes;
 import fr.hashtek.spigot.breakffa.gui.cosmetics.categories.GuiCosmeticsHat;
-import fr.hashtek.spigot.breakffa.gui.cosmetics.categories.GuiCosmeticsKillSFX;
+import fr.hashtek.spigot.breakffa.gui.cosmetics.categories.GuiCosmeticsKillSfx;
 import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.PaginatedHashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
@@ -72,7 +72,7 @@ public class GuiCosmetics
         /* ------------------------------------------------------------------------------------------------- */
 
         /* Cosmetic categories items ----------------------------------------------------------------------- */
-        final HashItem ksfxItem = GuiCosmeticsKillSFX.CATEGORY_ATTRIBUTES.createTitleItem(playerCosmeticManager, CosmeticTypeKillSFX.class);
+        final HashItem ksfxItem = GuiCosmeticsKillSfx.CATEGORY_ATTRIBUTES.createTitleItem(playerCosmeticManager, CosmeticTypeKillSfx.class);
         final HashItem customHelmetItem = GuiCosmeticsHat.CATEGORY_ATTRIBUTES.createTitleItem(playerCosmeticManager, CosmeticTypeHat.class);
 
         ksfxItem
@@ -87,7 +87,7 @@ public class GuiCosmetics
                         final CosmeticManager pCosmeticManager =
                             MAIN.getGameManager().getPlayerManager(p).getCosmeticManager();
 
-                        new GuiCosmeticsKillSFX(gui, pCosmeticManager).open(p);
+                        new GuiCosmeticsKillSfx(gui, pCosmeticManager).open(p);
                     })
             )
             .build(GUI_TITLE, GUI_MANAGER);
