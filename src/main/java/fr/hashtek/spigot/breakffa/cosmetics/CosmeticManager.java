@@ -1,20 +1,14 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
-import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeHat;
-import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKSFX;
+import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKillSFX;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
-/**
- * TODO:
- *  - Documentation is messy
- *  - Overall code is messy lol
- */
 public class CosmeticManager
 {
 
@@ -48,28 +42,25 @@ public class CosmeticManager
 
     }
 
-    /**
-     * Function used to get the cosmetic getter according to a Player's Cosmetic Manager.
-     *
-     * @param   <T>     Cosmetic
-     */
-    public interface OwnedCosmeticsGetter<T extends Cosmetic<? extends AbstractCosmetic>>
-    {
+//    /**
+//     * Function used to get the cosmetic getter according to a Player's Cosmetic Manager.
+//     *
+//     * @param   <T>     Cosmetic
+//     */
+//    public interface OwnedCosmeticsGetter<T extends Cosmetic<? extends AbstractCosmetic>>
+//    {
+//
+//        /**
+//         * @param   manager     Cosmetic Manager of the player who clicked
+//         */
+//        Supplier<List<T>> getOwnedGetter(CosmeticManager manager);
+//
+//    }
 
-        /**
-         * @param   manager     Cosmetic Manager of the player who clicked
-         */
-        Supplier<List<T>> getOwnedGetter(CosmeticManager manager);
 
-    }
+    private final List<Cosmetic<? extends AbstractCosmetic>> ownedCosmetics;
 
-
-    /* Kill SFXs */
-    private final List<Cosmetic<CosmeticTypeKSFX>> ownedKillSfxs;
-    private Cosmetic<CosmeticTypeKSFX> currentKillSfx;
-
-    /* Custom helmet */
-    private final List<Cosmetic<CosmeticTypeHat>> ownedHat;
+    private Cosmetic<CosmeticTypeKillSFX> currentKillSfx;
     private Cosmetic<CosmeticTypeHat> currentHat;
 
 
@@ -78,9 +69,7 @@ public class CosmeticManager
      */
     public CosmeticManager()
     {
-        this.ownedKillSfxs = new ArrayList<Cosmetic<CosmeticTypeKSFX>>();
-        this.ownedHat = new ArrayList<Cosmetic<CosmeticTypeHat>>();
-
+        this.ownedCosmetics = new ArrayList<Cosmetic<? extends AbstractCosmetic>>();
         this.loadData();
     }
 
@@ -91,79 +80,72 @@ public class CosmeticManager
     public void loadData()
     {
         // ...
-//        this.unlockEverything(); // FIXME: Temporary!
+    }
+
+    public static List<Cosmetic<? extends AbstractCosmetic>> getCosmetics()
+    {
+        final List<Cosmetic<? extends AbstractCosmetic>> cosmetics = new ArrayList<Cosmetic<? extends AbstractCosmetic>>();
+
+        for (CosmeticTypeHat.Hat hat : CosmeticTypeHat.Hat.values()) {
+            cosmetics.add(hat.getCosmetic());
+        }
+
+        for (CosmeticTypeKillSFX.KillSfx killSfx : CosmeticTypeKillSFX.KillSfx.values()) {
+            cosmetics.add(killSfx.getCosmetic());
+        }
+
+        return cosmetics;
     }
 
     /**
-     * Unlocks everything. FIXME: TEMPORARY!!!
-     *
-     * @apiNote not to use pls
+     * @return  Cosmetic that player owns
      */
-    private void unlockEverything()
+    public List<Cosmetic<? extends AbstractCosmetic>> getOwnedCosmetics()
     {
-        /* Kill SFXs */
-        for (CosmeticTypeKSFX.KillSfx sfx : CosmeticTypeKSFX.KillSfx.values()) {
-            this.ownedKillSfxs.add(sfx.getCosmetic());
-        }
-        this.currentKillSfx = this.ownedKillSfxs.get(0);
-
-        /* Custom helmets */
-        for (CosmeticTypeHat.Hat helmet : CosmeticTypeHat.Hat.values()) {
-            this.ownedHat.add(helmet.getCosmetic());
-        }
-        this.currentHat = this.ownedHat.get(0);
+        return this.ownedCosmetics;
     }
 
-
-    public int getAmountOfCosmeticsByAvailability(Cosmetic.CosmeticAvailability availability)
-    {
-        return (int) (
-            Arrays.stream(CosmeticTypeKSFX.KillSfx.values()).filter(c -> c.getCosmetic().getAvailability() == availability).count() +
-            Arrays.stream(CosmeticTypeHat.Hat.values()).filter(c -> c.getCosmetic().getAvailability() == availability).count()
-        );
-    }
-
-    public int getAmountOfOwnedCosmeticsByAvailability(Cosmetic.CosmeticAvailability availability)
-    {
-        return (int) (
-            this.ownedKillSfxs.stream().filter(c -> c.getAvailability() == availability).count() +
-            this.ownedHat.stream().filter(c -> c.getAvailability() == availability).count()
-        );
-    }
-
-
-    /* Kill SFXs */
-
+    /* Kill SFXs ---------------------------------------------------------- */
     /**
      * @return  Kill SFXs that player owns
      */
-    public List<Cosmetic<CosmeticTypeKSFX>> getOwnedKillSfxs()
+    @SuppressWarnings("unchecked")
+    public List<Cosmetic<CosmeticTypeKillSFX>> getOwnedKillSfxs()
     {
-        return this.ownedKillSfxs;
+        return this.ownedCosmetics.stream()
+            .filter(cosmetic -> cosmetic.getCosmetic() instanceof CosmeticTypeKillSFX)
+            .map(cosmetic -> (Cosmetic<CosmeticTypeKillSFX>) cosmetic)
+            .collect(Collectors.toList());
     }
 
     /**
      * @return  Current Kill SFX
      */
-    public Cosmetic<CosmeticTypeKSFX> getCurrentKillSfx()
+    public Cosmetic<CosmeticTypeKillSFX> getCurrentKillSfx()
     {
         return currentKillSfx;
     }
 
-    public void setCurrentKillSfx(Cosmetic<CosmeticTypeKSFX> sfx)
+    /**
+     * @param   sfx     New current Kill SFX
+     */
+    public void setCurrentKillSfx(Cosmetic<CosmeticTypeKillSFX> sfx)
     {
         this.currentKillSfx = sfx;
     }
+    /* -------------------------------------------------------------------- */
 
-
-    /* Hats */
-
+    /* Hats --------------------------------------------------------------- */
     /**
      * @return  Hat that players owns
      */
-    public List<Cosmetic<CosmeticTypeHat>> getOwnedHat()
+    @SuppressWarnings("unchecked")
+    public List<Cosmetic<CosmeticTypeHat>> getOwnedHats()
     {
-        return this.ownedHat;
+        return this.ownedCosmetics.stream()
+            .filter(cosmetic -> cosmetic.getCosmetic() instanceof CosmeticTypeHat)
+            .map(cosmetic -> (Cosmetic<CosmeticTypeHat>) cosmetic)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -174,8 +156,13 @@ public class CosmeticManager
         return this.currentHat;
     }
 
-    public void setCurrentHat(Cosmetic<CosmeticTypeHat> helmet)
+    /**
+     * @param   hat     New current hat
+     */
+    public void setCurrentHat(Cosmetic<CosmeticTypeHat> hat)
     {
-        this.currentHat = helmet;
+        this.currentHat = hat;
     }
+    /* -------------------------------------------------------------------- */
+
 }
