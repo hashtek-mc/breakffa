@@ -1,6 +1,8 @@
 package fr.hashtek.spigot.breakffa.cosmetics.types;
 
+import fr.hashtek.spigot.breakffa.cosmetics.AbstractCosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
+import fr.hashtek.spigot.breakffa.cosmetics.CosmeticAvailability;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
 import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.Material;
@@ -19,7 +21,7 @@ public class CosmeticTypeHat extends AbstractCosmetic
                 "miau",
                 447,
                 new CosmeticTypeHat(new HashItem(Material.ANVIL)),
-                Cosmetic.CosmeticAvailability.EXCLUSIVE
+                CosmeticAvailability.EXCLUSIVE
             ) {
                 @Override
                 protected boolean buyConditions(Player player) {
@@ -51,7 +53,7 @@ public class CosmeticTypeHat extends AbstractCosmetic
          */
         public Cosmetic<CosmeticTypeHat> getCosmetic()
         {
-            return cosmetic;
+            return this.cosmetic;
         }
 
     }
