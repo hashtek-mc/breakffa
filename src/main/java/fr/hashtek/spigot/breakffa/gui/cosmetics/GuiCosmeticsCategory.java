@@ -4,7 +4,7 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
-import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
+import fr.hashtek.spigot.breakffa.cosmetics.AbstractCosmetic;
 import fr.hashtek.spigot.breakffa.gui.GuiCosmetics;
 import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.PaginatedHashGui;
@@ -21,23 +21,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class GuiCosmeticsCategory<
-    T extends AbstractCosmetic,
-    E extends Enum<E> & CosmeticCategoryArticles<T>
-> extends PaginatedHashGui
+public abstract class GuiCosmeticsCategory
+    <T extends AbstractCosmetic,
+    E extends Enum<E> & CosmeticCategoryArticles<T>>
+    extends PaginatedHashGui
 {
 
     private static final BreakFFA MAIN = BreakFFA.getInstance();
     private static final HashGuiManager GUI_MANAGER = MAIN.getGuiManager();
 
-    private static final int SIZE = 6;
+    private static final int GUI_SIZE = 6;
 
     private final Mask mask;
     private final GuiCosmeticsCategoryAttributes attributes;
 
     private final GuiCosmetics parentGui;
     private final Class<E> cosmetics;
-    private final CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter;
     private final CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> currentCosmeticGetter;
     private final CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter;
 
@@ -48,7 +47,6 @@ public abstract class GuiCosmeticsCategory<
      * @param   playerCosmeticManager   Player Cosmetic Manager
      * @param   attributes              Category attributes
      * @param   cosmetics               Cosmetic class
-     * @param   ownedCosmeticsGetter    Owned cosmetics getter (from a {@link CosmeticManager} instance)
      * @param   currentCosmeticGetter   Current cosmetic getter (from a {@link CosmeticManager} instance)
      * @param   currentCosmeticSetter   Current cosmetic setter (from a {@link CosmeticManager} instance)
      */
@@ -56,15 +54,15 @@ public abstract class GuiCosmeticsCategory<
         GuiCosmetics parentGui,
         CosmeticManager playerCosmeticManager,
         GuiCosmeticsCategoryAttributes attributes,
+        Class<T> cosmeticType,
         Class<E> cosmetics,
-        CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter,
         CosmeticManager.CurrentCosmeticGetter<Cosmetic<T>> currentCosmeticGetter,
         CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter
     )
     {
         super(
-            Component.text(attributes.getName()),
-            SIZE,
+            attributes.getName(),
+            GUI_SIZE,
             GUI_MANAGER
         );
 
@@ -73,11 +71,10 @@ public abstract class GuiCosmeticsCategory<
 
         this.parentGui = parentGui;
         this.cosmetics = cosmetics;
-        this.ownedCosmeticsGetter = ownedCosmeticsGetter;
         this.currentCosmeticGetter = currentCosmeticGetter;
         this.currentCosmeticSetter = currentCosmeticSetter;
 
-        this.initializeGui(this.getCategoryTitleItem());
+        this.initializeGui(attributes.createTitleItem(playerCosmeticManager, cosmeticType));
         this.reloadGui(
             this,
             playerCosmeticManager
@@ -177,11 +174,14 @@ public abstract class GuiCosmeticsCategory<
 
         final HashItem item = new HashItem(cosmetic.getMaterial())
             .setName(Component.text(cosmetic.getName()))
-            .addLore(Component.text(cosmetic.getDescription()));
+            .addLore(Component.text(cosmetic.getDescription()))
+            .addLore(Component.text("availability: " + cosmetic.getAvailability()));
 
-        if (ownedCosmeticsGetter.getOwnedGetter(manager).get().contains(cosmetic)) {
+        if (manager.getOwnedCosmetics().contains(cosmetic)) {
             item.addLore(Component.text("YOU GOT THIS COSMETIC!!!"));
         } else {
+            // TODO: If item can't be bought, show it here.
+            // TODO: If item has buy conditions, show it here too
             item.addLore(Component.text("price: " + cosmetic.getPrice()));
         }
 
@@ -209,28 +209,26 @@ public abstract class GuiCosmeticsCategory<
                         return;
                     }
 
+                    /* ---------------------------------------------------------------------------------------------------------------------------- */
                     /*                                        This unchecked cast is "okay" because there is no way that this fires in another gui, */
                     /*                                      ⬇ thanks to the Gui whitelist when building an item.                                    */
-                    final GuiCosmeticsCategory<T, E> gui = (GuiCosmeticsCategory<T, E>) guiCosmeticsCategory;
+                    final GuiCosmeticsCategory<T, E> gui = (GuiCosmeticsCategory<T, E>) guiCosmeticsCategory; /* ---------------------------------- */
 
                     final CosmeticManager playerCosmeticManager =
                         MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
 
                     /* If player doesn't own cosmetic, redirect it to the Buy Gui. */
-                    if (!gui.getOwnedCosmeticsGetter().getOwnedGetter(playerCosmeticManager).get().contains(cosmetic)) {
+                    if (!playerCosmeticManager.getOwnedCosmetics().contains(cosmetic)) {
                         new GuiCosmeticBuy<T, E>(
                             gui,
                             cosmetic,
-                            gui.getOwnedCosmeticsGetter(),
                             gui.getCurrentCosmeticSetter()
                         ).open(player);
                         return;
                     }
 
                     gui.getCurrentCosmeticSetter().getSetter(playerCosmeticManager).accept(cosmetic);
-
                     gui.reloadGui(gui, playerCosmeticManager);
-
                     gui.update(player);
                 })
         )
@@ -280,13 +278,6 @@ public abstract class GuiCosmeticsCategory<
 
 
     /**
-     * @apiNote Item should not be built. Just create it, we'll build it for ya ;)
-     * @apiNote Tip: Create a static variable that stores the item, and make this function return the variable.
-     * @return  Item that will serve as the Gui title (at the top)
-     */
-    public abstract HashItem getCategoryTitleItem();
-
-    /**
      * @return  Gui's attributes
      */
     public GuiCosmeticsCategoryAttributes getAttributes()
@@ -308,14 +299,6 @@ public abstract class GuiCosmeticsCategory<
     public Class<E> getCosmeticsClass()
     {
         return this.cosmetics;
-    }
-
-    /**
-     * @return  Owned cosmetics getter (from a {@link CosmeticManager} instance)
-     */
-    public CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> getOwnedCosmeticsGetter()
-    {
-        return this.ownedCosmeticsGetter;
     }
 
     /**

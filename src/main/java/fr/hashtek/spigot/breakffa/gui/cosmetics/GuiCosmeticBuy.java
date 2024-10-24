@@ -4,7 +4,7 @@ import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
-import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
+import fr.hashtek.spigot.breakffa.cosmetics.AbstractCosmetic;
 import fr.hashtek.spigot.hashgui.HashGui;
 import fr.hashtek.spigot.hashgui.handler.click.ClickAction;
 import fr.hashtek.spigot.hashgui.handler.click.ClickHandler;
@@ -57,7 +57,6 @@ public class GuiCosmeticBuy<
 
     private final GuiCosmeticsCategory<T, E> parentGui;
     private final Cosmetic<T> cosmetic;
-    private final CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter;
     private final CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter;
 
 
@@ -66,13 +65,11 @@ public class GuiCosmeticBuy<
      *
      * @param   parentGui               Parent Gui (instance of {@link GuiCosmeticsCategory})
      * @param   cosmetic                Cosmetic to buy
-     * @param   ownedCosmeticsGetter    Owned cosmetics getter (from a {@link CosmeticManager} instance)
      * @param   currentCosmeticSetter   Current cosmetic setter (from a {@link CosmeticManager} instance)
      */
     public GuiCosmeticBuy(
         GuiCosmeticsCategory<T, E> parentGui,
         Cosmetic<T> cosmetic,
-        CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> ownedCosmeticsGetter,
         CosmeticManager.CurrentCosmeticSetter<Cosmetic<T>> currentCosmeticSetter
     )
     {
@@ -80,7 +77,6 @@ public class GuiCosmeticBuy<
 
         this.parentGui = parentGui;
         this.cosmetic = cosmetic;
-        this.ownedCosmeticsGetter = ownedCosmeticsGetter;
         this.currentCosmeticSetter = currentCosmeticSetter;
 
         this.createGui(cosmetic);
@@ -112,13 +108,13 @@ public class GuiCosmeticBuy<
                                 return;
                             }
 
-                            final Cosmetic cosmeticToBuy = gui.getCosmetic();
+                            final Cosmetic<?> cosmeticToBuy = gui.getCosmetic();
 
                             final CosmeticManager playerCosmeticManager =
                                 MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
 
                             /* Unlocks the cosmetic for the player. */
-                            gui.getOwnedCosmeticsGetter().getOwnedGetter(playerCosmeticManager).get().add(cosmeticToBuy);
+                            playerCosmeticManager.getOwnedCosmetics().add(cosmeticToBuy);
                         }
                     ))
             )
@@ -200,14 +196,6 @@ public class GuiCosmeticBuy<
     public Cosmetic<T> getCosmetic()
     {
         return this.cosmetic;
-    }
-
-    /**
-     * @return  Owned cosmetics getter (from a {@link CosmeticManager} instance)
-     */
-    public CosmeticManager.OwnedCosmeticsGetter<Cosmetic<T>> getOwnedCosmeticsGetter()
-    {
-        return this.ownedCosmeticsGetter;
     }
 
 }
