@@ -1,7 +1,5 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
-import fr.hashtek.spigot.breakffa.cosmetics.types.AbstractCosmetic;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -10,70 +8,6 @@ import org.bukkit.entity.Player;
  */
 public class Cosmetic<T extends AbstractCosmetic>
 {
-
-    public enum CosmeticAvailability
-    {
-
-        OBTAINABLE  (ChatColor.AQUA),           // Can be obtainable at any time.
-        LIMITED     (ChatColor.YELLOW),         // Can't be obtainable at any time but can be re-obtainable in the future.
-        EXCLUSIVE   (ChatColor.LIGHT_PURPLE);   // Can be obtainable once (e.g. during a certain period or something) and then can't be ever obtainable.
-
-
-        private final ChatColor color;
-
-
-        CosmeticAvailability(ChatColor color)
-        {
-            this.color = color;
-        }
-
-
-        /**
-         * @return  Color
-         */
-        public ChatColor getColor()
-        {
-            return this.color;
-        }
-
-    }
-
-    public enum CosmeticRarity
-    {
-
-        COMMON          ("Common", "#FFFFFF"),
-        RARE            ("Rare", "#FFFFFF"),
-        EPIC            ("Epic", "#FFFFFF"),
-        LEGENDARY       ("Legendary", "#FFFFFF"),
-        MYSTIC          ("Mystic", "#FFFFFF"),
-        DIVINE          ("Divine", "#FFFFFF"),
-        TRANSCENDANT    ("Transcendant", "#FFFFFF"),
-        SPECIAL         ("Special", "#FFFFFF");
-
-
-        private final String name;
-        private final String hex;
-
-
-        CosmeticRarity(String name, String hex)
-        {
-            this.name = name;
-            this.hex = hex;
-        }
-
-
-        public String getName()
-        {
-            return this.name;
-        }
-
-        public String getHexColor()
-        {
-            return this.hex;
-        }
-
-    }
-
 
     private final Material material;
     private final String name;

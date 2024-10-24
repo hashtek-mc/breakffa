@@ -1,5 +1,6 @@
 package fr.hashtek.spigot.breakffa.cosmetics.types;
 
+import fr.hashtek.spigot.breakffa.cosmetics.AbstractCosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticCategoryArticles;
 import net.kyori.adventure.sound.SoundStop;
