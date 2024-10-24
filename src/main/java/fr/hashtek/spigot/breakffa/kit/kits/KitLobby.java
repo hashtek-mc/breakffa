@@ -1,6 +1,7 @@
 package fr.hashtek.spigot.breakffa.kit.kits;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
+import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 import fr.hashtek.spigot.breakffa.gui.GuiCosmetics;
 import fr.hashtek.spigot.breakffa.gui.GuiHotbarEditor;
 import fr.hashtek.spigot.breakffa.kit.KitItems;
@@ -66,14 +67,14 @@ public class KitLobby
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            new GuiCosmetics().open(player);
+                            new GuiCosmetics(player).open(player);
                         })
                 )
                 .addClickHandler(
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            new GuiCosmetics().open(player);
+                            new GuiCosmetics(player).open(player);
                         })
                 )
                 .build(GUI_MANAGER),
