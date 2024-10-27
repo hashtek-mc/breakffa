@@ -240,7 +240,6 @@ public class BreakFFA
         this.pluginManager.registerEvents(new ListenerInteract(), this);
         this.pluginManager.registerEvents(new ListenerChat(), this);
         this.pluginManager.registerEvents(new ListenerWeatherChange(), this);
-        this.pluginManager.registerEvents(new ListenerInventoryClose(), this);
 
         this.logger.info(this, "Listeners loaded!");
     }
