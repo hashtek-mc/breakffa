@@ -28,7 +28,7 @@ public class HotbarEditor
 
         GREEN_SEP (HashItem.separator(Material.LIME_STAINED_GLASS_PANE, GUI_MANAGER)),
         BLACK_SEP (HashItem.separator(Material.BLACK_STAINED_GLASS_PANE, GUI_MANAGER)),
-        BLUE_SEP (HashItem.separator(Material.BLUE_STAINED_GLASS_PANE, GUI_MANAGER)),
+        LIGHT_BLUE_SEP(HashItem.separator(Material.LIGHT_BLUE_STAINED_GLASS_PANE, GUI_MANAGER)),
 
         TITLE (new HashItem(Material.WARPED_SIGN)
             .setName(Component.text(ChatColor.GOLD + "Configuration de la Hotbar"))
@@ -94,8 +94,7 @@ public class HotbarEditor
                     })
             )
             .build(GUI_MANAGER)
-        )
-        ;
+        );
 
         private final HashItem item;
 
@@ -130,7 +129,7 @@ public class HotbarEditor
 
         mask.setItem('g', Items.GREEN_SEP.getItem())
             .setItem('n', Items.BLACK_SEP.getItem())
-            .setItem('b', Items.BLUE_SEP.getItem())
+            .setItem('l', Items.LIGHT_BLUE_SEP.getItem())
 
             .setItem('N', Items.TITLE.getItem())
             /*                 ^ 'N' and not 'T' because 'T' is already used by the TNT in the lobby kit. */
@@ -138,9 +137,9 @@ public class HotbarEditor
             /*                 ^ '5' and not 'S' because 'S' is already used by the sword in the lobby kit. */
             .setItem('R', Items.RESET.getItem());
 
-        mask.pattern(2, "gggnnnbbb")
-            .pattern(3, "g5gnNnbRb")
-            .pattern(4, "gggnnnbbb");
+        mask.pattern(2, "gggnnnlll")
+            .pattern(3, "g5gnNnlRl")
+            .pattern(4, "gggnnnlll");
 
         mask.apply();
 
