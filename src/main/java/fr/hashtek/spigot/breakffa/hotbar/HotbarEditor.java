@@ -35,7 +35,7 @@ public class HotbarEditor
             .setLore(Arrays.asList(
                 Component.text(
                     ChatColor.GRAY + "Disposez ici chaque objet de départ\n" +
-                    "du " + ChatColor.RED + "BreakFFA" + ChatColor.GRAY + "dans les emplacements que\n" +
+                    "du " + ChatColor.RED + "BreakFFA" + ChatColor.GRAY + " dans les emplacements que\n" +
                     "vous voulez afin qu'ils restent ainsi\n" +
                     "à chaque " + ChatColor.GREEN + "réapparition" + ChatColor.GRAY + " et " + ChatColor.GREEN + "reconnexion" + ChatColor.GRAY + "."
                 ),
@@ -66,7 +66,7 @@ public class HotbarEditor
         SAVE (new HashItem(Material.LIME_DYE)
             .setName(Component.text(ChatColor.GREEN + "Sauvegarder"))
             .addLore(Component.text(
-                ChatColor.GRAY + "Sauvegarde votre " + ChatColor.DARK_GREEN + "configuration" + ChatColor.GRAY + "personnalisée\n" +
+                ChatColor.GRAY + "Sauvegarde votre " + ChatColor.DARK_GREEN + "configuration" + ChatColor.GRAY + " personnalisée\n" +
                 "de la " + ChatColor.GOLD + "hotbar" + ChatColor.GRAY + " du " + ChatColor.RED + "BreakFFA" + ChatColor.GRAY + "."
             ))
             .addClickHandler(
