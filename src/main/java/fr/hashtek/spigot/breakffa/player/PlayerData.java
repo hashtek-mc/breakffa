@@ -1,7 +1,6 @@
 package fr.hashtek.spigot.breakffa.player;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.bukkit.entity.Player;
 
 /**
  * Player's BreakFFA data.
@@ -15,7 +14,7 @@ public class PlayerData
 
     private PlayerState state;
 
-    private PlayerSettings settings;
+    private final PlayerSettings settings;
 
     private int shards;
     private int killRewardShards;
@@ -28,8 +27,6 @@ public class PlayerData
 
     /**
      * Creates a new instance of PlayerData.
-     *
-     * @param   player      Player
      */
     public PlayerData()
     {
