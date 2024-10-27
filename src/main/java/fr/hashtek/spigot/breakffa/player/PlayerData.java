@@ -56,7 +56,7 @@ public class PlayerData
     /**
      * @return  Player's settings
      */
-    public PlayerSettings getPlayerSettings()
+    public PlayerSettings getSettings()
     {
         return this.settings;
     }
