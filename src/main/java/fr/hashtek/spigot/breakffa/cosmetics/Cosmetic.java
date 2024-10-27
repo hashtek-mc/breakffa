@@ -6,7 +6,8 @@ import org.bukkit.entity.Player;
 /**
  * @param   <T>     Cosmetic type
  */
-public class Cosmetic<T extends AbstractCosmetic>
+public class Cosmetic
+    <T extends AbstractCosmetic>
 {
 
     private final Material material;

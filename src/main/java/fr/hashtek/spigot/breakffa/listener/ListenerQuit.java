@@ -2,13 +2,13 @@ package fr.hashtek.spigot.breakffa.listener;
 
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
-import fr.hashtek.spigot.breakffa.game.GameManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class ListenerQuit implements Listener, HashLoggable
+public class ListenerQuit
+    implements Listener, HashLoggable
 {
 
     /**

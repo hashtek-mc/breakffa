@@ -17,7 +17,8 @@ public class CosmeticManager
      *
      * @param   <T>     Cosmetic
      */
-    public interface CurrentCosmeticSetter<T extends Cosmetic<? extends AbstractCosmetic>>
+    public interface CurrentCosmeticSetter
+        <T extends Cosmetic<? extends AbstractCosmetic>>
     {
 
         /**
@@ -32,7 +33,8 @@ public class CosmeticManager
      *
      * @param   <T>     Cosmetic
      */
-    public interface CurrentCosmeticGetter<T extends Cosmetic<? extends AbstractCosmetic>>
+    public interface CurrentCosmeticGetter
+        <T extends Cosmetic<? extends AbstractCosmetic>>
     {
 
         /**

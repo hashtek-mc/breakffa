@@ -32,7 +32,8 @@ public class KitLobby
     private static final Tekore CORE = MAIN.getCore();
 
 
-    public enum Items implements KitItems
+    public enum Items
+        implements KitItems
     {
 
         BACK_TO_LOBBY (

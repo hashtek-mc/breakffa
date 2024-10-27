@@ -27,7 +27,8 @@ public class KitStarter
      * getSlotIndex() and give() functions are empty because
      * they won't be used. Masks are going to carry this.
      */
-    public enum Items implements KitItems
+    public enum Items
+        implements KitItems
     {
 
         /* Items */

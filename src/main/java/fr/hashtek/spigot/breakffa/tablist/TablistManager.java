@@ -13,7 +13,8 @@ import org.simpleyaml.configuration.file.YamlFile;
 import java.util.Arrays;
 import java.util.List;
 
-public class TablistManager implements HashLoggable
+public class TablistManager
+    implements HashLoggable
 {
 
     private final BreakFFA main;

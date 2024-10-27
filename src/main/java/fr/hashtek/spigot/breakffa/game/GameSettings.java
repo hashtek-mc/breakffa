@@ -8,7 +8,8 @@ import org.simpleyaml.configuration.file.YamlFile;
 import java.util.Arrays;
 import java.util.List;
 
-public class GameSettings implements HashLoggable
+public class GameSettings
+    implements HashLoggable
 {
 
     private static final HashLogger LOGGER = BreakFFA.getInstance().getHashLogger();

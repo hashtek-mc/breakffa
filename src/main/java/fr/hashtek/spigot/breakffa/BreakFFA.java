@@ -24,7 +24,9 @@ import java.util.HashMap;
 import java.io.IOException;
 import java.util.Objects;
 
-public class BreakFFA extends JavaPlugin implements HashLoggable
+public class BreakFFA
+    extends JavaPlugin
+    implements HashLoggable
 {
 
     private static BreakFFA instance;

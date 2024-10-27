@@ -12,10 +12,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CosmeticTypeKillSfx extends AbstractCosmetic
+public class CosmeticTypeKillSfx
+    extends AbstractCosmetic
 {
 
-    public enum KillSfx implements CosmeticCategoryArticles<CosmeticTypeKillSfx>
+    public enum KillSfx
+        implements CosmeticCategoryArticles<CosmeticTypeKillSfx>
     {
 
         NINE_MM (new Cosmetic<CosmeticTypeKillSfx>(

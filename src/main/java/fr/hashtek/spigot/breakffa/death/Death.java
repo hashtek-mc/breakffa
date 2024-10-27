@@ -22,7 +22,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
-public class Death implements HashLoggable
+public class Death
+    implements HashLoggable
 {
 
     private static final BreakFFA MAIN = BreakFFA.getInstance();

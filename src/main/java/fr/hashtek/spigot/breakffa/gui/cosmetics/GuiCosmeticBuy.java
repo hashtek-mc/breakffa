@@ -16,10 +16,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class GuiCosmeticBuy<
-    T extends AbstractCosmetic,
-    E extends Enum<E> & CosmeticCategoryArticles<T>
-> extends HashGui
+public class GuiCosmeticBuy
+    <T extends AbstractCosmetic,
+    E extends Enum<E> & CosmeticCategoryArticles<T>>
+    extends HashGui
 {
 
     private static final BreakFFA MAIN = BreakFFA.getInstance();

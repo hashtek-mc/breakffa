@@ -3,7 +3,8 @@ package fr.hashtek.spigot.breakffa.cosmetics;
 /**
  * Interface for cosmetics stored in a Cosmetic category.
  */
-public interface CosmeticCategoryArticles<T extends AbstractCosmetic>
+public interface CosmeticCategoryArticles
+    <T extends AbstractCosmetic>
 {
 
     /**

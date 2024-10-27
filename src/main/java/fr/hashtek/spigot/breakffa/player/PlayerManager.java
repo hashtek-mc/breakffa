@@ -24,7 +24,8 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.Random;
 
-public class PlayerManager implements HashLoggable
+public class PlayerManager
+    implements HashLoggable
 {
 
     private static final BreakFFA MAIN = BreakFFA.getInstance();

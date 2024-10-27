@@ -16,7 +16,8 @@ import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
-public class ListenerExplosion implements Listener
+public class ListenerExplosion
+    implements Listener
 {
 
     /**

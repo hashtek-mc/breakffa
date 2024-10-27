@@ -9,7 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class ListenerJoin implements Listener, HashLoggable
+public class ListenerJoin
+    implements Listener, HashLoggable
 {
 
     private static final BreakFFA MAIN = BreakFFA.getInstance();

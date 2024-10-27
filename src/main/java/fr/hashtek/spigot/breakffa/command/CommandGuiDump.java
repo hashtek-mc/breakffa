@@ -24,7 +24,8 @@ import java.util.List;
 /**
  * Debug command
  */
-public class CommandGuiDump implements CommandExecutor
+public class CommandGuiDump
+    implements CommandExecutor
 {
 
     @Override

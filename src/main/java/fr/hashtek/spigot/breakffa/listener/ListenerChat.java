@@ -14,7 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-public class ListenerChat implements Listener
+public class ListenerChat
+    implements Listener
 {
 
     /**

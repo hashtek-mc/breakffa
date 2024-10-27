@@ -9,7 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-public class ListenerBreak implements Listener
+public class ListenerBreak
+    implements Listener
 {
 
     /**

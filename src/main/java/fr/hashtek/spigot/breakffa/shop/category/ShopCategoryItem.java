@@ -10,7 +10,8 @@ import org.bukkit.inventory.ItemFlag;
 import java.util.Arrays;
 import java.util.List;
 
-public class ShopCategoryItem extends HashItem
+public class ShopCategoryItem
+    extends HashItem
 {
 
     /**

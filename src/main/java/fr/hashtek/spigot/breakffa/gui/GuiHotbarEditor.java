@@ -19,7 +19,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.Map;
 
-public class GuiHotbarEditor extends HashGui
+public class GuiHotbarEditor
+    extends HashGui
 {
 
     private static final BreakFFA MAIN = BreakFFA.getInstance();

@@ -16,7 +16,8 @@ public class CosmeticTypeNexusSfx
     extends AbstractCosmetic
 {
 
-    public enum NexusSfx implements CosmeticCategoryArticles<CosmeticTypeNexusSfx>
+    public enum NexusSfx
+        implements CosmeticCategoryArticles<CosmeticTypeNexusSfx>
     {
 
         NINE_MM (new Cosmetic<CosmeticTypeNexusSfx>(

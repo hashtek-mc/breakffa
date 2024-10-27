@@ -16,7 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class ListenerDamageByEntity implements Listener
+public class ListenerDamageByEntity
+    implements Listener
 {
 
     private static final BreakFFA MAIN = BreakFFA.getInstance();

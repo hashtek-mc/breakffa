@@ -8,10 +8,12 @@ import fr.hashtek.spigot.hashitem.HashItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-public class CosmeticTypeHat extends AbstractCosmetic
+public class CosmeticTypeHat
+    extends AbstractCosmetic
 {
 
-    public enum Hat implements CosmeticCategoryArticles<CosmeticTypeHat>
+    public enum Hat
+        implements CosmeticCategoryArticles<CosmeticTypeHat>
     {
 
         ANVIL (

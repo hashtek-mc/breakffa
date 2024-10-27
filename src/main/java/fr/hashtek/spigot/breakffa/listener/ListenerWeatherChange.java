@@ -4,7 +4,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
-public class ListenerWeatherChange implements Listener
+public class ListenerWeatherChange
+    implements Listener
 {
 
     /**

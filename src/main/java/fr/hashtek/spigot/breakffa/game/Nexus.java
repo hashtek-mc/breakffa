@@ -19,7 +19,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class Nexus implements HashLoggable
+public class Nexus
+    implements HashLoggable
 {
 
     private static final BreakFFA MAIN = BreakFFA.getInstance();

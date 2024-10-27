@@ -4,7 +4,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-public class ListenerDeath implements Listener
+public class ListenerDeath
+    implements Listener
 {
 
     /**
