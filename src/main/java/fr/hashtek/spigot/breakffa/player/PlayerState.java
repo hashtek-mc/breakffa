@@ -6,8 +6,26 @@ package fr.hashtek.spigot.breakffa.player;
 public enum PlayerState
 {
 
-    AT_LOBBY,
-    PLAYING,
-    SPECTATING
+    AT_LOBBY (true),
+    EDITING_HOTBAR_SETTINGS (true),
+    PLAYING (false),
+    SPECTATING (false)
+
+    ;
+
+
+    private final boolean isInLobby;
+
+
+    PlayerState(boolean isInLobby)
+    {
+        this.isInLobby = isInLobby;
+    }
+
+
+    public boolean isInLobby()
+    {
+        return this.isInLobby;
+    }
 
 }
