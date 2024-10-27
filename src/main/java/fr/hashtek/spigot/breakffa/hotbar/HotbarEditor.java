@@ -23,9 +23,6 @@ public class HotbarEditor
     private static final BreakFFA MAIN = BreakFFA.getInstance();
     private static final HashGuiManager GUI_MANAGER = MAIN.getGuiManager();
 
-    private static final int OFF_HAND_SLOT_INDEX = 25;
-
-
     private enum Items
     {
 
@@ -83,6 +80,20 @@ public class HotbarEditor
                         MAIN.getGameManager().getPlayerManager(player).backToLobby();
                     })
             )
+            .build(GUI_MANAGER)
+        ),
+
+        RESET (new HashItem(Material.PAPER)
+            .setName(Component.text(ChatColor.AQUA + "Réinitialiser"))
+            .addLore(Component.text(ChatColor.GRAY + "Restore la hotbar par défaut."))
+            .addClickHandler(
+                new ClickHandler()
+                    .addAllClickTypes()
+                    .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
+                        HotbarEditor.updateHotbarLayout(player.getInventory(), PlayerSettings.DEFAULT_HOTBAR_LAYOUT);
+                    })
+            )
+            .build(GUI_MANAGER)
         )
         ;
 
@@ -105,76 +116,79 @@ public class HotbarEditor
 
     public HotbarEditor(Player player)
     {
-        this.createGui(
+        this.init(
             player.getInventory(),
             MAIN.getGameManager().getPlayerManager(player).getData()
-                .getPlayerSettings().getHotbarLayout()
+                .getSettings().getHotbarLayout()
         );
     }
 
 
-    public void createGui(PlayerInventory inventory, String hotbarLayout)
+    public void init(PlayerInventory inventory, String hotbarLayout)
     {
         final Mask mask = new Mask(inventory);
-
-        final char lastCharOfHotbarLayout = hotbarLayout.charAt(hotbarLayout.length() - 1);
 
         mask.setItem('g', Items.GREEN_SEP.getItem())
             .setItem('n', Items.BLACK_SEP.getItem())
             .setItem('b', Items.BLUE_SEP.getItem())
 
-            .setItem('T', Items.TITLE.getItem())
-            .setItem('S', Items.SAVE.getItem());
+            .setItem('N', Items.TITLE.getItem())
+            /*                 ^ 'N' and not 'T' because 'T' is already used by the TNT in the lobby kit. */
+            .setItem('5', Items.SAVE.getItem())
+            /*                 ^ '5' and not 'S' because 'S' is already used by the sword in the lobby kit. */
+            .setItem('R', Items.RESET.getItem());
 
-        mask.pattern(hotbarLayout.substring(0, 8))
-            .pattern("gggnnnbbb")
-            .pattern("gSgnTnb b")
-            .pattern("gggnnnbbb");
+        mask.pattern(2, "gggnnnbbb")
+            .pattern(3, "g5gnNnbRb")
+            .pattern(4, "gggnnnbbb");
 
         mask.apply();
 
+        updateHotbarLayout(inventory, hotbarLayout);
+    }
+
+    private static void updateHotbarLayout(PlayerInventory inventory, String hotbarLayout)
+    {
+        final Mask mask = new Mask(inventory);
+        final char lastCharOfHotbarLayout = hotbarLayout.charAt(hotbarLayout.length() - 1);
+
+        for (KitStarter.Items item : KitStarter.Items.values()) {
+            if (item.getCharacter() == ' ') {
+                continue;
+            }
+            final ItemStack i = item.getItem().getItemStack().clone();
+            i.setAmount(1);
+            mask.setItem(item.getCharacter(), i);
+        }
+
+        mask.pattern(hotbarLayout.substring(0, 9));
+        mask.apply();
+
         if (lastCharOfHotbarLayout != ' ') {
-            inventory.setItem(
-                OFF_HAND_SLOT_INDEX,
-                KitStarter.Items.getItemFromCharacter(lastCharOfHotbarLayout).getItemStack() // NPE no-check is okay because we're verifying first that the last char is not empty.
-            );
+            /* NPE no-check is okay because we're verifying first that the last char is not empty.  ↓ */
+            final ItemStack i = KitStarter.Items.getItemFromCharacter(lastCharOfHotbarLayout).getItemStack().clone();
+            i.setAmount(1);
+            inventory.setItemInOffHand(i);
         }
     }
 
     public static void updatePlayerHotbarLayout(Player player)
     {
-        final PlayerSettings playerSettings = MAIN.getGameManager().getPlayerManager(player).getData().getPlayerSettings();
+        final PlayerSettings playerSettings = MAIN.getGameManager().getPlayerManager(player).getData().getSettings();
         final StringBuilder newHotbarLayout = new StringBuilder();
         final PlayerInventory inventory = player.getInventory();
 
         /* Getting the player's hotbar content and creating a new hotbar layout from it. */
         for (int k = 0; k < 9; k++) {
             final ItemStack item = inventory.getItem(k);
-
-            if (item == null || item.getType() == Material.AIR) {
-                newHotbarLayout.append(" ");
-                continue;
-            }
-
-            for (KitStarter.Items starterItem : KitStarter.Items.values()) {
-                if (!starterItem.getItem().getItemStack().equals(item)) { // FIXME: Maybe won't work properly
-                    continue;
-                }
-                newHotbarLayout.append(starterItem.getCharacter());
-            }
+            newHotbarLayout.append(KitStarter.Items.getItemCharacter(item));
         }
 
-        playerSettings.setHotbarLayout(newHotbarLayout.toString());
-    }
+        /* Off-hand management */
+        final ItemStack itemInOffHand = inventory.getItemInOffHand();
+        newHotbarLayout.append(KitStarter.Items.getItemCharacter(itemInOffHand));
 
-    /**
-     * Opens player's inventory (lol)
-     *
-     * @param   player  Player
-     */
-    public void open(Player player)
-    {
-        player.openInventory(player.getInventory());
+        playerSettings.setHotbarLayout(newHotbarLayout.toString());
     }
 
 }

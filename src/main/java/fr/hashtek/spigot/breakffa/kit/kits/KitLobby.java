@@ -90,14 +90,14 @@ public class KitLobby
                     new InteractHandler()
                         .addAllInteractTypes()
                         .setInteractAction((Player player, ItemStack item, int slot) -> {
-                            new HotbarEditor(player).open(player);
+                            new HotbarEditor(player);
                         })
                 )
                 .addClickHandler(
                     new ClickHandler()
                         .addAllClickTypes()
                         .setClickAction((Player player, HashGui gui, ItemStack item, int slot) -> {
-                            new HotbarEditor(player).open(player);
+                            new HotbarEditor(player);
                         })
                 )
                 .build(GUI_MANAGER),
