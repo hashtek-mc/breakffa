@@ -3,7 +3,7 @@ package fr.hashtek.spigot.breakffa.player;
 public class PlayerSettings
 {
 
-    public static final String DEFAULT_HOTBAR_LAYOUT = "sptgb    ";
+    public static final String DEFAULT_HOTBAR_LAYOUT = "SPTG     B";
 
     private String hotbarLayout;
 
