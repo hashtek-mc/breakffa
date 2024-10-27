@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Arrays;
@@ -139,6 +140,20 @@ public class KitStarter
         }
 
         /**
+         * @param   item    Item to compare
+         * @return  <code>true</code> if both items are equal, otherwise <code>false</code>.
+         */
+        public boolean equals(ItemStack item)
+        {
+            final ItemStack i1 = item.clone();
+            final ItemStack i2 = this.getItem().getItemStack().clone();
+
+            i2.setAmount(i1.getAmount());
+
+            return i1.equals(i2);
+        }
+
+        /**
          * @param   character   Character to search
          * @return  Item assigned to the given character
          */
@@ -150,6 +165,24 @@ public class KitStarter
                 }
             }
             return null;
+        }
+
+        /**
+         * @param   item    Item
+         * @return  Item's assigned character (if any)
+         */
+        public static char getItemCharacter(ItemStack item)
+        {
+            if (item == null || item.getType() == Material.AIR) {
+                return ' ';
+            }
+
+            for (KitStarter.Items starterItem : KitStarter.Items.values()) {
+                if (starterItem.equals(item)) {
+                    return starterItem.getCharacter();
+                }
+            }
+            return ' ';
         }
 
     }
@@ -175,7 +208,7 @@ public class KitStarter
     public void giveItems(Player player)
     {
         final PlayerData playerData = MAIN.getGameManager().getPlayerManager(player).getData();
-        final PlayerSettings settings = playerData.getPlayerSettings();
+        final PlayerSettings settings = playerData.getSettings();
         final PlayerInventory inventory = player.getInventory();
         final ShopManager shopManager = MAIN.getShopManager();
         final String hotbarLayout = settings.getHotbarLayout();
@@ -190,7 +223,7 @@ public class KitStarter
             mask.setItem(item.getCharacter(), item.getItem());
         }
 
-        mask.pattern(hotbarLayout.substring(0, 8));
+        mask.pattern(hotbarLayout.substring(0, 9));
 
         mask.apply();
 
