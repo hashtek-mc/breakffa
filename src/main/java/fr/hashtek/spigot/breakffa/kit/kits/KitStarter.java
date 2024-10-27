@@ -36,32 +36,37 @@ public class KitStarter
                 .setName(Component.text(ChatColor.RED + "Epée Basique"))
                 .setUnbreakable(true)
                 .addEnchant(Enchantment.DAMAGE_ALL, 1)
-                .build()
+                .build(),
+            'S'
         ),
 
         PICKAXE (
             new HashItem(Material.IRON_PICKAXE)
                 .setName(Component.text(ChatColor.GREEN + "Pioche Basique"))
                 .setUnbreakable(true)
-                .build()
+                .build(),
+            'P'
         ),
 
         INSTANT_TNT (
             new HashItem(Material.TNT, 4)
                 .setName(Component.text(ChatColor.GREEN + "TNT"))
-                .build()
+                .build(),
+            'T'
         ),
 
         GOLDEN_APPLES(
             new HashItem(Material.GOLDEN_APPLE, 3)
                 .setName(Component.text(ChatColor.GREEN + "Pomme d'Or"))
-                .build()
+                .build(),
+            'G'
         ),
 
         BLOCKS(
             new HashItem(Material.SANDSTONE, 64, (byte) 2)
                 .setName(Component.text(ChatColor.GREEN + "Blocs"))
-                .build()
+                .build(),
+            'B'
         ),
 
         /* Armor */
@@ -88,16 +93,18 @@ public class KitStarter
 
 
         private final HashItem item;
+        private final Character character;
 
 
         Items(HashItem item)
         {
-            this(item, -1);
+            this(item, ' ');
         }
 
-        Items(HashItem item, int slotIndex)
+        Items(HashItem item, Character character)
         {
             this.item = item;
+            this.character = character;
         }
 
 
@@ -121,6 +128,28 @@ public class KitStarter
 
         @Override
         public void give(Player player) {}
+
+        /**
+         * @return  Item's assigned char. Primarily used in masks.
+         */
+        public Character getCharacter()
+        {
+            return this.character;
+        }
+
+        /**
+         * @param   character   Character to search
+         * @return  Item assigned to the given character
+         */
+        public static HashItem getItemFromCharacter(Character character)
+        {
+            for (Items item : Items.values()) {
+                if (item.getCharacter() == character)  {
+                    return item.getItem();
+                }
+            }
+            return null;
+        }
 
     }
 
@@ -148,18 +177,26 @@ public class KitStarter
         final PlayerSettings settings = playerData.getPlayerSettings();
         final PlayerInventory inventory = player.getInventory();
         final ShopManager shopManager = MAIN.getShopManager();
+        final String hotbarLayout = settings.getHotbarLayout();
 
         final Mask mask = new Mask(inventory);
 
-        mask.setItem('s', Items.SWORD.getItem())
-            .setItem('p', Items.PICKAXE.getItem())
-            .setItem('t', Items.INSTANT_TNT.getItem())
-            .setItem('g', Items.GOLDEN_APPLES.getItem())
-            .setItem('b', Items.BLOCKS.getItem());
+        for (Items item : Items.values()) {
+            if (item.getCharacter() == ' ') {
+                continue;
+            }
 
-        mask.pattern(settings.getHotbarLayout());
+            mask.setItem(item.getCharacter(), item.getItem());
+        }
+
+        mask.pattern(hotbarLayout.substring(0, 8));
 
         mask.apply();
+
+        final char lastCharOfHotbarLayout = hotbarLayout.charAt(hotbarLayout.length() - 1);
+        if (lastCharOfHotbarLayout != ' ') {
+            inventory.setItemInOffHand(mask.getItem(lastCharOfHotbarLayout).getItemStack());
+        }
 
         this.setArmor(inventory);
         shopManager.giveShop(player);
