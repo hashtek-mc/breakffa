@@ -2,9 +2,10 @@ package fr.hashtek.spigot.breakffa.cosmetics;
 
 import fr.hashtek.spigot.breakffa.cosmetics.types.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -45,7 +46,10 @@ public class CosmeticManager
     }
 
 
-    private final List<Cosmetic<? extends AbstractCosmetic>> ownedCosmetics;
+    private static final Map<String, Cosmetic<? extends AbstractCosmetic>> COSMETIC_REGISTRY =
+        getCosmetics().stream().collect(Collectors.toMap(Cosmetic::getRawName, cosmetic -> cosmetic));
+
+    private final Set<Cosmetic<? extends AbstractCosmetic>> ownedCosmetics;
 
     private Cosmetic<CosmeticTypeBlock> currentBlock;
     private Cosmetic<CosmeticTypeEmblem> currentEmblem;
@@ -61,26 +65,16 @@ public class CosmeticManager
      */
     public CosmeticManager()
     {
-        this.ownedCosmetics = new ArrayList<Cosmetic<? extends AbstractCosmetic>>();
-        this.loadData();
-    }
-
-    /**
-     * Loads the data from the Redis database.
-     * TODO: Finish this.
-     */
-    public void loadData()
-    {
-        // ...
+        this.ownedCosmetics = new HashSet<Cosmetic<? extends AbstractCosmetic>>();
     }
 
     /**
      * @return  Every cosmetic that exists
      */
     @SuppressWarnings("unchecked")
-    public static List<Cosmetic<? extends AbstractCosmetic>> getCosmetics()
+    public static Set<Cosmetic<? extends AbstractCosmetic>> getCosmetics()
     {
-        Class<? extends Enum<? extends CosmeticCategoryArticles<? extends AbstractCosmetic>>>[] cosmeticEnums =
+        final Class<? extends Enum<? extends CosmeticCategoryArticles<? extends AbstractCosmetic>>>[] cosmeticEnums =
             new Class[] {
                 CosmeticTypeHat.Hat.class,
                 CosmeticTypeKillSfx.KillSfx.class,
@@ -94,13 +88,13 @@ public class CosmeticManager
         return Arrays.stream(cosmeticEnums)
             .flatMap(enumClass -> Arrays.stream(enumClass.getEnumConstants())
             .map(enumValue -> ((CosmeticCategoryArticles<? extends AbstractCosmetic>) enumValue).getCosmetic()))
-            .collect(Collectors.toList());
+            .collect(Collectors.toSet());
     }
 
     /**
      * @return  Cosmetic that player owns
      */
-    public List<Cosmetic<? extends AbstractCosmetic>> getOwnedCosmetics()
+    public Set<Cosmetic<? extends AbstractCosmetic>> getOwnedCosmetics()
     {
         return this.ownedCosmetics;
     }
