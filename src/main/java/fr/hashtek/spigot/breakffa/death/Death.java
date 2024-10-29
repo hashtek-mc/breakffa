@@ -199,7 +199,7 @@ public class Death
             MAIN.getGuiManager().getHitManager()
         );
 
-        final Cosmetic<CosmeticTypeKillSfx> currentKillerKSFXCosmetic = this.killerManager.getCosmeticManager().getCurrentKillSfx();
+        final Cosmetic<CosmeticTypeKillSfx> currentKillerKSFXCosmetic = this.killerManager.getData().getCosmeticManager().getCurrentKillSfx();
 
         if (currentKillerKSFXCosmetic != null) {
             // FIXME: Rework on this

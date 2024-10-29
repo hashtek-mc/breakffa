@@ -3,7 +3,6 @@ package fr.hashtek.spigot.breakffa.player;
 import fr.hashtek.hashlogger.HashLoggable;
 import fr.hashtek.spigot.breakffa.BreakFFA;
 import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
-import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeHat;
 import fr.hashtek.spigot.breakffa.death.Death;
 import fr.hashtek.spigot.breakffa.death.DeathReason;
@@ -33,7 +32,6 @@ public class PlayerManager
     private final Player player;
     private PlayerData playerData;
 
-    private final CosmeticManager cosmeticManager;
     private SpectatorMode spectatorMode;
 
     private Player lastDamagedPlayer;
@@ -51,7 +49,6 @@ public class PlayerManager
     {
         this.player = player;
 
-        this.cosmeticManager = new CosmeticManager();
         // spectator mode?
 
         this.lastDamagedPlayer = null;
@@ -128,12 +125,12 @@ public class PlayerManager
         inventory.setHeldItemSlot(0);
         starterKit.giveItems(this.player);
 
-        /* Sets player's custom helmet. */
-        final Cosmetic<CosmeticTypeHat> currentPlayerCustomHelmetCosmetic =
-            this.cosmeticManager.getCurrentHat();
+        /* Sets player's hat. */
+        final Cosmetic<CosmeticTypeHat> currentPlayerHatCosmetic =
+            this.getData().getCosmeticManager().getCurrentHat();
 
-        if (currentPlayerCustomHelmetCosmetic != null) {
-            inventory.setHelmet(currentPlayerCustomHelmetCosmetic.getCosmetic().getHat().getItemStack());
+        if (currentPlayerHatCosmetic != null) {
+            inventory.setHelmet(currentPlayerHatCosmetic.getCosmetic().getHat().getItemStack());
         }
     }
 
@@ -198,14 +195,6 @@ public class PlayerManager
     public PlayerData getData()
     {
         return this.playerData;
-    }
-
-    /**
-     * @return  Cosmetic manager
-     */
-    public CosmeticManager getCosmeticManager()
-    {
-        return this.cosmeticManager;
     }
 
     /**

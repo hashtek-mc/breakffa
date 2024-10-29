@@ -215,7 +215,7 @@ public abstract class GuiCosmeticsCategory
                     final GuiCosmeticsCategory<T, E> gui = (GuiCosmeticsCategory<T, E>) guiCosmeticsCategory; /* ---------------------------------- */
 
                     final CosmeticManager playerCosmeticManager =
-                        MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
+                        MAIN.getGameManager().getPlayerManager(player).getData().getCosmeticManager();
 
                     /* If player doesn't own cosmetic, redirect it to the Buy Gui. */
                     if (!playerCosmeticManager.getOwnedCosmetics().contains(cosmetic)) {

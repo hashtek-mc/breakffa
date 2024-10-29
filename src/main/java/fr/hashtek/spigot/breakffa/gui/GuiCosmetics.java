@@ -42,7 +42,7 @@ public class GuiCosmetics
         super(GUI_TITLE, GUI_SIZE, MAIN.getGuiManager());
 
         final CosmeticManager playerCosmeticManager =
-            MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
+            MAIN.getGameManager().getPlayerManager(player).getData().getCosmeticManager();
 
         this.createGui(player, playerCosmeticManager);
     }
@@ -72,10 +72,10 @@ public class GuiCosmetics
         /* ------------------------------------------------------------------------------------------------- */
 
         /* Cosmetic categories items ----------------------------------------------------------------------- */
-        final HashItem ksfxItem = GuiCosmeticsKillSfx.CATEGORY_ATTRIBUTES.createTitleItem(playerCosmeticManager, CosmeticTypeKillSfx.class);
-        final HashItem customHelmetItem = GuiCosmeticsHat.CATEGORY_ATTRIBUTES.createTitleItem(playerCosmeticManager, CosmeticTypeHat.class);
+        final HashItem killsfxItem = GuiCosmeticsKillSfx.CATEGORY_ATTRIBUTES.createTitleItem(playerCosmeticManager, CosmeticTypeKillSfx.class);
+        final HashItem hatItem = GuiCosmeticsHat.CATEGORY_ATTRIBUTES.createTitleItem(playerCosmeticManager, CosmeticTypeHat.class);
 
-        ksfxItem
+        killsfxItem
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
@@ -85,14 +85,14 @@ public class GuiCosmetics
                         }
 
                         final CosmeticManager pCosmeticManager =
-                            MAIN.getGameManager().getPlayerManager(p).getCosmeticManager();
+                            MAIN.getGameManager().getPlayerManager(p).getData().getCosmeticManager();
 
                         new GuiCosmeticsKillSfx(gui, pCosmeticManager).open(p);
                     })
             )
             .build(GUI_TITLE, GUI_MANAGER);
 
-        customHelmetItem
+        hatItem
             .addClickHandler(
                 new ClickHandler()
                     .addAllClickTypes()
@@ -102,7 +102,7 @@ public class GuiCosmetics
                         }
 
                         final CosmeticManager pCosmeticManager =
-                            MAIN.getGameManager().getPlayerManager(p).getCosmeticManager();
+                            MAIN.getGameManager().getPlayerManager(p).getData().getCosmeticManager();
 
                         new GuiCosmeticsHat(gui, pCosmeticManager).open(p);
                     })
@@ -128,8 +128,8 @@ public class GuiCosmetics
 
         mask.apply();
 
-        super.getCurrentPage().addItem(ksfxItem);
-        super.getCurrentPage().addItem(customHelmetItem);
+        super.getCurrentPage().addItem(killsfxItem);
+        super.getCurrentPage().addItem(hatItem);
     }
 
 

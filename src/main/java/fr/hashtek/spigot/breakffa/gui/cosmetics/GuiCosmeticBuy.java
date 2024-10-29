@@ -111,7 +111,7 @@ public class GuiCosmeticBuy
                             final Cosmetic<?> cosmeticToBuy = gui.getCosmetic();
 
                             final CosmeticManager playerCosmeticManager =
-                                MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
+                                MAIN.getGameManager().getPlayerManager(player).getData().getCosmeticManager();
 
                             /* Unlocks the cosmetic for the player. */
                             playerCosmeticManager.getOwnedCosmetics().add(cosmeticToBuy);
@@ -159,7 +159,7 @@ public class GuiCosmeticBuy
             final GuiCosmeticsCategory parentGui = gui.getParentGui();
 
             final CosmeticManager playerCosmeticManager =
-                MAIN.getGameManager().getPlayerManager(player).getCosmeticManager();
+                MAIN.getGameManager().getPlayerManager(player).getData().getCosmeticManager();
 
             if (action != null) {
                 action.execute(player, hashGui, item, slot);

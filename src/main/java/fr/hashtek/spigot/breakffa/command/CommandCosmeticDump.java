@@ -1,12 +1,10 @@
 package fr.hashtek.spigot.breakffa.command;
 
 import fr.hashtek.spigot.breakffa.BreakFFA;
-import fr.hashtek.spigot.breakffa.cosmetics.Cosmetic;
 import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
-import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeHat;
-import fr.hashtek.spigot.breakffa.cosmetics.types.CosmeticTypeKillSfx;
 import fr.hashtek.spigot.breakffa.game.GameManager;
 import fr.hashtek.spigot.breakffa.player.PlayerManager;
+import fr.hashtek.spigot.breakffa.player.PlayerSettings;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -36,7 +34,9 @@ public class CommandCosmeticDump
         final BreakFFA main = BreakFFA.getInstance();
         final GameManager gameManager = main.getGameManager();
         final PlayerManager playerManager = gameManager.getPlayerManager(player);
-        final CosmeticManager cosmeticManager = playerManager.getCosmeticManager();
+        final CosmeticManager cosmeticManager = playerManager.getData().getCosmeticManager();
+
+        playerManager.getData().getSettings().setHotbarLayout(PlayerSettings.DEFAULT_HOTBAR_LAYOUT);
 
         player.sendMessage(Component.text("" + ChatColor.GOLD + ChatColor.BOLD + "COSMETIC DUMP"));
 

@@ -1,6 +1,10 @@
 package fr.hashtek.spigot.breakffa.player;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import fr.hashtek.spigot.breakffa.constants.Constants;
+import fr.hashtek.spigot.breakffa.cosmetics.CosmeticManager;
 
 /**
  * Player's BreakFFA data.
@@ -13,8 +17,9 @@ public class PlayerData
 {
 
     private PlayerState state;
-
     private final PlayerSettings settings;
+
+    private CosmeticManager cosmeticManager;
 
     private int shards;
     private int killRewardShards;
@@ -31,8 +36,8 @@ public class PlayerData
     public PlayerData()
     {
         this.state = PlayerState.AT_LOBBY;
-
         this.settings = new PlayerSettings();
+        this.cosmeticManager = new CosmeticManager();
 
         this.shards = 0;
         this.killRewardShards = 1;
@@ -59,6 +64,15 @@ public class PlayerData
     public PlayerSettings getSettings()
     {
         return this.settings;
+    }
+
+    /**
+     * @return  Cosmetic manager
+     */
+    @JsonGetter(Constants.COSMETIC_KEY)
+    public CosmeticManager getCosmeticManager()
+    {
+        return this.cosmeticManager;
     }
 
     /**
@@ -117,6 +131,16 @@ public class PlayerData
     public void setState(PlayerState state)
     {
         this.state = state;
+    }
+
+    /**
+     * @param   cosmeticManager New Cosmetic manager
+     * @apiNote Solely used for Redis access. If you're not, please just edit whatever you want directly in the manager.
+     */
+    @JsonSetter(Constants.COSMETIC_KEY)
+    public void setCosmeticManager(CosmeticManager cosmeticManager)
+    {
+        this.cosmeticManager = cosmeticManager;
     }
 
     /**
