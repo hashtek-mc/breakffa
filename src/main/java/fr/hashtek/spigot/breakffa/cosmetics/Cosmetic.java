@@ -10,6 +10,7 @@ public class Cosmetic
     <T extends AbstractCosmetic>
 {
 
+    private final String rawName;
     private final Material material;
     private final String name;
     private final String description;
@@ -28,6 +29,7 @@ public class Cosmetic
      * @param   cosmetic        Cosmetic
      */
     public Cosmetic(
+        String rawName,
         Material material,
         String name,
         String description,
@@ -36,6 +38,7 @@ public class Cosmetic
     )
     {
         this(
+            rawName,
             material,
             name,
             description,
@@ -56,6 +59,7 @@ public class Cosmetic
      * @param   availability    Cosmetic's availability
      */
     public Cosmetic(
+        String rawName,
         Material material,
         String name,
         String description,
@@ -65,6 +69,7 @@ public class Cosmetic
     )
     {
         this(
+            rawName,
             material,
             name,
             description,
@@ -85,6 +90,7 @@ public class Cosmetic
      * @param   rarity          Cosmetic's rarity
      */
     public Cosmetic(
+        String rawName,
         Material material,
         String name,
         String description,
@@ -94,6 +100,7 @@ public class Cosmetic
     )
     {
         this(
+            rawName,
             material,
             name,
             description,
@@ -115,6 +122,7 @@ public class Cosmetic
      * @param   rarity          Cosmetic's rarity
      */
     public Cosmetic(
+        String rawName,
         Material material,
         String name,
         String description,
@@ -124,6 +132,7 @@ public class Cosmetic
         CosmeticRarity rarity
     )
     {
+        this.rawName = rawName;
         this.material = material;
         this.name = name;
         this.description = description;
@@ -165,7 +174,15 @@ public class Cosmetic
         return true;
     }
 
-    
+
+    /**
+     * @return  Raw name (the one stored in the database)
+     */
+    public String getRawName()
+    {
+        return this.rawName;
+    }
+
     /**
      * @return  Material
      */

@@ -21,6 +21,7 @@ public class CosmeticTypeKillSfx
     {
 
         NINE_MM (new Cosmetic<CosmeticTypeKillSfx>(
+            "9MM",
             Material.GOLDEN_SWORD,
             "9mm",
             "caca",
@@ -29,6 +30,7 @@ public class CosmeticTypeKillSfx
         )),
 
         CACA (new Cosmetic<CosmeticTypeKillSfx>(
+            "HUITRE",
             Material.FISHING_ROD,
             "huitre",
             "omori",

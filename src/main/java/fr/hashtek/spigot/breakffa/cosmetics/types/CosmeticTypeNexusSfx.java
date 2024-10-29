@@ -21,6 +21,7 @@ public class CosmeticTypeNexusSfx
     {
 
         NINE_MM (new Cosmetic<CosmeticTypeNexusSfx>(
+            "9_MM",
             Material.GOLDEN_SWORD,
             "9mm",
             "caca",
@@ -29,6 +30,7 @@ public class CosmeticTypeNexusSfx
         )),
 
         CACA (new Cosmetic<CosmeticTypeNexusSfx>(
+            "HUITEROMORI",
             Material.FISHING_ROD,
             "huitre",
             "omori",

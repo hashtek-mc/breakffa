@@ -18,6 +18,7 @@ public class CosmeticTypeHat
 
         ANVIL (
             new Cosmetic<CosmeticTypeHat>(
+                "ANVILLOL",
                 Material.ANVIL,
                 "anvil lol",
                 "miau",
