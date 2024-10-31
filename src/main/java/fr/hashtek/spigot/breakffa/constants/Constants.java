@@ -6,4 +6,6 @@ public class Constants
     public static final String PLAYER_DATA_PREFIX =
         fr.hashtek.tekore.common.constants.Constants.GAME_PREFIX_KEY + "breakffa:";
 
+    public static final String COSMETIC_KEY = "cosmetics";
+
 }

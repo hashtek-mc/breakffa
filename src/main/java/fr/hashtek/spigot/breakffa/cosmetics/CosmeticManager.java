@@ -46,7 +46,7 @@ public class CosmeticManager
     }
 
 
-    private static final Map<String, Cosmetic<? extends AbstractCosmetic>> COSMETIC_REGISTRY =
+    public static final Map<String, Cosmetic<? extends AbstractCosmetic>> COSMETIC_REGISTRY =
         getCosmetics().stream().collect(Collectors.toMap(Cosmetic::getRawName, cosmetic -> cosmetic));
 
     private final Set<Cosmetic<? extends AbstractCosmetic>> ownedCosmetics;

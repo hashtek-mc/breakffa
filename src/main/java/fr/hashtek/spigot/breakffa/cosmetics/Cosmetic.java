@@ -1,11 +1,15 @@
 package fr.hashtek.spigot.breakffa.cosmetics;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 /**
  * @param   <T>     Cosmetic type
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
 public class Cosmetic
     <T extends AbstractCosmetic>
 {
@@ -178,6 +182,7 @@ public class Cosmetic
     /**
      * @return  Raw name (the one stored in the database)
      */
+    @JsonValue
     public String getRawName()
     {
         return this.rawName;
@@ -237,6 +242,17 @@ public class Cosmetic
     public CosmeticRarity getRarity()
     {
         return this.rarity;
+    }
+
+    /**
+     * @param   rawName Cosmetic's raw name
+     * @return  Cosmetic
+     * @apiNote Solely used for Redis access.
+     */
+    @JsonCreator
+    public static Cosmetic getFromRawName(String rawName)
+    {
+        return CosmeticManager.COSMETIC_REGISTRY.get(rawName);
     }
 
 }
