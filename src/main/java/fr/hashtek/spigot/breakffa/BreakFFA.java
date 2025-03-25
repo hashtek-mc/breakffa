@@ -24,10 +24,7 @@ import java.util.HashMap;
 import java.io.IOException;
 import java.util.Objects;
 
-public class BreakFFA
-    extends JavaPlugin
-    implements HashLoggable
-{
+public class BreakFFA extends JavaPlugin implements HashLoggable {
 
     private static BreakFFA instance;
     private Tekore core;
@@ -47,15 +44,8 @@ public class BreakFFA
 
     private World world;
 
-
-    /**
-     * Called on server start.
-     * Core error handling uses System.err.println because
-     * HashLogger isn't loaded yet.
-     */
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         instance = this;
 
         try {
@@ -66,39 +56,30 @@ public class BreakFFA
             return;
         }
 
-        this.setupConfig();
-        this.setupHashLogger();
+        setupConfig();
+        setupHashLogger();
 
-        this.logger.info(this, "Starting BreakFFA...");
+        logger.info(this, "Starting BreakFFA...");
 
-        this.setupManagers();
-        this.setupWorld();
-        this.setupBoard();
-        this.registerListeners();
-        this.registerCommands();
+        setupManagers();
+        setupWorld();
+        setupBoard();
+        registerListeners();
+        registerCommands();
 
-        this.logger.info(this, "BreakFFA loaded.");
+        logger.info(this, "BreakFFA loaded.");
     }
 
-    /**
-     * Called on server stop.
-     */
     @Override
-    public void onDisable()
-    {
-        this.logger.info(this, "Disabling BreakFFA...");
+    public void onDisable() {
+        logger.info(this, "Disabling BreakFFA...");
 
-        this.gameManager.resetMap();
+        gameManager.resetMap();
 
-        this.logger.info(this, "BreakFFA disabled.");
+        logger.info(this, "BreakFFA disabled.");
     }
 
-    /**
-     * Creates a new instance of HashConfig, to read configuration files.
-     * Also creates a new instance of LobbyConfiguration.
-     */
-    private void setupConfig()
-    {
+    private void setupConfig() {
         final String configFilename = "config.yml";
 
         try {
@@ -109,18 +90,12 @@ public class BreakFFA
                 true
             );
         } catch (IOException exception) {
-            this.logger.fatal(this, "Failed to read config file. Stopping server.", exception);
+            logger.fatal(this, "Failed to read config file. Stopping server.", exception);
             this.getServer().shutdown();
         }
     }
 
-    /**
-     * Creates an instance of HashLogger.
-     * This function doesn't use HashLogger because it is called before the
-     * initialization of HashLogger. System.err.println is used instead.
-     */
-    private void setupHashLogger()
-    {
+    private void setupHashLogger() {
         try {
             this.logger = HashLogger.fromEnvConfig(this, this.hashConfig.getEnv());
         } catch (IllegalArgumentException | NullPointerException exception) {
@@ -129,51 +104,39 @@ public class BreakFFA
         }
     }
 
-    /**
-     * Setups all managers.
-     */
-    private void setupManagers()
-    {
-        this.logger.info(this, "Setting up managers...");
+    private void setupManagers() {
+        logger.info(this, "Setting up managers...");
 
         this.pluginManager = this.getServer().getPluginManager();
 
         this.guiManager = new HashGuiManager(this, this.pluginManager);
         this.guiManager.setup();
 
-        this.setupGameManager();
+        setupGameManager();
         this.shopManager = new ShopManager();
 
-        this.logger.info(this, "Managers set up!");
+        logger.info(this, "Managers set up!");
     }
 
-    /**
-     * Setups game manager.
-     */
-    private void setupGameManager()
-    {
-        this.logger.info(this, "Setting up Game manager...");
+    private void setupGameManager() {
+        logger.info(this, "Setting up Game manager...");
 
         this.gameManager = new GameManager();
 
         try {
             this.gameManager.setup(this.hashConfig);
         } catch (Exception exception) {
-            HashError.UNKNOWN
-                .log(this.logger, this, exception);
-
+            HashError.UNKNOWN.log(this.logger, this, exception);
             this.getServer().shutdown();
         }
 
-        this.logger.info(this, "Game manager set up!");
+        logger.info(this, "Game manager set up!");
     }
 
-    private void setupWorld()
-    {
+    private void setupWorld() {
         this.world = this.getServer().getWorld("breakffa");
 
         if (this.world == null) {
-            // TODO: Log this.
             return;
         }
 
@@ -187,43 +150,12 @@ public class BreakFFA
         this.world.setAutoSave(false);
     }
 
-    /**
-     * Setups main board.
-     * FIXME: Change HashError field. (CFG_EXCEPTION ?)
-     */
-    private void setupBoard()
-    {
-//        this.scoreboardManager = new ScoreboardManager(this);
-//        this.tablistManager = new TablistManager(this);
-//        this.rankTeams = new HashMap<String, HashTeam>();
-//
-//        try {
-//            this.tablistManager.setup(this.hashConfig.getYaml());
-//        } catch (NoSuchFieldException exception) {
-//            HashError.UNKNOWN
-//                .log(this.logger, this, exception);
-//        }
-//
-//        int i = 0;
-//        for (Rank rank : this.core.getRanks()) {
-//            HashTeam team = new HashTeam(
-//                i,
-//                rank.getShortName() + " ",
-//                "",
-//                10,
-//                this.scoreboardManager.getBoard()
-//            ); // TODO: Set team size to 0 when HashBoard is updated.
-//            rankTeams.put(rank.getUuid(), team);
-//            i++;
-//        }
+    private void setupBoard() {
+        // Setup scoreboard and tablist managers
     }
 
-    /**
-     * Registers all event listeners.
-     */
-    private void registerListeners()
-    {
-        this.logger.info(this, "Registering listeners...");
+    private void registerListeners() {
+        logger.info(this, "Registering listeners...");
 
         this.pluginManager.registerEvents(new ListenerJoin(), this);
         this.pluginManager.registerEvents(new ListenerQuit(), this);
@@ -241,108 +173,59 @@ public class BreakFFA
         this.pluginManager.registerEvents(new ListenerChat(), this);
         this.pluginManager.registerEvents(new ListenerWeatherChange(), this);
 
-        this.logger.info(this, "Listeners loaded!");
+        logger.info(this, "Listeners loaded!");
     }
 
-    /**
-     * Registers all command listeners.
-     */
-    private void registerCommands()
-    {
-        this.logger.info(this, "Registering commands...");
+    private void registerCommands() {
+        logger.info(this, "Registering commands...");
 
         Objects.requireNonNull(getCommand("guidump")).setExecutor(new CommandGuiDump());
         Objects.requireNonNull(getCommand("cosmeticdump")).setExecutor(new CommandCosmeticDump());
 
-        this.logger.info(this, "Commands registered!");
+        logger.info(this, "Commands registered!");
     }
 
-    /**
-     * @return	BreakFFA instance
-     */
-    public static BreakFFA getInstance()
-    {
+    public static BreakFFA getInstance() {
         return instance;
     }
 
-    /**
-     * @return	Tekore instance
-     */
-    public Tekore getCore()
-    {
+    public Tekore getCore() {
         return this.core;
     }
 
-    /**
-     * @return	Logger
-     */
-    public HashLogger getHashLogger()
-    {
+    public HashLogger getHashLogger() {
         return this.logger;
     }
 
-    /**
-     * @return	Configuration manager
-     */
-    public HashConfig getHashConfig()
-    {
+    public HashConfig getHashConfig() {
         return this.hashConfig;
     }
 
-    /**
-     * @return	GUI manager
-     */
-    public HashGuiManager getGuiManager()
-    {
+    public HashGuiManager getGuiManager() {
         return this.guiManager;
     }
 
-    /**
-     * @return  Game manager
-     */
-    public GameManager getGameManager()
-    {
+    public GameManager getGameManager() {
         return this.gameManager;
     }
 
-    /**
-     * @return  Shop manager
-     */
-    public ShopManager getShopManager()
-    {
+    public ShopManager getShopManager() {
         return this.shopManager;
     }
 
-    /**
-     * @return  Main board
-     */
-    public ScoreboardManager getBoardManager()
-    {
+    public ScoreboardManager getBoardManager() {
         return this.scoreboardManager;
     }
 
-    /**
-     * @return  Tablist
-     */
-    public TablistManager getTablistManager()
-    {
+    public TablistManager getTablistManager() {
         return this.tablistManager;
     }
 
-    /**
-     * @return  Rank teams
-     */
-    public HashMap<String, HashTeam> getRankTeams()
-    {
+    public HashMap<String, HashTeam> getRankTeams() {
         return this.rankTeams;
     }
 
-    /**
-     * @return  World
-     */
-    public World getWorld()
-    {
+    public World getWorld() {
         return this.world;
     }
-
 }
